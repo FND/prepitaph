@@ -11,6 +11,15 @@ and occasionally find myself reimplementing it in other languages, notably
 JavaScript -- typically for some kind of dynamic indexing.
 ```
 
+```infobox
+Note that these days, there are standardized equivalents with
+[`getOrInsert`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/getOrInsert)
+and
+[`getOrInsertComputed`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/getOrInsertComputed).
+While our custom implementation here defines the initializer at the time of
+instantiation, those standardized methods defer to the time of access.
+```
+
 ```javascript
 let index = new DefaultMap(() => []);
 // …
