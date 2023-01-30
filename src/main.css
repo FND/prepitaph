@@ -10,12 +10,21 @@ body {
 	--color-fg: #000;
 	--color-bg: #FFF;
 	--color-acc: #333;
+	--color-link: #00C;
+	--color-link-visited: #518;
 
 	margin: 0;
 	font-family: system-ui, sans-serif;
 	line-height: 1.5;
 	color: var(--color-fg);
 	background-color: var(--color-bg);
+}
+
+a:link {
+	color: var(--color-link);
+}
+a:visited {
+	color: var(--color-link-visited);
 }
 
 main {
