@@ -1,0 +1,101 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	--spacing: 0.5rem;
+	--spacing-extra: calc(var(--spacing) * 3.375); /* modular scale-ish */
+	--color-fg: #000;
+	--color-bg: #FFF;
+	--color-acc: #333;
+
+	margin: 0;
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+	color: var(--color-fg);
+	background-color: var(--color-bg);
+}
+
+main {
+	--h-size: 60ch;
+
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: var(--spacing);
+	padding-right: var(--spacing);
+	padding-bottom: var(--spacing); /* XXX: hacky? */
+}
+
+/* layout utilities */
+
+.stack > * {
+	display: block;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.stack > * + * {
+	margin-top: var(--spacing);
+}
+
+/* site header */
+
+.site-header {
+	background-color: var(--color-acc);
+}
+.site-header,
+.site-header a {
+	color: var(--color-bg);
+}
+
+.site-header nav {
+	display: flex;
+	gap: var(--spacing);
+	flex-wrap: wrap; /* just to be safe */
+	align-items: center;
+}
+
+.site-header nav a {
+	padding: var(--spacing);
+}
+
+.site-header .home {
+	padding-left: var(--spacing-extra);
+}
+.site-header .home + * {
+	margin-left: var(--spacing-extra);
+}
+
+/* decoration */
+.site-header .home,
+.site-header .home > * {
+	position: relative;
+}
+.site-header .home::before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: calc(100% + var(--spacing-extra));
+	height: 100%;
+	background-color: var(--color-fg);
+	transform: skew(-30deg);
+	transform-origin: top;
+}
+
+/* article */
+
+.article > header .metadata {
+	margin-top: 0;
+	font-size: small;
+}
+.article > header .metadata,
+.article > header .metadata a {
+	color: var(--color-acc);
+}
+.article > header .metadata a + *::before {
+	content: "• ";
+}
