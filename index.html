@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Hello World | prepitaph</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	--spacing: 0.5rem;
+	--spacing-extra: calc(var(--spacing) * 3.375); /* modular scale-ish */
+	--color-fg: #000;
+	--color-fg-alt: #333;
+	--color-bg: #FFF;
+
+	margin: 0;
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+main {
+	--h-size: 60ch;
+
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: var(--spacing);
+	padding-right: var(--spacing);
+	padding-bottom: var(--spacing); /* XXX: hacky? */
+}
+
+/* layout utilities */
+
+.stack > * {
+	display: block;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.stack > * + * {
+	margin-top: var(--spacing);
+}
+
+/* site header */
+
+.site-header {
+	background-color: var(--color-fg-alt);
+}
+.site-header,
+.site-header a {
+	color: var(--color-bg);
+}
+
+.site-header nav {
+	display: flex;
+	gap: var(--spacing);
+	flex-wrap: wrap; /* just to be safe */
+	align-items: center;
+}
+
+.site-header nav a {
+	padding: var(--spacing);
+}
+
+.site-header .home {
+	padding-left: var(--spacing-extra);
+}
+.site-header .home + * {
+	margin-left: var(--spacing-extra);
+}
+
+/* decoration */
+.site-header .home,
+.site-header .home > * {
+	position: relative;
+}
+.site-header .home::before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: calc(100% + var(--spacing-extra));
+	height: 100%;
+	background-color: var(--color-fg);
+	transform: skew(-30deg);
+	transform-origin: top;
+}
+
+/* article */
+
+.article > header .metadata {
+	margin-top: 0;
+	font-size: small;
+}
+.article > header .metadata,
+.article > header .metadata a {
+	color: var(--color-fg-alt);
+}
+.article > header .metadata a + *::before {
+	content: "• ";
+}
+	</style>
+</head>
+
+<body class="stack">
+	<header class="site-header">
+		<nav>
+			<a href="#" class="home"><b>prepitaph</b></a>
+			<a href="#">articles</a>
+			<a href="#">about</a>
+		</nav>
+	</header>
+
+	<main class="article stack">
+		<header class="stack">
+			<h1>Hello World</h1>
+			<p class="metadata">
+				by <a href="#">FND</a>
+				<time datetime="1970-01-01">January 1, 1970</time>
+			</p>
+			<p class="teaser">
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+				eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+				ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+				aliquip ex ea commodo consequat. Duis aute irure dolor in
+				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+				pariatur.
+			</p>
+		</header>
+
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+			ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+			aliquip ex ea commodo consequat. Duis aute irure dolor in
+			reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+			pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+			culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+		<pre><code lang="html">foo = bar
+baz</code></pre>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+			ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+			aliquip ex ea commodo consequat. Duis aute irure dolor in
+			reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+			pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+			culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+		<figure>
+			<svg viewBox="0 0 100 50">
+				<circle cx="50%" cy="50%" r="25%" fill="#333" />
+				<circle cx="50%" cy="50%" r="20%" fill="#FFF" />
+			</svg>
+			<figcaption>lorem ipsum dolor sit amet</figcaption>
+		</figure>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+			ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+			aliquip ex ea commodo consequat. Duis aute irure dolor in
+			reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+			pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+			culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</main>
+</body>
+
+</html>
