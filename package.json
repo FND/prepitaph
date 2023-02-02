@@ -1,0 +1,14 @@
+{
+	"scripts": {
+		"start": "node ./src/ssg/index.js",
+		"test": "eslint --cache ./src && echo ✓"
+	},
+	"type": "module",
+	"dependencies": {
+		"lampenfieber": "^1.1.0",
+		"metacolon": "^1.1.1"
+	},
+	"devDependencies": {
+		"eslint-config-fnd": "^1.13.0"
+	}
+}
