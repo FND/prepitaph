@@ -27,7 +27,7 @@ export function fragment(article, { isStandalone } = {}) {
 			by <b>${html(metadata.author)}</b>
 			<time datetime="${attr(timestamp)}">${html(date)}</time>
 		</p>
-		${!intro ? "" : `<p class="teaser">${html(intro)}</p>`}
+		${!intro ? "" : `<div class="teaser stack">${intro}</div>`}
 	</header>
 	${article.content}
 </${tag}>
