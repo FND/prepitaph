@@ -1,5 +1,22 @@
-import { readdir, realpath as _realpath } from "node:fs/promises";
-import { resolve } from "node:path";
+import { writeFile, mkdir, readdir, realpath as _realpath } from "node:fs/promises";
+import { resolve, dirname } from "node:path";
+
+export async function createFile(filepath, content, dirCache = new Set()) {
+	let dir = await dirname(filepath);
+	if(!dirCache.has(dir)) {
+		await mkdir(dir, { recursive: true });
+		dirCache.add(dir);
+	}
+	try {
+		await writeFile(filepath, content, { flag: "wx" });
+	} catch(err) {
+		if(err.code === "EEXIST") {
+			throw new Error(`cannot create file; already exists: \`${err.path}\``);
+		}
+		throw err;
+	}
+	return dirCache;
+}
 
 export async function* getFiles(rootDir) {
 	let entries = await readdir(rootDir, { withFileTypes: true });

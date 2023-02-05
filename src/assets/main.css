@@ -4,7 +4,7 @@
 	box-sizing: border-box;
 }
 
-body {
+html {
 	--spacing: 0.5rem;
 	--spacing-extra: calc(var(--spacing) * 3.375); /* modular scale-ish */
 	--color-fg: #000;
@@ -13,6 +13,10 @@ body {
 	--color-link: #00C;
 	--color-link-visited: #518;
 
+	background-color: var(--color-acc);
+}
+
+body {
 	margin: 0;
 	font-family: system-ui, sans-serif;
 	line-height: 1.5;
@@ -105,6 +109,9 @@ main {
 .article > header .metadata a {
 	color: var(--color-acc);
 }
-.article > header .metadata a + *::before {
+.article > header .metadata b {
+	font-weight: normal;
+}
+.article > header .metadata * + *::before {
 	content: "• ";
 }

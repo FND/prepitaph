@@ -1,8 +1,8 @@
 import { TextPage } from "./page.js";
 import { TextTransformer } from "./transform.js";
-import { getFiles, realpath } from "./fs.js";
+import { createFile, getFiles, realpath } from "./fs.js";
 import config from "../config.js";
-import { relative, dirname, sep } from "node:path";
+import { relative, resolve, dirname, parse, sep } from "node:path";
 
 try {
 	await main();
@@ -12,22 +12,34 @@ try {
 
 async function main() {
 	let contentDir = await realpath(config.contentDir);
+	let outputDir = resolve(config.outputDir);
 	let transformer = new TextTransformer(config.blocks);
 
 	console.error(`starting content discovery in \`${contentDir}\``);
-	for await (let { page, localPath } of discoverContent(contentDir)) {
-		let { category } = page.metadata;
-		console.error(`[${category}]`, localPath);
+	let pages = []; // TODO: proper index
+	for await (let page of discoverContent(contentDir)) {
+		let { metadata } = page;
+		let { category } = metadata;
+		console.error(`[${category}]`, metadata.localPath);
 
 		let getClass = config.categories[category];
 		if(!getClass) {
 			let msg = "unrecognized category";
 			throw new Error(`${msg} in \`${page.filepath}\`: \`${category}\``);
 		}
-		let cls = await getClass();
+		pages.push(getClass().
+			then(cls => cls.from(page, transformer)));
+	}
 
-		page = await cls.from(page, transformer);
-		console.log(page);
+	// NB: separate rendering loop allows for validating interlinked content
+	let cache;
+	for(let page of pages) {
+		page = await page;
+		let html = await page.render({ pages });
+
+		let { dir, name } = parse(page.metadata.localPath);
+		let filepath = resolve(outputDir, dir, `${name}.html`);
+		cache = await createFile(filepath, html, cache);
 	}
 }
 
@@ -39,9 +51,7 @@ async function* discoverContent(rootDir) {
 			let reason = "multiple subdirectories are not supported";
 			throw new Error(`invalid content file \`${localPath}\`; ${reason}`);
 		}
-
-		let page = await TextPage.from(filepath, { category });
-		yield { page, localPath };
+		yield TextPage.from(filepath, { category, localPath });
 	}
 }
 

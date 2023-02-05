@@ -1,6 +1,8 @@
 {
 	"scripts": {
-		"start": "node ./src/ssg/index.js",
+		"start": "npm run build && npm run assets",
+		"build": "node ./src/ssg/index.js",
+		"assets": "cp -R ./src/assets ./dist/",
 		"test": "eslint --cache ./src && echo ✓"
 	},
 	"type": "module",

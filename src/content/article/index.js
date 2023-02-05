@@ -1,3 +1,6 @@
+import { document } from "./template.js";
+import { iso2date } from "../../ssg/util.js";
+
 export class Article {
 	static async from(page, transformer) {
 		let blocks = page.content;
@@ -13,10 +16,22 @@ export class Article {
 	}
 
 	constructor(filepath, metadata, intro, content) {
+		// TODO: declarative metadata transformation
+		// FIXME: validation required to reduce risk of subtle breakage
+		metadata.created = iso2date(metadata.created);
+		let { updated } = metadata;
+		if(updated) {
+			metadata.updated = iso2date(updated);
+		}
+
 		this.filepath = filepath;
 		this.metadata = metadata;
 		this.intro = intro;
 		this.content = content;
+	}
+
+	async render() {
+		return document(this);
 	}
 }
 

@@ -6,7 +6,7 @@ export default {
 	siteTitle: "prepitaph",
 
 	categories: {
-		articles: () => import("./ssg/article.js").
+		articles: () => import("./content/article/index.js").
 			then(m => m.Article)
 	},
 	blocks: {
