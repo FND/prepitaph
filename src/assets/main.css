@@ -6,6 +6,7 @@
 
 html {
 	--spacing: 0.5rem;
+	--spacing-reduced: calc(var(--spacing) * 0.667); /* modular scale-ish */
 	--spacing-extra: calc(var(--spacing) * 3.375); /* modular scale-ish */
 	--color-fg: #000;
 	--color-bg: #FFF;
@@ -29,6 +30,18 @@ a:link {
 }
 a:visited {
 	color: var(--color-link-visited);
+}
+
+pre {
+	--offset: calc(-1 * (var(--spacing-reduced) + calc(var(--spacing))));
+
+	overflow: auto;
+	margin-left: var(--offset);
+	margin-right: var(--offset);
+	border: 1px solid #DDD; /* XXX: magic value */
+	border-left-width: var(--spacing-reduced);
+	border-radius: var(--spacing);
+	padding: var(--spacing);
 }
 
 main {
@@ -114,4 +127,8 @@ main {
 }
 .article > header .metadata * + *::before {
 	content: "• ";
+}
+
+.article img {
+	max-width: 100%;
 }
