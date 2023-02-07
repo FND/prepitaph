@@ -23,6 +23,7 @@ export class Article {
 		if(updated) {
 			metadata.updated = iso2date(updated);
 		}
+		metadata.syntax = metadata.syntax === "true";
 
 		this.filepath = filepath;
 		this.metadata = metadata;
@@ -30,8 +31,8 @@ export class Article {
 		this.content = content;
 	}
 
-	async render() {
-		return document(this);
+	async render(context) {
+		return document(this, context);
 	}
 }
 

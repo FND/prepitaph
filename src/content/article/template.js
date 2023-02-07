@@ -1,10 +1,18 @@
 import layout from "../layout.js";
 import { encodeContent as html, encodeAttribute as attr } from "../../ssg/html.js";
+import config from "../../config.js";
 
-export function document(article) {
+export function document(article, { assets }) {
+	let { css } = config;
+	let { title, syntax } = article.metadata;
+	let styles = syntax === false ? css.default : css.default.concat(css.syntax);
 	return layout({
-		title: article.metadata.title,
-		content: fragment(article, { isStandalone: true })
+		title,
+		content: fragment(article, { isStandalone: true }),
+		css: styles.map(({ source, uri }) => {
+			assets.add(source); // XXX: ideally we'd want to move this into converters?
+			return uri;
+		})
 	});
 }
 

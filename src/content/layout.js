@@ -1,9 +1,7 @@
 import config from "../config.js";
-import { encodeContent as html } from "../ssg/html.js";
+import { encodeContent as html, encodeAttribute as attr } from "../ssg/html.js";
 
-let CSS = "/assets/main.css"; // FIXME: hard-coded
-
-export default ({ title, content }) => {
+export default ({ title, css = [], content }) => {
 	title = title.isStandalone ? title.text : `${title} | ${config.siteTitle}`;
 	// NB: layout will always be EN
 	return `
@@ -14,7 +12,9 @@ export default ({ title, content }) => {
 	<meta charset="utf-8">
 	<title>${html(title)}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="${CSS}">
+	${css.
+		map(uri => `<link rel="stylesheet" href="${attr(uri)}">`).
+		join("\n")}
 </head>
 
 <body class="stack">

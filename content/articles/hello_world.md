@@ -2,6 +2,7 @@ title: Hello World
 updated: 2023-06-15
 created: 2022-12-31
 author: FND
+syntax: true
 
 ```intro
 This is my teaser. It briefly summarizes the article and might be used for
@@ -22,9 +23,10 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
 fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
 culpa qui officia deserunt mollit anim id est laborum.
 
-```
-def report(msg):
-    print(msg, file=sys.stderr)
+```javascript
+function report(msg) {
+    console.error(msg);
+}
 ```
 
 

@@ -1,15 +1,15 @@
 {
 	"scripts": {
-		"start": "npm run build && npm run assets",
 		"build": "node ./src/ssg/index.js",
-		"assets": "cp -R ./src/assets ./dist/",
+		"rebuild": "rm -rf ./dist && npm run build",
 		"test": "eslint --cache ./src && echo ✓"
 	},
 	"type": "module",
 	"dependencies": {
 		"commonmark": "^0.30.0",
 		"lampenfieber": "^1.1.0",
-		"metacolon": "^1.1.1"
+		"metacolon": "^1.1.1",
+		"prismjs": "^1.29.0"
 	},
 	"devDependencies": {
 		"eslint-config-fnd": "^1.13.0"

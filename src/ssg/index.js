@@ -2,7 +2,8 @@ import { TextPage } from "./page.js";
 import { TextTransformer } from "./transform.js";
 import { createFile, getFiles, realpath } from "./fs.js";
 import config from "../config.js";
-import { relative, resolve, dirname, parse, sep } from "node:path";
+import { copyFile, mkdir } from "node:fs/promises";
+import { relative, resolve, dirname, basename, parse, sep } from "node:path";
 
 try {
 	await main();
@@ -13,6 +14,7 @@ try {
 async function main() {
 	let contentDir = await realpath(config.contentDir);
 	let outputDir = resolve(config.outputDir);
+	let assetsDir = resolve(outputDir, config.assetsDir);
 	let transformer = new TextTransformer(config.blocks);
 
 	console.error(`starting content discovery in \`${contentDir}\``);
@@ -32,15 +34,24 @@ async function main() {
 	}
 
 	// NB: separate rendering loop allows for validating interlinked content
+	let assets = new Set();
 	let cache;
 	for(let page of pages) {
 		page = await page;
-		let html = await page.render({ pages });
+		let html = await page.render({ pages, assets });
 
 		let { dir, name } = parse(page.metadata.localPath);
 		let filepath = resolve(outputDir, dir, `${name}.html`);
 		cache = await createFile(filepath, html, cache);
 	}
+
+	// copy any assets discovered during rendering
+	await mkdir(assetsDir, { recursive: true });
+	await Promise.all([...assets].map(filepath => {
+		let target = resolve(assetsDir, basename(filepath));
+		console.error(`copying asset \`${filepath}\` to \`${target}\``);
+		return copyFile(filepath, target);
+	}));
 }
 
 async function* discoverContent(rootDir) {
