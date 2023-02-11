@@ -1,4 +1,4 @@
-import txtParse from "lampenfieber";
+import { txt2blocks } from "./parser.js";
 import colonParse from "metacolon";
 
 export class TextPage {
@@ -11,8 +11,7 @@ export class TextPage {
 			throw new Error(`metadata in \`${filepath}\` overrides global preset: ` +
 				conflicts.map(entry => `\`${entry}\``).join(", "));
 		}
-		return new this(filepath, { ...headers, ...metadata },
-				txtParse(body).map(normalizeBlock));
+		return new this(filepath, { ...headers, ...metadata }, txt2blocks(body));
 	}
 
 	constructor(filepath, metadata, blocks) {
@@ -20,16 +19,4 @@ export class TextPage {
 		this.metadata = metadata;
 		this.content = blocks;
 	}
-}
-
-function normalizeBlock(segment) {
-	return typeof segment === "string" ? {
-		type: "default",
-		params: {},
-		content: segment
-	} : {
-		type: segment.type ?? "none", // XXX: rename
-		params: segment.params,
-		content: segment.content
-	};
 }

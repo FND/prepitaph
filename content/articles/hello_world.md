@@ -46,6 +46,20 @@ culpa qui officia deserunt mollit anim id est laborum.
 * bar
 * baz
 
+```aside
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua.
+
+'''javascript
+function abort(...msg) {
+    console.error(...msg);
+}
+'''
+
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+aliquip ex ea commodo consequat.
+```
+
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
 nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.

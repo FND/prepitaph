@@ -38,7 +38,7 @@ pre {
 	overflow: auto;
 	margin-left: var(--offset);
 	margin-right: var(--offset);
-	border: 1px solid #DDD; /* XXX: magic value */
+	border: 1px solid #DDD; /* XXX: magic color value */
 	border-left-width: var(--spacing-reduced);
 	border-radius: var(--spacing);
 	padding: var(--spacing);
@@ -131,4 +131,11 @@ main {
 
 .article img {
 	max-width: 100%;
+}
+
+.article aside { /* XXX: magic color values */
+	border: 3px solid rgba(110, 140, 192, 0.8);
+	border-width: 3px 0;
+	padding: var(--spacing) var(--spacing-extra);
+	background-color: rgba(220, 232, 255, 0.2);
 }

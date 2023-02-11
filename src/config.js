@@ -1,4 +1,6 @@
 import { renderMarkdown } from "./ssg/markdown.js";
+import { renderAll } from "./ssg/transform.js";
+import { txt2blocks } from "./ssg/parser.js";
 import { encodeContent as html } from "./ssg/html.js";
 import Prism from "prismjs";
 import { fileURLToPath } from "node:url";
@@ -35,6 +37,11 @@ export default {
 		default: markdown,
 		none: (content, params, context) => `<pre>${html(content)}</pre>`,
 		intro: markdown,
+		aside: async (content, { backticks = "'''" }, context) => {
+			content = content.replaceAll(backticks, "```");
+			let html = await renderAll(txt2blocks(content), context, context.transformer);
+			return `<aside class="stack">${html}</aside>`;
+		},
 		javascript: code("javascript")
 	}
 };
