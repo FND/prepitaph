@@ -1,4 +1,5 @@
 import { txt2blocks } from "./parser.js";
+import { CustomError } from "./util.js";
 import colonParse from "metacolon";
 
 export class TextPage {
@@ -8,8 +9,9 @@ export class TextPage {
 		let _headers = new Set(Object.keys(headers));
 		let conflicts = Object.keys(metadata).filter(key => _headers.has(key));
 		if(conflicts.length) {
-			throw new Error(`metadata in \`${filepath}\` overrides global preset: ` +
-				conflicts.map(entry => `\`${entry}\``).join(", "));
+			throw new CustomError("INVALID_CONTENT",
+					`metadata in \`${filepath}\` overrides global preset: ` +
+					conflicts.map(entry => `\`${entry}\``).join(", "));
 		}
 		return new this(filepath, { ...headers, ...metadata }, txt2blocks(body));
 	}

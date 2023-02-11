@@ -1,6 +1,6 @@
 import { document } from "./template.js";
 import { renderAll } from "../../ssg/transform.js";
-import { iso2date } from "../../ssg/util.js";
+import { iso2date, CustomError } from "../../ssg/util.js";
 
 let INVALID = Symbol("invalid field value");
 let METADATA = { // TODO: stricter validation required to reduce risk of subtle breakage
@@ -32,7 +32,8 @@ export class Article {
 			let value = metadata[field];
 			value = convert(value);
 			if(value === INVALID) {
-				throw new Error(`invalid \`${field}\` value in \`${filepath}\``);
+				throw new CustomError("INVALID_CONTENT",
+						`invalid \`${field}\` value in \`${filepath}\``);
 			}
 			memo[field] = value;
 			return memo;

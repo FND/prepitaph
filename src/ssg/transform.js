@@ -1,3 +1,5 @@
+import { CustomError } from "./util.js";
+
 // XXX: smell
 export async function renderAll(blocks, context, transformer) {
 	let res = [];
@@ -17,8 +19,9 @@ export class TextTransformer {
 		for(let block of blocks) {
 			let convert = this.converters.get(block.type);
 			if(!convert) {
-				let msg = "unrecognized content block in";
-				throw new Error(`${msg} \`${context.page.filepath}\`: \`${block.type}\``);
+				let msg = "unrecognized content block";
+				throw new CustomError("INVALID_CONTENT",
+						`${msg} in \`${context.page.filepath}\`: \`${block.type}\``);
 			}
 			yield convert(block.content, block.params, context);
 		}

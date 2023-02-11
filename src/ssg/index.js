@@ -1,6 +1,7 @@
 import { TextPage } from "./page.js";
 import { TextTransformer } from "./transform.js";
 import { createFile, getFiles, realpath } from "./fs.js";
+import { CustomError } from "./util.js";
 import config from "../config.js";
 import { copyFile, mkdir } from "node:fs/promises";
 import { relative, resolve, dirname, basename, parse, sep } from "node:path";
@@ -8,7 +9,10 @@ import { relative, resolve, dirname, basename, parse, sep } from "node:path";
 try {
 	await main();
 } catch(err) {
-	abort(err.message); // XXX: complicates debugging
+	if(err instanceof CustomError) {
+		abort(`[${err.code}] ${err.message}`);
+	}
+	throw err;
 }
 
 async function main() {
@@ -26,8 +30,8 @@ async function main() {
 
 		let getClass = config.categories[category];
 		if(!getClass) {
-			let msg = "unrecognized category";
-			throw new Error(`${msg} in \`${page.filepath}\`: \`${category}\``);
+			throw new CustomError("INVALID_CONTENT",
+					`unrecognized category in \`${page.filepath}\`: \`${category}\``);
 		}
 		pages.push(getClass().
 			then(cls => cls.from(page, transformer)));
@@ -61,7 +65,8 @@ async function* discoverContent(rootDir) {
 		let category = dirname(localPath);
 		if(category.includes(sep)) {
 			let reason = "multiple subdirectories are not supported";
-			throw new Error(`invalid content file \`${localPath}\`; ${reason}`);
+			throw new CustomError("INVALID_CONTENT",
+					`invalid content file \`${localPath}\`; ${reason}`);
 		}
 		yield TextPage.from(filepath, { category, localPath });
 	}
