@@ -46,7 +46,7 @@ async function main() {
 		let { slug, localPath } = page.metadata;
 
 		let { dir, name } = parse(localPath);
-		let filepath = resolve(outputDir, dir, `${slug || name}.html`);
+		let filepath = resolve(outputDir, dir, slug || name, "index.html");
 		cache = await createFile(filepath, html, cache);
 	}
 
