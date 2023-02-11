@@ -39,9 +39,10 @@ async function main() {
 	for(let page of pages) {
 		page = await page;
 		let html = await page.render({ pages, assets });
+		let { slug, localPath } = page.metadata;
 
-		let { dir, name } = parse(page.metadata.localPath);
-		let filepath = resolve(outputDir, dir, `${name}.html`);
+		let { dir, name } = parse(localPath);
+		let filepath = resolve(outputDir, dir, `${slug || name}.html`);
 		cache = await createFile(filepath, html, cache);
 	}
 

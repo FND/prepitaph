@@ -1,4 +1,5 @@
 title: Hello World
+slug: hello-world
 updated: 2023-06-15
 created: 2022-12-31
 author: FND
