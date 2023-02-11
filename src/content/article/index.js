@@ -2,6 +2,18 @@ import { document } from "./template.js";
 import { renderAll } from "../../ssg/transform.js";
 import { iso2date } from "../../ssg/util.js";
 
+let INVALID = Symbol("invalid field value");
+let METADATA = { // TODO: stricter validation required to reduce risk of subtle breakage
+	title: value => value || INVALID,
+	slug: value => value || null,
+	author: value => value || INVALID,
+	created: value => value ? iso2date(value) : INVALID,
+	updated: value => value ? iso2date(value) : null,
+	syntax: value => value === "true",
+	category: value => value || null,
+	localPath: value => value || null
+};
+
 export class Article {
 	static async from(page, transformer) {
 		let blocks = page.content;
@@ -15,17 +27,16 @@ export class Article {
 	}
 
 	constructor(filepath, metadata, intro = null, content) {
-		// TODO: declarative metadata transformation
-		// FIXME: validation required to reduce risk of subtle breakage
-		metadata.created = iso2date(metadata.created);
-		let { updated } = metadata;
-		if(updated) {
-			metadata.updated = iso2date(updated);
-		}
-		metadata.syntax = metadata.syntax === "true";
-
 		this.filepath = filepath;
-		this.metadata = metadata;
+		this.metadata = Object.entries(METADATA).reduce((memo, [field, convert]) => {
+			let value = metadata[field];
+			value = convert(value);
+			if(value === INVALID) {
+				throw new Error(`invalid \`${field}\` value in \`${filepath}\``);
+			}
+			memo[field] = value;
+			return memo;
+		}, {});
 		this.intro = intro;
 		this.content = content;
 	}
