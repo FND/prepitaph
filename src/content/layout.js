@@ -1,20 +1,22 @@
 import config from "../config.js";
-import { encodeContent as html, encodeAttribute as attr } from "../ssg/html.js";
+import { html, RAW } from "../ssg/html.js";
 
 export default ({ title, css = [], content }) => {
 	title = title.isStandalone ? title.text : `${title} | ${config.siteTitle}`;
 	// NB: layout will always be EN
-	return `
+	return html`
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<meta charset="utf-8">
-	<title>${html(title)}</title>
+	<title>${title}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	${css.
-		map(uri => `<link rel="stylesheet" href="${attr(uri)}">`).
-		join("\n")}
+	${{
+		[RAW]: css.
+			map(uri => html`<link rel="stylesheet"${{ href: uri }}>`).
+			join("\n")
+	}}
 </head>
 
 <body class="stack">
@@ -25,7 +27,7 @@ export default ({ title, css = [], content }) => {
 			<a href="about.html">about</a>
 		</nav>
 	</header>
-	${content}
+	${{ [RAW]: content }}
 </body>
 
 </html>

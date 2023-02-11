@@ -1,7 +1,7 @@
 import { renderMarkdown } from "./ssg/markdown.js";
 import { renderAll } from "./ssg/transform.js";
 import { txt2blocks } from "./ssg/parser.js";
-import { encodeContent as html } from "./ssg/html.js";
+import { html, RAW } from "./ssg/html.js";
 import Prism from "prismjs";
 import { fileURLToPath } from "node:url";
 import { resolve, normalize, dirname } from "node:path";
@@ -35,12 +35,14 @@ export default {
 	},
 	blocks: {
 		default: markdown,
-		none: (content, params, context) => `<pre>${html(content)}</pre>`,
+		none: (content, params, context) => html`<pre>${content}</pre>`,
 		intro: markdown,
 		aside: async (content, { backticks = "'''" }, context) => {
 			content = content.replaceAll(backticks, "```");
-			let html = await renderAll(txt2blocks(content), context, context.transformer);
-			return `<aside class="stack">${html}</aside>`;
+			return html`<aside class="stack">${{
+				[RAW]: await renderAll(txt2blocks(content), context,
+						context.transformer)
+			}}</aside>`;
 		},
 		javascript: code("javascript")
 	}
@@ -53,8 +55,10 @@ function markdown(content) {
 }
 
 function code(lang, grammar = lang) {
+	grammar = languages[grammar];
 	return (content, params, context) => {
-		let html = highlight(content, languages[grammar], lang);
-		return `<pre><code class="language-${lang}">${html}</code></pre>`;
+		return html`<pre><code${{ class: `language-${lang}` }}>${{
+			[RAW]: highlight(content, grammar, lang)
+		}}</code></pre>`;
 	};
 }

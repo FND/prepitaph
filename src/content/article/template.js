@@ -1,5 +1,5 @@
 import layout from "../layout.js";
-import { encodeContent as html, encodeAttribute as attr } from "../../ssg/html.js";
+import { html, RAW } from "../../ssg/html.js";
 import config from "../../config.js";
 
 export function document(article, { assets }) {
@@ -17,7 +17,7 @@ export function document(article, { assets }) {
 }
 
 export function fragment(article, { isStandalone } = {}) {
-	let { metadata } = article;
+	let { metadata, intro } = article;
 	let ts = metadata.updated || metadata.created; // NB: design decision
 	let timestamp = ts.toISOString().substring(0, 10);
 	let date = ts.toLocaleDateString("en-US", {
@@ -25,19 +25,23 @@ export function fragment(article, { isStandalone } = {}) {
 		month: "long",
 		day: "numeric"
 	});
-	let tag = isStandalone ? "main" : "article";
-	let intro = article.intro;
-	return `
+
+	intro = intro === null ? "" : html`<div class="teaser stack">${{
+		[RAW]: intro
+	}}</div>`;
+
+	let tag = { [RAW]: isStandalone ? "main" : "article" };
+	return html`
 <${tag} class="article stack">
 	<header class="stack">
-		<h1>${html(metadata.title)}</h1>
+		<h1>${metadata.title}</h1>
 		<p class="metadata">
-			by <b>${html(metadata.author)}</b>
-			<time datetime="${attr(timestamp)}">${html(date)}</time>
+			by <b>${metadata.author}</b>
+			<time${{ datetime: timestamp }}>${date}</time>
 		</p>
-		${!intro ? "" : `<div class="teaser stack">${intro}</div>`}
+		${{ [RAW]: intro }}
 	</header>
-	${article.content}
+	${{ [RAW]: article.content }}
 </${tag}>
 	`.trim();
 }
