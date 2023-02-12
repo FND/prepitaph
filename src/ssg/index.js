@@ -2,7 +2,7 @@ import { TextPage } from "./page.js";
 import { TextTransformer } from "./transform.js";
 import { createFile, getFiles, realpath } from "./fs.js";
 import { CustomError } from "./util.js";
-import config from "../config.js";
+import * as config from "../config.js";
 import { copyFile, mkdir } from "node:fs/promises";
 import { relative, resolve, dirname, basename, parse, sep } from "node:path";
 

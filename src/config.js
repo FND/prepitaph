@@ -8,44 +8,40 @@ import { resolve, normalize, dirname } from "node:path";
 
 let { highlight, languages } = Prism;
 
-let OUTPUT_DIR = "./dist";
-let ASSETS_DIR = "./assets";
 let { PATH_PREFIX = "" } = process.env;
 let ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-export default {
-	contentDir: "./content", // NB: relative to current working directory
-	outputDir: OUTPUT_DIR, // NB: relative to current working directory
-	assetsDir: ASSETS_DIR, // NB: relative to `outputDir`
+export let contentDir = "./content"; // NB: relative to current working directory
+export let outputDir = "./dist"; // NB: relative to current working directory
+export let assetsDir = "./assets"; // NB: relative to `outputDir`
 
-	siteTitle: "prepitaph",
-	css: {
-		default: [{
-			source: `${ROOT_DIR}/src/assets/main.css`,
-			uri: normalize(`${PATH_PREFIX}/${ASSETS_DIR}/main.css`)
-		}],
-		syntax: [{ // TODO: use `import.meta.resolve`
-			source: `${ROOT_DIR}/node_modules/prismjs/themes/prism.min.css`,
-			uri: normalize(`${PATH_PREFIX}/${ASSETS_DIR}/prism.min.css`)
-		}]
+export let siteTitle = "prepitaph";
+export let css = {
+	default: [{
+		source: `${ROOT_DIR}/src/assets/main.css`,
+		uri: normalize(`${PATH_PREFIX}/${assetsDir}/main.css`)
+	}],
+	syntax: [{ // TODO: use `import.meta.resolve`
+		source: `${ROOT_DIR}/node_modules/prismjs/themes/prism.min.css`,
+		uri: normalize(`${PATH_PREFIX}/${assetsDir}/prism.min.css`)
+	}]
+};
+export let categories = {
+	articles: () => import("./content/article/index.js").
+		then(m => m.Article)
+};
+export let blocks = {
+	default: markdown,
+	none: (content, params, context) => html`<pre>${content}</pre>`,
+	intro: markdown,
+	aside: async (content, { backticks = "'''" }, context) => {
+		content = content.replaceAll(backticks, "```");
+		return html`<aside class="stack">${{
+			[RAW]: await renderAll(txt2blocks(content), context,
+					context.transformer)
+		}}</aside>`;
 	},
-	categories: {
-		articles: () => import("./content/article/index.js").
-			then(m => m.Article)
-	},
-	blocks: {
-		default: markdown,
-		none: (content, params, context) => html`<pre>${content}</pre>`,
-		intro: markdown,
-		aside: async (content, { backticks = "'''" }, context) => {
-			content = content.replaceAll(backticks, "```");
-			return html`<aside class="stack">${{
-				[RAW]: await renderAll(txt2blocks(content), context,
-						context.transformer)
-			}}</aside>`;
-		},
-		javascript: code("javascript")
-	}
+	javascript: code("javascript")
 };
 
 function markdown(content) {

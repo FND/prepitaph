@@ -1,9 +1,8 @@
 import layout from "../layout.js";
 import { html, RAW } from "../../ssg/html.js";
-import config from "../../config.js";
+import { css } from "../../config.js";
 
 export function document(article, { assets }) {
-	let { css } = config;
 	let { title, syntax } = article.metadata;
 	let styles = syntax === false ? css.default : css.default.concat(css.syntax);
 	return layout({
