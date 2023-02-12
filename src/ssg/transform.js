@@ -1,4 +1,4 @@
-import { CustomError } from "./util.js";
+import { collect, CustomError } from "./util.js";
 
 export class TextTransformer {
 	constructor(converters) {
@@ -7,11 +7,8 @@ export class TextTransformer {
 	}
 
 	async render(blocks, context) {
-		let res = [];
-		for await (let chunk of this.renderChunks(blocks, context)) {
-			res.push(chunk);
-		}
-		return res.join("");
+		let res = this.renderChunks(blocks, context);
+		return collect(res, "");
 	}
 
 	async* renderChunks(blocks, context) {

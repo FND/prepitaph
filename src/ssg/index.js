@@ -1,10 +1,11 @@
 import { TextTransformer } from "./transform.js";
+import { AssetRegistry } from "./assets.js";
 import { file2doc } from "./parser.js";
 import { createFile, getFiles, realpath, File } from "./fs.js";
 import { CustomError } from "./util.js";
 import * as config from "../config.js";
 import { copyFile, mkdir } from "node:fs/promises";
-import { resolve, dirname, basename, parse, sep } from "node:path";
+import { resolve, dirname, basename, sep } from "node:path";
 
 try {
 	await main();
@@ -42,12 +43,11 @@ async function main() {
 
 	// NB: separate rendering loop allows for validating interlinked content
 	let transformer = new TextTransformer(config.blocks);
-	let assets = new Set();
+	let assets = new AssetRegistry();
 	let cache;
 	for await (let page of pages) {
 		let html = await page.render({ pages, assets, transformer });
-		let { dir, name } = parse(page.file.localPath);
-		let filepath = resolve(outputDir, dir, page.metadata.slug || name, "index.html");
+		let filepath = resolve(outputDir, page.basePath, "index.html");
 		cache = await createFile(filepath, html, cache);
 	}
 
@@ -64,7 +64,9 @@ async function* discoverContent(rootDir) {
 	for await (let filepath of getFiles(rootDir)) {
 		let file = new File(filepath, rootDir);
 		let category = dirname(file.localPath);
-		if(category.includes(sep)) {
+		if(category === ".") {
+			category = "NONE"; // XXX: special-casing
+		} else if(category.includes(sep)) {
 			let reason = "multiple subdirectories are not supported";
 			throw new CustomError("INVALID_CONTENT",
 					`invalid content file \`${file.localPath}\`; ${reason}`);

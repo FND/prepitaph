@@ -32,7 +32,7 @@ function normalizeBlock(segment) {
 		params: {},
 		content: segment
 	} : {
-		type: segment.type ?? "none", // XXX: rename
+		type: segment.type ?? "NONE", // XXX: rename
 		params: segment.params,
 		content: segment.content
 	};
