@@ -2,12 +2,12 @@ import layout from "../layout.js";
 import { html, RAW } from "../../ssg/html.js";
 import { css } from "../../config.js";
 
-export function document(article, { assets }) {
+export async function document(article, { assets }) {
 	let { title, syntax } = article.metadata;
 	let styles = syntax === false ? css.default : css.default.concat(css.syntax);
 	return layout({
 		title,
-		content: fragment(article, { isStandalone: true }),
+		content: await fragment(article, { isStandalone: true }),
 		css: styles.map(({ source, uri }) => {
 			assets.add(source); // XXX: ideally we'd want to move this into converters?
 			return uri;
@@ -15,7 +15,7 @@ export function document(article, { assets }) {
 	});
 }
 
-export function fragment(article, { isStandalone } = {}) {
+export async function fragment(article, { isStandalone } = {}) {
 	let { metadata, intro } = article;
 	let ts = metadata.updated || metadata.created; // NB: design decision
 	let timestamp = ts.toISOString().substring(0, 10);
@@ -26,7 +26,7 @@ export function fragment(article, { isStandalone } = {}) {
 	});
 
 	intro = intro === null ? "" : html`<div class="teaser stack">${{
-		[RAW]: intro
+		[RAW]: await intro
 	}}</div>`;
 
 	let tag = { [RAW]: isStandalone ? "main" : "article" };
@@ -40,7 +40,7 @@ export function fragment(article, { isStandalone } = {}) {
 		</p>
 		${{ [RAW]: intro }}
 	</header>
-	${{ [RAW]: article.content }}
+	${{ [RAW]: await article.content }}
 </${tag}>
 	`.trim();
 }

@@ -1,6 +1,6 @@
 import { CustomError } from "./util.js";
 import { writeFile, mkdir, readdir, realpath as _realpath } from "node:fs/promises";
-import { resolve, dirname } from "node:path";
+import { resolve, relative, dirname } from "node:path";
 
 export async function createFile(filepath, content, dirCache = new Set()) {
 	let dir = await dirname(filepath);
@@ -41,5 +41,12 @@ export async function realpath(filepath) {
 					`no such file or directory: \`${filepath}\``);
 		}
 		throw err;
+	}
+}
+
+export class File {
+	constructor(filepath, referenceDir) {
+		this.path = filepath;
+		this.localPath = relative(referenceDir, filepath);
 	}
 }

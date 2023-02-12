@@ -1,10 +1,10 @@
-import { TextPage } from "./page.js";
 import { TextTransformer } from "./transform.js";
-import { createFile, getFiles, realpath } from "./fs.js";
+import { file2doc } from "./parser.js";
+import { createFile, getFiles, realpath, File } from "./fs.js";
 import { CustomError } from "./util.js";
 import * as config from "../config.js";
 import { copyFile, mkdir } from "node:fs/promises";
-import { relative, resolve, dirname, basename, parse, sep } from "node:path";
+import { resolve, dirname, basename, parse, sep } from "node:path";
 
 try {
 	await main();
@@ -19,34 +19,35 @@ async function main() {
 	let contentDir = await realpath(config.contentDir);
 	let outputDir = resolve(config.outputDir);
 	let assetsDir = resolve(outputDir, config.assetsDir);
-	let transformer = new TextTransformer(config.blocks);
 
 	console.error(`starting content discovery in \`${contentDir}\``);
 	let pages = []; // TODO: proper index
-	for await (let page of discoverContent(contentDir)) {
-		let { metadata } = page;
-		let { category } = metadata;
-		console.error(`[${category}]`, metadata.localPath);
+	for await (let doc of discoverContent(contentDir)) {
+		let { category } = doc.metadata;
+		console.error(`[${category}]`, doc.file.localPath);
 
 		let getClass = config.categories[category];
 		if(!getClass) {
 			throw new CustomError("INVALID_CONTENT",
-					`unrecognized category in \`${page.filepath}\`: \`${category}\``);
+					`unrecognized category in \`${doc.file.path}\`: \`${category}\``);
 		}
-		pages.push(getClass().
-			then(cls => cls.from(page, transformer)));
+
+		let resource = getClass().
+			then(cls => cls.from(doc));
+		pages.push(resource);
+		// guard against unhandled rejections
+		// cf. https://jakearchibald.com/2023/unhandled-rejections/
+		resource.catch(() => {});
 	}
 
 	// NB: separate rendering loop allows for validating interlinked content
+	let transformer = new TextTransformer(config.blocks);
 	let assets = new Set();
 	let cache;
-	for(let page of pages) {
-		page = await page;
-		let html = await page.render({ pages, assets });
-		let { slug, localPath } = page.metadata;
-
-		let { dir, name } = parse(localPath);
-		let filepath = resolve(outputDir, dir, slug || name, "index.html");
+	for await (let page of pages) {
+		let html = await page.render({ pages, assets, transformer });
+		let { dir, name } = parse(page.file.localPath);
+		let filepath = resolve(outputDir, dir, page.metadata.slug || name, "index.html");
 		cache = await createFile(filepath, html, cache);
 	}
 
@@ -61,14 +62,14 @@ async function main() {
 
 async function* discoverContent(rootDir) {
 	for await (let filepath of getFiles(rootDir)) {
-		let localPath = relative(rootDir, filepath);
-		let category = dirname(localPath);
+		let file = new File(filepath, rootDir);
+		let category = dirname(file.localPath);
 		if(category.includes(sep)) {
 			let reason = "multiple subdirectories are not supported";
 			throw new CustomError("INVALID_CONTENT",
-					`invalid content file \`${localPath}\`; ${reason}`);
+					`invalid content file \`${file.localPath}\`; ${reason}`);
 		}
-		yield TextPage.from(filepath, { category, localPath });
+		yield file2doc(file, { category });
 	}
 }
 

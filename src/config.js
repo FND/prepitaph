@@ -1,5 +1,4 @@
 import { renderMarkdown } from "./ssg/markdown.js";
-import { renderAll } from "./ssg/transform.js";
 import { txt2blocks } from "./ssg/parser.js";
 import { html, RAW } from "./ssg/html.js";
 import Prism from "prismjs";
@@ -37,8 +36,7 @@ export let blocks = {
 	aside: async (content, { backticks = "'''" }, context) => {
 		content = content.replaceAll(backticks, "```");
 		return html`<aside class="stack">${{
-			[RAW]: await renderAll(txt2blocks(content), context,
-					context.transformer)
+			[RAW]: await context.transformer.render(txt2blocks(content), context)
 		}}</aside>`;
 	},
 	javascript: code("javascript")
