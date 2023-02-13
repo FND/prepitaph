@@ -47,7 +47,7 @@ async function main() {
 	let cache;
 	for await (let page of pages) {
 		let html = await page.render({ pages, assets, transformer });
-		let filepath = resolve(outputDir, page.basePath, "index.html");
+		let filepath = resolve(outputDir, page.basePath, `index.${page.format}`);
 		cache = await createFile(filepath, html, cache);
 	}
 

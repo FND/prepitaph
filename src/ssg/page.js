@@ -20,7 +20,13 @@ export class Page {
 	}
 
 	uri(pathPrefix) {
-		return pathPrefix + this.basePath + "/";
+		let { format } = this;
+		let res = pathPrefix + this.basePath;
+		if(format === "html") { // implicit `index.html` via trailing slash
+			// guard against spurious trailing slashes when combined with host URL
+			return res && res + "/";
+		}
+		return `${res}index.${format}`;
 	}
 
 	clone(props) {
@@ -36,5 +42,9 @@ export class Page {
 
 		let { dir, name } = parse(this.file.localPath);
 		return join(dir, slug || name);
+	}
+
+	get format() {
+		return this.metadata.format || "html";
 	}
 }

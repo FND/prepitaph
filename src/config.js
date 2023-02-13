@@ -1,7 +1,6 @@
 import { renderMarkdown } from "./ssg/markdown.js";
 import { txt2blocks } from "./ssg/parser.js";
 import { html, RAW } from "./ssg/html.js";
-import { collect } from "./ssg/util.js";
 import Prism from "prismjs";
 import { fileURLToPath } from "node:url";
 import { resolve, normalize, dirname } from "node:path";
@@ -13,6 +12,7 @@ let ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export let contentDir = "./content"; // NB: relative to current working directory
 export let outputDir = "./dist"; // NB: relative to current working directory
 export let assetsDir = "./assets"; // NB: relative to `outputDir`
+export let host = "https://example.org/blog/";
 export let pathPrefix = process.env.PATH_PREFIX || "";
 
 export let siteTitle = "prepitaph";
@@ -35,9 +35,19 @@ export let categories = {
 export let blocks = {
 	default: markdown,
 	NONE: (content, params, context) => html`<pre>${content}</pre>`,
-	list: async (content, { collection, category }, context) => {
-		let res = list(collection, category, context);
-		return collect(res, "\n");
+	feed: async (content, { category }, context) => {
+		let { renderAtom } = await import("./content/feed.js");
+		let pages = await filter(context.pages, category);
+		return renderAtom(pages, context);
+	},
+	list: async (content, { category }, context) => {
+		let res = [];
+		for await (let page of filter(context.pages, category)) {
+			let html = page.render(context, { isStandalone: false });
+			res.push(html);
+		}
+		res = await Promise.all(res);
+		return res.join("\n");
 	},
 	intro: markdown,
 	aside: async (content, { backticks = "'''" }, context) => {
@@ -64,10 +74,10 @@ function code(lang, grammar = lang) {
 	};
 }
 
-async function* list(collection, category, context) {
-	for await (let page of context[collection]) {
+async function* filter(pages, category) {
+	for await (let page of pages) {
 		if(page.metadata.category === category) {
-			yield page.render(context, { isStandalone: false });
+			yield page;
 		}
 	}
 }

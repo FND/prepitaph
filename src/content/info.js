@@ -1,7 +1,7 @@
 import layout from "./layout.js";
 import { Page, INVALID } from "../ssg/page.js";
 import { html, RAW } from "../ssg/html.js";
-import { siteTitle, css } from "../config.js";
+import { siteTitle, css, pathPrefix } from "../config.js";
 
 export class InfoPage extends Page {
 	static metadata = { // XXX: partially duplicates `Article`
@@ -12,7 +12,8 @@ export class InfoPage extends Page {
 			return value || INVALID;
 		},
 		slug: value => value || null,
-		category: value => value || null
+		category: value => value || null,
+		format: value => value || null
 	};
 
 	static async from(doc) {
@@ -20,9 +21,13 @@ export class InfoPage extends Page {
 	}
 
 	async render(context) {
-		let { title } = this.metadata;
+		if(this.format === "atom") { // XXX: special-casing
+			context.selfURI = this.uri(pathPrefix);
+			return context.transformer.render(this.content, context);
+		}
+
 		return layout({
-			title: title || {
+			title: this.metadata.title || { // XXX: special-casing
 				isStandalone: true,
 				text: siteTitle
 			},
