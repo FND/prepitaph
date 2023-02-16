@@ -1,5 +1,5 @@
 import { renderMarkdown } from "./ssg/markdown.js";
-import { txt2blocks } from "./ssg/parser.js";
+import { txt2blocks } from "./ssg/ingestion.js";
 import { html, RAW } from "./ssg/html.js";
 import Prism from "prismjs";
 import { fileURLToPath } from "node:url";
@@ -12,7 +12,7 @@ let ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export let contentDir = "./content"; // NB: relative to current working directory
 export let outputDir = "./dist"; // NB: relative to current working directory
 export let assetsDir = "./assets"; // NB: relative to `outputDir`
-export let host = "https://example.org/blog/";
+export let host = "https://example.org";
 export let pathPrefix = process.env.PATH_PREFIX || "";
 
 export let siteTitle = "prepitaph";
@@ -35,10 +35,10 @@ export let categories = {
 export let blocks = {
 	default: markdown,
 	NONE: (content, params, context) => html`<pre>${content}</pre>`,
-	feed: async (content, { category }, context) => {
+	feed: async (content, { category, title = siteTitle }, context) => {
 		let { renderAtom } = await import("./content/feed.js");
 		let pages = await filter(context.pages, category);
-		return renderAtom(pages, context);
+		return renderAtom(pages, title, context);
 	},
 	list: async (content, { category }, context) => {
 		let res = [];
@@ -76,7 +76,7 @@ function code(lang, grammar = lang) {
 
 async function* filter(pages, category) {
 	for await (let page of pages) {
-		if(page.metadata.category === category) {
+		if(page.category === category) {
 			yield page;
 		}
 	}

@@ -1,11 +1,11 @@
+import { ingestContent } from "./ingestion.js";
 import { TextTransformer } from "./transform.js";
 import { AssetRegistry } from "./assets.js";
-import { file2doc } from "./parser.js";
-import { createFile, getFiles, realpath, File } from "./fs.js";
+import { createFile, realpath } from "./fs.js";
 import { CustomError } from "./util.js";
 import * as config from "../config.js";
 import { copyFile, mkdir } from "node:fs/promises";
-import { resolve, dirname, basename, sep } from "node:path";
+import { resolve, basename } from "node:path";
 
 try {
 	await main();
@@ -23,33 +23,27 @@ async function main() {
 
 	console.error(`starting content discovery in \`${contentDir}\``);
 	let pages = []; // TODO: proper index
-	for await (let doc of discoverContent(contentDir)) {
-		let { category } = doc.metadata;
-		console.error(`[${category}]`, doc.file.localPath);
-
-		let getClass = config.categories[category];
-		if(!getClass) {
-			throw new CustomError("INVALID_CONTENT",
-					`unrecognized category in \`${doc.file.path}\`: \`${category}\``);
-		}
-
-		let resource = getClass().
-			then(cls => cls.from(doc));
-		pages.push(resource);
-		// guard against unhandled rejections
-		// cf. https://jakearchibald.com/2023/unhandled-rejections/
-		resource.catch(() => {});
+	for await (let page of ingestContent(contentDir, config.categories)) {
+		console.error(`... \`${page.localPath}\``);
+		console.error(`    → ${page.url(config.host, config.pathPrefix)}`);
+		pages.push(page);
 	}
 
 	// NB: separate rendering loop allows for validating interlinked content
+	console.error(`rendering pages into \`${outputDir}\``);
 	let transformer = new TextTransformer(config.blocks);
 	let assets = new AssetRegistry();
-	let cache;
+	let context = { pages, assets, transformer, config };
+	let cache = new Set();
+	let output = [];
 	for await (let page of pages) {
-		let html = await page.render({ pages, assets, transformer });
-		let filepath = resolve(outputDir, page.basePath, `index.${page.format}`);
-		cache = await createFile(filepath, html, cache);
+		let filepath = resolve(outputDir, page.localPath);
+		// NB: avoiding `await` because we want non-blocking iteration here
+		let op = page.render(context).
+			then(html => createFile(filepath, html, cache));
+		output.push(op);
 	}
+	await Promise.all(output);
 
 	// copy any assets discovered during rendering
 	await mkdir(assetsDir, { recursive: true });
@@ -58,21 +52,6 @@ async function main() {
 		console.error(`copying asset \`${filepath}\` to \`${target}\``);
 		return copyFile(filepath, target);
 	}));
-}
-
-async function* discoverContent(rootDir) {
-	for await (let filepath of getFiles(rootDir)) {
-		let file = new File(filepath, rootDir);
-		let category = dirname(file.localPath);
-		if(category === ".") {
-			category = "NONE"; // XXX: special-casing
-		} else if(category.includes(sep)) {
-			let reason = "multiple subdirectories are not supported";
-			throw new CustomError("INVALID_CONTENT",
-					`invalid content file \`${file.localPath}\`; ${reason}`);
-		}
-		yield file2doc(file, { category });
-	}
 }
 
 function abort(msg) {

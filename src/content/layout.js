@@ -1,8 +1,7 @@
-import { siteTitle } from "../config.js";
 import { html, RAW } from "../ssg/html.js";
 
-export default ({ title, css = [], content }) => {
-	title = title.isStandalone ? title.text : `${title} | ${siteTitle}`;
+export default ({ title, content, css = [], config }) => {
+	title = title.isStandalone ? title.text : `${title} | ${config.siteTitle}`;
 	// NB: layout will always be EN
 	return html`
 <!DOCTYPE html>

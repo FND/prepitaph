@@ -1,32 +1,55 @@
 import { CustomError } from "./util.js";
-import { join, parse } from "node:path";
+import { join } from "node:path";
 
-export let INVALID = Symbol("invalid field value");
+export let INVALID = Symbol("invalid field");
 
 export class Page {
-	constructor(file, metadata, content) {
-		this.file = file;
-		this.metadata = Object.entries(this.constructor.metadata).
-			reduce((memo, [field, convert]) => {
-				let value = convert(metadata[field]);
-				if(value === INVALID) {
-					throw new CustomError("INVALID_CONTENT",
-							`invalid \`${field}\` value in \`${file.path}\``);
-				}
-				memo[field] = value;
-				return memo;
-			}, {});
-		this.content = content;
+	static fields = {
+		slug: {
+			isPrivate: true,
+			call: value => value || null
+		},
+		category: value => value || null,
+		format: value => value || "html"
+	};
+
+	constructor(source, name, metadata, blocks) {
+		this.source = source;
+		this.name = name;
+		this.blocks = blocks;
+		// populate fields from metadata
+		for(let [field, convert] of Object.entries(this.constructor.fields)) {
+			if(Object.hasOwn(this, field)) {
+				throw new CustomError("INVALID_CONTENT",
+						`invalid metadata \`${field}\` in \`${source}\`: reserved field`);
+			}
+
+			let value = Object.hasOwn(convert, "call") ?
+				convert.call(metadata[field]) :
+				convert(metadata[field]);
+			if(value === INVALID) {
+				throw new CustomError("INVALID_CONTENT",
+						`invalid \`${field}\` value in \`${source}\``);
+			}
+			this[convert.isPrivate ? `_${field}` : field] = value;
+		}
+
+		let path = localPath(this);
+		this.localPath = join(...path);
+		// NB: `index.html` is implicit via trailing slash
+		if(path.at(-1) === "index.html") { // XXX: special-casing
+			path = path.slice(0, -1).concat("");
+		}
+		this._uri = path.join("/");
 	}
 
-	uri(pathPrefix) {
-		let { format } = this;
-		let res = pathPrefix + this.basePath;
-		if(format === "html") { // implicit `index.html` via trailing slash
-			// guard against spurious trailing slashes when combined with host URL
-			return res && res + "/";
-		}
-		return `${res}index.${format}`;
+	render(context) { // TODO: memoize?
+		throw new CustomError("NOT_IMPLEMENTED",
+				`\`render\` method not implemented for \`${this.constructor.name}\``);
+	}
+
+	url(host, pathPrefix) { // TODO: memoize?
+		return new URL(`${pathPrefix}/${this._uri}`, host).href;
 	}
 
 	clone(props) {
@@ -34,17 +57,18 @@ export class Page {
 		return Object.assign(page, props);
 	}
 
-	get basePath() {
-		let { slug } = this.metadata;
-		if(slug === "NONE") { // XXX: special-casing
-			return "";
-		}
-
-		let { dir, name } = parse(this.file.localPath);
-		return join(dir, slug || name);
+	get slug() {
+		return this._slug || this.name.replaceAll("_", "-"); // NB: design decision
 	}
+}
 
-	get format() {
-		return this.metadata.format || "html";
+function localPath({ slug, category, name, format }) {
+	if(category === null) {
+		return [`${slug}.${format}`];
 	}
+	// NB: support for implicit `index.html` via trailing slash in URIs
+	if(format === "html") {
+		return [category, slug, "index.html"];
+	}
+	return [category, `${slug}.${format}`];
 }

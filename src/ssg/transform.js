@@ -17,7 +17,7 @@ export class TextTransformer {
 			if(!convert) {
 				let msg = "unrecognized content block";
 				throw new CustomError("INVALID_CONTENT",
-						`${msg} in \`${context.page.file.path}\`: \`${block.type}\``);
+						`${msg} in \`${context.page.source}\`: \`${block.type}\``);
 			}
 			yield convert(block.content, block.params, context);
 		}

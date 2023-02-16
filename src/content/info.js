@@ -1,40 +1,31 @@
 import layout from "./layout.js";
 import { Page, INVALID } from "../ssg/page.js";
 import { html, RAW } from "../ssg/html.js";
-import { siteTitle, css, pathPrefix } from "../config.js";
 
 export class InfoPage extends Page {
-	static metadata = { // XXX: partially duplicates `Article`
-		title: value => {
-			if(value === "NONE") {
-				return null;
-			}
-			return value || INVALID;
-		},
-		slug: value => value || null,
-		category: value => value || null,
-		format: value => value || null
+	static fields = {
+		...super.fields,
+		title: value => value === "NONE" ? null : // XXX: special-casing
+			(value || INVALID)
 	};
 
-	static async from(doc) {
-		return new this(doc.file, doc.metadata, doc.content);
-	}
-
 	async render(context) {
+		let { config } = context;
 		if(this.format === "atom") { // XXX: special-casing
-			context.selfURI = this.uri(pathPrefix);
-			return context.transformer.render(this.content, context);
+			context.selfURL = this.url(config.host, config.pathPrefix);
+			return context.transformer.render(this.blocks, context);
 		}
 
 		return layout({
-			title: this.metadata.title || { // XXX: special-casing
+			title: this.title || {
 				isStandalone: true,
-				text: siteTitle
+				text: config.siteTitle
 			},
 			content: html`<main class="stack">${{
-				[RAW]: await context.transformer.render(this.content, context)
+				[RAW]: await context.transformer.render(this.blocks, context)
 			}}</main>`,
-			css: context.assets.register(css.default)
+			css: context.assets.register(config.css.default),
+			config
 		});
 	}
 }
