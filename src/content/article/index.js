@@ -22,6 +22,7 @@ export class Article extends Page {
 	}
 
 	async render(context, { isStandalone = true } = {}) {
+		context = this.augmentContext(context);
 		let { intro } = this;
 		let { transformer } = context;
 		let page = clone(this, {

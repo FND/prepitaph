@@ -1,4 +1,4 @@
-import { CustomError } from "./util.js";
+import { clone, CustomError } from "./util.js";
 import { join } from "node:path";
 
 export let INVALID = Symbol("invalid field");
@@ -46,6 +46,10 @@ export class Page {
 	render(context) { // TODO: memoize?
 		throw new CustomError("NOT_IMPLEMENTED",
 				`\`render\` method not implemented for \`${this.constructor.name}\``);
+	}
+
+	augmentContext(context) {
+		return clone(context, { page: this });
 	}
 
 	url(host, pathPrefix) { // TODO: memoize?
