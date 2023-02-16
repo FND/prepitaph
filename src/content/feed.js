@@ -5,7 +5,7 @@ export async function renderAtom(pages, title, context) {
 	pages = await collect(pages);
 	let first = pages[0];
 	let { config } = context;
-	let baseURL = new URL(config.pathPrefix, config.host).href;
+	let { baseURL } = config;
 	// XXX: is HTML encoding correct/sufficient here?
 	return html`
 <?xml version="1.0" encoding="utf-8"?>
@@ -25,7 +25,7 @@ export async function renderAtom(pages, title, context) {
 
 async function renderEntry(page, context) {
 	let { config } = context;
-	let url = page.url(config.host, config.pathPrefix);
+	let url = page.url(config.baseURL).href;
 	// TODO: use `<content>` instead of `<summary>`? requires rendering to
 	// * distinguish more variants (full document vs. main vs. summary)
 	// * use absolute URLs throughout (including media)
@@ -38,7 +38,10 @@ async function renderEntry(page, context) {
 	<author>
 		<name>${page.author}</name>
 	</author>
-	<summary type="html">${await page.render(context, { isStandalone: false })}</summary>
+	<summary type="html">${await page.render(context, {
+		isStandalone: false,
+		includeHost: true
+	})}</summary>
 </entry>
 	`.trim();
 }

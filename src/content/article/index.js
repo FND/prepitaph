@@ -21,7 +21,7 @@ export class Article extends Page {
 		this.intro = intro || null;
 	}
 
-	async render(context, { isStandalone = true } = {}) {
+	async render(context, { isStandalone = true, includeHost } = {}) {
 		context = this.augmentContext(context);
 		let { intro } = this;
 		let { transformer } = context;
@@ -29,7 +29,12 @@ export class Article extends Page {
 			intro: intro && transformer.render([intro], context),
 			content: transformer.render(this.blocks, context)
 		});
-		return isStandalone ? document(page, context) : fragment(page, {
+		return isStandalone ? document(page, {
+			includeHost,
+			assets: context.assets,
+			config: context.config
+		}) : fragment(page, {
+			includeHost,
 			config: context.config
 		});
 	}

@@ -52,8 +52,8 @@ export class Page {
 		return clone(context, { page: this });
 	}
 
-	url(host, pathPrefix) { // TODO: memoize?
-		return new URL(`${pathPrefix}/${this._uri}`, host).href;
+	url(baseURL) { // TODO: memoize?
+		return new URL(this._uri, baseURL);
 	}
 
 	get slug() {

@@ -17,9 +17,12 @@ try {
 }
 
 async function main() {
+	let host = normalizeURI(globalConfig.host);
+	let pathPrefix = normalizeURI(globalConfig.pathPrefix);
 	let config = clone(globalConfig, {
-		host: normalizeURI(globalConfig.host),
-		pathPrefix: normalizeURI(globalConfig.pathPrefix)
+		baseURL: new URL(pathPrefix + "/", host).href,
+		host,
+		pathPrefix
 	});
 
 	let contentDir = await realpath(config.contentDir);
@@ -30,7 +33,7 @@ async function main() {
 	let pages = []; // TODO: proper index
 	for await (let page of ingestContent(contentDir, config.categories)) {
 		console.error(`... \`${page.localPath}\``);
-		console.error(`    → ${page.url(config.host, config.pathPrefix)}`);
+		console.error(`    → ${page.url(config.baseURL).href}`);
 		pages.push(page);
 	}
 

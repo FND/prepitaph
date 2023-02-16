@@ -13,7 +13,7 @@ export class InfoPage extends Page {
 		context = this.augmentContext(context);
 		let { config } = context;
 		if(this.format === "atom") { // XXX: special-casing
-			context.selfURL = this.url(config.host, config.pathPrefix);
+			context.selfURL = this.url(config.baseURL).href;
 			return context.transformer.render(this.blocks, context);
 		}
 

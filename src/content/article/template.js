@@ -1,18 +1,18 @@
 import layout from "../layout.js";
 import { html, RAW } from "../../ssg/html.js";
 
-export async function document(article, { assets, config }) {
+export async function document(article, { includeHost, assets, config }) {
 	let { css } = config;
 	let styles = article.syntax ? css.default.concat(css.syntax) : css.default;
 	return layout({
 		title: article.title,
-		content: await fragment(article, { config, isStandalone: true }),
+		content: await fragment(article, { isStandalone: true, includeHost, config }),
 		css: assets.register(styles),
 		config
 	});
 }
 
-export async function fragment(article, { config, isStandalone } = {}) {
+export async function fragment(article, { isStandalone, includeHost, config } = {}) {
 	let ts = article.updated || article.created; // NB: design decision
 	let timestamp = ts.toISOString().substring(0, 10);
 	let date = ts.toLocaleDateString("en-US", {
@@ -21,10 +21,11 @@ export async function fragment(article, { config, isStandalone } = {}) {
 		day: "numeric"
 	});
 
+	let url = article.url(config.baseURL);
 	let title = isStandalone ?
 		html`<h1>${article.title}</h1>` :
 		html`<h2><a${{
-			href: article.url(config.host, config.pathPrefix)
+			href: includeHost ? url.href : url.pathname
 		}}>${article.title}</a></h2>`;
 
 	let { intro } = article;
