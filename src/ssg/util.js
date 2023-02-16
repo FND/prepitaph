@@ -1,3 +1,7 @@
+export function normalizeURI(uri) {
+	return uri.endsWith("/") ? uri.substring(0, uri.length - 1) : uri;
+}
+
 export function iso2date(value) { // TODO: validation
 	let [year, month, day] = value.split("-").
 		map(v => parseInt(v, 10));
@@ -12,6 +16,11 @@ export async function collect(stream, joiner) {
 		res.push(item);
 	}
 	return typeof joiner === "string" ? res.join(joiner) : res;
+}
+
+export function clone(obj, props) {
+	obj = Object.create(obj); // XXX: prototype cascade might be inefficient?
+	return Object.assign(obj, props);
 }
 
 export class CustomError extends Error {

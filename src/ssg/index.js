@@ -2,8 +2,8 @@ import { ingestContent } from "./ingestion.js";
 import { TextTransformer } from "./transform.js";
 import { AssetRegistry } from "./assets.js";
 import { createFile, realpath } from "./fs.js";
-import { CustomError } from "./util.js";
-import * as config from "../config.js";
+import { normalizeURI, clone, CustomError } from "./util.js";
+import * as globalConfig from "../config.js";
 import { copyFile, mkdir } from "node:fs/promises";
 import { resolve, basename } from "node:path";
 
@@ -17,6 +17,11 @@ try {
 }
 
 async function main() {
+	let config = clone(globalConfig, {
+		host: normalizeURI(globalConfig.host),
+		pathPrefix: normalizeURI(globalConfig.pathPrefix)
+	});
+
 	let contentDir = await realpath(config.contentDir);
 	let outputDir = resolve(config.outputDir);
 	let assetsDir = resolve(outputDir, config.assetsDir);

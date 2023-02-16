@@ -52,11 +52,6 @@ export class Page {
 		return new URL(`${pathPrefix}/${this._uri}`, host).href;
 	}
 
-	clone(props) {
-		let page = Object.create(this);
-		return Object.assign(page, props);
-	}
-
 	get slug() {
 		return this._slug || this.name.replaceAll("_", "-"); // NB: design decision
 	}

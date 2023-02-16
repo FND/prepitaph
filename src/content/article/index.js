@@ -1,6 +1,6 @@
 import { document, fragment } from "./template.js";
 import { Page, INVALID } from "../../ssg/page.js";
-import { iso2date } from "../../ssg/util.js";
+import { iso2date, clone } from "../../ssg/util.js";
 
 export class Article extends Page {
 	// TODO: stricter validation required to reduce risk of subtle breakage
@@ -24,7 +24,7 @@ export class Article extends Page {
 	async render(context, { isStandalone = true } = {}) {
 		let { intro } = this;
 		let { transformer } = context;
-		let page = this.clone({
+		let page = clone(this, {
 			intro: intro && transformer.render([intro], context),
 			content: transformer.render(this.blocks, context)
 		});
