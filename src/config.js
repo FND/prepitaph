@@ -59,8 +59,8 @@ export let blocks = {
 	javascript: code("javascript")
 };
 
-function markdown(content, params, { store, config }) {
-	return renderMarkdown(content, {
+async function markdown(content, params, { store, config }) {
+	let html = await renderMarkdown(content, {
 		fragIDs: txt => txt.replace(/\s/g, "-").toLowerCase(), // XXX: crude
 		resolveURI(uri, type) {
 			if(uri.startsWith("page://")) {
@@ -70,6 +70,8 @@ function markdown(content, params, { store, config }) {
 			return uri;
 		}
 	});
+	// hack to work around excessive HTML sanitization disallowing `data:` URIs
+	return html.replaceAll('<img src="inline://', '<img src="data:');
 }
 
 function code(lang, grammar = lang) {
