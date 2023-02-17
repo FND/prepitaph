@@ -1,8 +1,6 @@
 import { html, RAW } from "../ssg/html.js";
-import { collect } from "../ssg/util.js";
 
 export async function renderAtom(pages, title, context) {
-	pages = await collect(pages);
 	let first = pages[0];
 	let { config } = context;
 	let { baseURL } = config;

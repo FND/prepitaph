@@ -1,6 +1,7 @@
 import { ingestContent } from "./ingestion.js";
 import { TextTransformer } from "./transform.js";
 import { AssetRegistry } from "./assets.js";
+import { ContentStore } from "./store.js";
 import { createFile, realpath } from "./fs.js";
 import { normalizeURI, clone, CustomError } from "./util.js";
 import * as globalConfig from "../config.js";
@@ -30,21 +31,21 @@ async function main() {
 	let assetsDir = resolve(outputDir, config.assetsDir);
 
 	console.error(`starting content discovery in \`${contentDir}\``);
-	let pages = []; // TODO: proper index
+	let store = new ContentStore();
 	for await (let page of ingestContent(contentDir, config.categories)) {
 		console.error(`... \`${page.localPath}\``);
 		console.error(`    → ${page.url(config.baseURL).href}`);
-		pages.push(page);
+		store.add(page);
 	}
 
 	// NB: separate rendering loop allows for validating interlinked content
 	console.error(`rendering pages into \`${outputDir}\``);
 	let transformer = new TextTransformer(config.blocks);
 	let assets = new AssetRegistry();
-	let context = { pages, assets, transformer, config };
+	let context = { store, assets, transformer, config };
 	let cache = new Set();
 	let output = [];
-	for await (let page of pages) {
+	for(let page of store) {
 		let filepath = resolve(outputDir, page.localPath);
 		// NB: avoiding `await` because we want non-blocking iteration here
 		let op = page.render(context).

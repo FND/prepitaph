@@ -37,12 +37,12 @@ export let blocks = {
 	NONE: (content, params, context) => html`<pre>${content}</pre>`,
 	feed: async (content, { category, title = siteTitle }, context) => {
 		let { renderAtom } = await import("./content/feed.js");
-		let pages = await filter(context.pages, category);
+		let pages = context.store.retrieve(category);
 		return renderAtom(pages, title, context);
 	},
 	list: async (content, { category }, context) => {
 		let res = [];
-		for await (let page of filter(context.pages, category)) {
+		for(let page of context.store.retrieve(category)) {
 			let html = page.render(context, { isStandalone: false });
 			res.push(html);
 		}
@@ -72,12 +72,4 @@ function code(lang, grammar = lang) {
 			[RAW]: highlight(content, grammar, lang)
 		}}</code></pre>`;
 	};
-}
-
-async function* filter(pages, category) {
-	for await (let page of pages) {
-		if(page.category === category) {
-			yield page;
-		}
-	}
 }
