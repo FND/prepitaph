@@ -4,15 +4,17 @@ import { HtmlRenderer, Parser } from "commonmark";
 // `fragIDs` allows adding IDs to headings by invoking the provided function, if
 // any, with the respective heading's text
 // `allowHTML`, if `true`, permits embedding raw HTML
-// `resolveURI` allows modifying link targets
+// `resolveURI` allows modifying link and image targets
 export async function renderMarkdown(txt,
 		{ smart, fragIDs, allowHTML, resolveURI } = {}) {
 	let reader = new Parser({ smart });
 	let root = reader.parse(txt);
 	if(resolveURI) {
-		visit(root, "link", node => {
-			node.destination = resolveURI(node.destination);
-		});
+		for(let type of ["link", "image"]) {
+			visit(root, type, node => {
+				node.destination = resolveURI(node.destination, type);
+			});
+		}
 	}
 
 	let writer = new HtmlRenderer({ safe: !allowHTML });

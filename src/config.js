@@ -59,9 +59,16 @@ export let blocks = {
 	javascript: code("javascript")
 };
 
-function markdown(content) {
+function markdown(content, params, { store, config }) {
 	return renderMarkdown(content, {
-		fragIDs: txt => txt.replace(/\s/g, "-").toLowerCase() // XXX: crude
+		fragIDs: txt => txt.replace(/\s/g, "-").toLowerCase(), // XXX: crude
+		resolveURI(uri, type) {
+			if(uri.startsWith("page://")) {
+				let page = store.resolve(uri.substring(7));
+				return page.url(config.baseURL).pathname;
+			}
+			return uri;
+		}
 	});
 }
 
