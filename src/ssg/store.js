@@ -3,6 +3,7 @@ import { CustomError } from "./util.js";
 export class ContentStore {
 	constructor() {
 		this._byCategory = new Map();
+		this._bySpecifier = new Map();
 	}
 
 	resolve(specifier) {
@@ -24,6 +25,8 @@ export class ContentStore {
 	add(page) {
 		let index = this._byCategory;
 		let { category } = page;
+		this._bySpecifier.set(`${category || ""}/${page.slug}.${page.format}`, page);
+
 		let entries = index.get(category);
 		if(entries) {
 			entries.push(page);
@@ -33,21 +36,21 @@ export class ContentStore {
 	}
 
 	retrieve(category, slug, format = "html") {
-		let entries = this._byCategory.get(category);
-		if(!entries) {
-			throw new CustomError("INVALID_CATEGORY", `no such category:\`${category}\``);
-		}
 		if(slug === undefined) {
+			let entries = this._byCategory.get(category);
+			if(!entries) {
+				throw new CustomError("INVALID_CATEGORY",
+						`no such category:\`${category}\``);
+			}
 			return entries;
 		}
 
-		for(let page of entries) { // XXX: inefficient; use indexing
-			if(page.slug === slug && page.format === format) {
-				return page;
-			}
+		let specifier = `${category || ""}/${slug}.${format}`;
+		let page = this._bySpecifier.get(specifier);
+		if(!page) {
+			throw new CustomError("INVALID_SPECIFIER", `no such page: \`${specifier}\``);
 		}
-		throw new CustomError("INVALID_PAGE",
-				`invalid page reference \`${category}/${slug}\``);
+		return page;
 	}
 
 	* [Symbol.iterator]() {
