@@ -25,7 +25,7 @@ export default ({ title, content, css = [], store, config }) => {
 <body class="stack">
 	<header class="site-header">
 		<nav>
-			<a${{ href: homeURI }} class="home"><b>prepitaph</b></a>
+			<a${{ href: homeURI }}><b>prepitaph</b></a>
 			<a${{ href: coloURI }}>colophon</a>
 		</nav>
 	</header>

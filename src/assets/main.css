@@ -87,19 +87,19 @@ main {
 	padding: var(--spacing);
 }
 
-.site-header .home {
+.site-header a:first-of-type {
 	padding-left: var(--spacing-extra);
 }
-.site-header .home + * {
+.site-header a:first-of-type + * {
 	margin-left: var(--spacing-extra);
 }
 
 /* decoration */
-.site-header .home,
-.site-header .home > * {
+.site-header a:first-of-type,
+.site-header a:first-of-type > * {
 	position: relative;
 }
-.site-header .home::before {
+.site-header a:first-of-type::before {
 	content: "";
 	display: block;
 	position: absolute;
