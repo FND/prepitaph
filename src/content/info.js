@@ -17,12 +17,15 @@ export class InfoPage extends Page {
 			return context.transformer.render(this.blocks, context);
 		}
 
+		let { title } = this;
 		return layout({
-			title: this.title || {
+			title: title || {
 				isStandalone: true,
 				text: config.siteTitle
 			},
-			content: html`<main class="stack">${{
+			content: html`<main class="stack">${title && {
+				[RAW]: html`<h1>${title}</h1>`
+			}}${{
 				[RAW]: await context.transformer.render(this.blocks, context)
 			}}</main>`,
 			css: context.assets.register(config.css.default),

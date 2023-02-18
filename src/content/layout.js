@@ -3,6 +3,7 @@ import { html, RAW } from "../ssg/html.js";
 export default ({ title, content, css = [], store, config }) => {
 	let { baseURL } = config;
 	let homeURI = store.retrieve(null, "index").url(baseURL).pathname;
+	let coloURI = store.retrieve(null, "colophon").url(baseURL).pathname;
 
 	title = title.isStandalone ? title.text : `${title} | ${config.siteTitle}`;
 	// NB: layout will always be EN
@@ -25,6 +26,7 @@ export default ({ title, content, css = [], store, config }) => {
 	<header class="site-header">
 		<nav>
 			<a${{ href: homeURI }} class="home"><b>prepitaph</b></a>
+			<a${{ href: coloURI }}>colophon</a>
 		</nav>
 	</header>
 	${{ [RAW]: content }}

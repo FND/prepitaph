@@ -5,9 +5,14 @@ export function html(strings, ...values) {
 	let res = [strings[i]];
 	for(let value of values) {
 		i++;
+		if(typeof value === "number") {
+			value = value.toString();
+		}
 		if(typeof value === "string") {
-			res.push(encodeContent(value));
-		} else {
+			res.push(value.replaceAll("&", "&amp;").
+				replaceAll("<", "&lt;").
+				replaceAll(">", "&gt;"));
+		} else if(value !== null && value !== false) {
 			res.push(value[RAW] || serializeAttributes(value));
 		}
 		res.push(strings[i]);
@@ -17,23 +22,11 @@ export function html(strings, ...values) {
 
 function serializeAttributes(attribs) {
 	let res = Object.entries(attribs).reduce((memo, [name, value]) => {
-		return value ? memo.concat(`${name}="${encodeAttribute(value)}"`) : memo;
+		if(!value) {
+			return memo;
+		}
+		value = value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
+		return memo.concat(`${name}="${value}"`);
 	}, []);
 	return res.length === 0 ? "" : [""].concat(res).join(" ");
-}
-
-// adapted from TiddlyWiki <http://tiddlywiki.com> and Python 3's `html` module
-
-function encodeContent(str) {
-	return str.replace(/&/g, "&amp;").
-		replace(/</g, "&lt;").
-		replace(/>/g, "&gt;");
-}
-
-function encodeAttribute(str) {
-	return str.replace(/&/g, "&amp;"). // XXX: unnecessary?
-		replace(/</g, "&lt;").
-		replace(/>/g, "&gt;").
-		replace(/"/g, "&quot;").
-		replace(/'/g, "&#x27;");
 }

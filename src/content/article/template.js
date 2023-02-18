@@ -13,7 +13,8 @@ export async function document(article, { includeHost, assets, store, config }) 
 	});
 }
 
-export async function fragment(article, { isStandalone, includeHost, config } = {}) {
+export async function fragment(article,
+		{ isStandalone = false, includeHost, config } = {}) {
 	let ts = article.updated || article.created; // NB: design decision
 	let timestamp = ts.toISOString().substring(0, 10);
 	let date = ts.toLocaleDateString("en-US", {
@@ -30,9 +31,9 @@ export async function fragment(article, { isStandalone, includeHost, config } = 
 		}}>${article.title}</a></h2>`;
 
 	let { intro } = article;
-	intro = intro === null ? "" : html`<div class="teaser stack">${{
-		[RAW]: await intro
-	}}</div>`;
+	intro = intro && {
+		[RAW]: html`<div class="teaser stack">${{ [RAW]: await intro }}</div>`
+	};
 
 	let tag = { [RAW]: isStandalone ? "main" : "article" };
 	return html`
@@ -43,9 +44,9 @@ export async function fragment(article, { isStandalone, includeHost, config } = 
 			by <b>${article.author}</b>
 			<time${{ datetime: timestamp }}>${date}</time>
 		</p>
-		${{ [RAW]: intro }}
+		${intro}
 	</header>
-	${isStandalone ? { [RAW]: await article.content } : ""}
+	${isStandalone && { [RAW]: await article.content }}
 </${tag}>
 	`.trim();
 }

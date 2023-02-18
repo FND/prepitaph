@@ -61,13 +61,12 @@ export class Page {
 	}
 }
 
-function localPath({ slug, category, name, format }) {
-	if(category === null) {
-		return [`${slug}.${format}`];
+function localPath({ category, slug, format }) {
+	let isHTML = format === "html";
+	let root = category === null;
+	if(root && isHTML && slug === "index") { // NB: special-casing front page
+		return ["index.html"];
 	}
-	// NB: support for implicit `index.html` via trailing slash in URIs
-	if(format === "html") {
-		return [category, slug, "index.html"];
-	}
-	return [category, `${slug}.${format}`];
+	let res = isHTML ? [slug, "index.html"] : [`${slug}.${format}`];
+	return root ? res : [category, ...res];
 }
