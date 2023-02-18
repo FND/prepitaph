@@ -32,6 +32,7 @@ export class Article extends Page {
 		return isStandalone ? document(page, {
 			includeHost,
 			assets: context.assets,
+			store: context.store,
 			config: context.config
 		}) : fragment(page, {
 			includeHost,

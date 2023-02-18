@@ -1,13 +1,14 @@
 import layout from "../layout.js";
 import { html, RAW } from "../../ssg/html.js";
 
-export async function document(article, { includeHost, assets, config }) {
+export async function document(article, { includeHost, assets, store, config }) {
 	let { css } = config;
 	let styles = article.syntax ? css.default.concat(css.syntax) : css.default;
 	return layout({
 		title: article.title,
 		content: await fragment(article, { isStandalone: true, includeHost, config }),
 		css: assets.register(styles),
+		store,
 		config
 	});
 }

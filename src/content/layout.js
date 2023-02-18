@@ -1,6 +1,9 @@
 import { html, RAW } from "../ssg/html.js";
 
-export default ({ title, content, css = [], config }) => {
+export default ({ title, content, css = [], store, config }) => {
+	let { baseURL } = config;
+	let homeURI = store.retrieve(null, "index").url(baseURL).pathname;
+
 	title = title.isStandalone ? title.text : `${title} | ${config.siteTitle}`;
 	// NB: layout will always be EN
 	return html`
@@ -21,9 +24,7 @@ export default ({ title, content, css = [], config }) => {
 <body class="stack">
 	<header class="site-header">
 		<nav>
-			<a href="index.html" class="home"><b>prepitaph</b></a>
-			<a href="index.html">articles</a>
-			<a href="about.html">about</a>
+			<a${{ href: homeURI }} class="home"><b>prepitaph</b></a>
 		</nav>
 	</header>
 	${{ [RAW]: content }}

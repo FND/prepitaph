@@ -26,6 +26,7 @@ export class InfoPage extends Page {
 				[RAW]: await context.transformer.render(this.blocks, context)
 			}}</main>`,
 			css: context.assets.register(config.css.default),
+			store: context.store,
 			config
 		});
 	}
