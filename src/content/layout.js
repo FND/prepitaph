@@ -1,6 +1,6 @@
 import { html, RAW } from "../ssg/html.js";
 
-export default ({ title, content, css = [], store, config }) => {
+export default ({ title, summary = null, content, css = [], store, config }) => {
 	let { baseURL } = config;
 	let homeURI = store.retrieve(null, "index").url(baseURL).pathname;
 	let coloURI = store.retrieve(null, "colophon").url(baseURL).pathname;
@@ -15,6 +15,9 @@ export default ({ title, content, css = [], store, config }) => {
 	<meta charset="utf-8">
 	<title>${title}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	${summary && {
+		[RAW]: html`<meta name="description"${{ content: summary }}>`
+	}}
 	${{
 		[RAW]: css.
 			map(uri => html`<link rel="stylesheet"${{ href: uri }}>`).

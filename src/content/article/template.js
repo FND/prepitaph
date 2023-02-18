@@ -6,6 +6,7 @@ export async function document(article, { includeHost, assets, store, config }) 
 	let styles = article.syntax ? css.default.concat(css.syntax) : css.default;
 	return layout({
 		title: article.title,
+		summary: await article.intro,
 		content: await fragment(article, { isStandalone: true, includeHost, config }),
 		css: assets.register(styles),
 		store,
