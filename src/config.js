@@ -35,6 +35,7 @@ export let categories = {
 export let blocks = {
 	default: markdown,
 	NONE: (content, params, context) => html`<pre>${content}</pre>`,
+	markdown,
 	feed: async (content, { category, title = siteTitle }, context) => {
 		let { renderAtom } = await import("./content/feed.js");
 		let pages = context.store.retrieve(category);
@@ -59,9 +60,10 @@ export let blocks = {
 	javascript: code("javascript")
 };
 
-async function markdown(content, params, { store, config }) {
+async function markdown(content, { allowHTML }, { store, config }) {
 	let html = await renderMarkdown(content, {
 		fragIDs: txt => txt.replace(/\s/g, "-").toLowerCase(), // XXX: crude
+		allowHTML: allowHTML === "true",
 		resolveURI(uri, type) {
 			if(uri.startsWith("page://")) {
 				let page = store.resolve(uri.substring(7));
