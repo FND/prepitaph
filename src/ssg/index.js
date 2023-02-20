@@ -4,7 +4,7 @@ import { AssetRegistry } from "./assets.js";
 import { ContentStore } from "./store.js";
 import { createFile, realpath } from "./fs.js";
 import { normalizeURI, clone, CustomError } from "./util.js";
-import * as globalConfig from "../config.js";
+import * as globalConfig from "../config/index.js";
 import { copyFile, mkdir, constants } from "node:fs/promises";
 import { resolve, basename, dirname } from "node:path";
 
