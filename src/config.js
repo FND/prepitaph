@@ -16,7 +16,7 @@ export let host = "https://example.org";
 export let pathPrefix = process.env.PATH_PREFIX || "";
 
 export let siteTitle = "prepitaph";
-export let css = {
+export let css = { // TODO: use `AssetManager` for URI generation
 	default: [{
 		source: `${ROOT_DIR}/src/assets/main.css`,
 		uri: normalize(`${pathPrefix}/${assetsDir}/main.css`)

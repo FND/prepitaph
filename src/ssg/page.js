@@ -13,9 +13,10 @@ export class Page {
 		format: value => value || "html"
 	};
 
-	constructor(source, name, metadata, blocks) {
-		this.source = source;
+	constructor(name, metadata, blocks, source, assets = null) {
 		this.name = name;
+		this.source = source;
+		this.assets = assets;
 		this.blocks = blocks;
 		// populate fields from metadata
 		for(let [field, convert] of Object.entries(this.constructor.fields)) {

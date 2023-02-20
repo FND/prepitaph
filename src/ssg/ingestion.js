@@ -1,24 +1,23 @@
-import { getFiles, File } from "./fs.js";
+import { readDir } from "./fs.js";
 import { CustomError } from "./util.js";
 import txtParse from "lampenfieber";
 import colonParse from "metacolon";
-import { dirname, parse, sep } from "node:path";
-
-let { hasOwnProperty } = Object.prototype;
+import { parse } from "node:path";
 
 export async function* ingestContent(rootDir, categories) {
-	for await (let { file, metadata, blocks } of discoverContent(rootDir)) {
+	for await (let {
+		name, filepath, assets, metadata, blocks
+	} of parseContent(rootDir)) {
 		let { category } = metadata;
 		let loadClass = categories[category === null ? "NONE" : category];
 		if(!loadClass) {
 			throw new CustomError("INVALID_CONTENT",
-					`unrecognized category \`${category}\` in \`${file.path}\``);
+					`unrecognized category \`${category}\` in \`${filepath}\``);
 		}
 
-		let { name } = parse(file.localPath);
 		// NB: avoiding `await` because we want non-blocking iteration here
 		let resource = loadClass(). // eslint-disable-next-line new-cap
-			then(cls => new cls(file.path, name, metadata, blocks));
+			then(cls => new cls(name, metadata, blocks, filepath, assets));
 		yield resource;
 		// guard against unhandled rejections
 		// cf. https://jakearchibald.com/2023/unhandled-rejections/
@@ -31,25 +30,16 @@ export function txt2blocks(content) {
 	return txtParse(content).map(normalizeBlock);
 }
 
-async function* discoverContent(rootDir) {
-	for await (let filepath of getFiles(rootDir)) {
-		let file = new File(filepath, rootDir);
-
-		let category = dirname(file.localPath);
-		if(category === ".") {
-			category = null; // XXX: special-casing
-		} else if(category.includes(sep)) {
-			let reason = "multiple subdirectories are not supported";
-			throw new CustomError("INVALID_CONTENT",
-					`invalid content file \`${file.path}\`; ${reason}`);
-		}
-
+async function* parseContent(rootDir) {
+	for await (let { name, filepath, assets, category } of discoverContent(rootDir)) {
 		// NB: avoiding `await` because we want non-blocking iteration here
 		yield colonParse(filepath).
 			then(({ headers, body }) => ({
-				file,
+				name,
+				filepath,
+				assets,
 				metadata: { // XXX: `Map`ify? should be fixed within metacolon
-					...disallow("category", headers, file),
+					...disallow("category", headers, filepath),
 					category
 				},
 				blocks: txt2blocks(body)
@@ -57,10 +47,61 @@ async function* discoverContent(rootDir) {
 	}
 }
 
-function disallow(field, headers, file) {
-	if(hasOwnProperty.call(headers, field)) {
+async function* discoverContent(rootDir) {
+	for await (let { filename, filepath, isDirectory } of readDir(rootDir)) {
+		if(isDirectory) { // category directory
+			yield* ingestCategory(filename, filepath);
+		} else { // root-level content file
+			let { name } = parse(filename);
+			yield { name, filepath, category: null };
+		}
+	}
+}
+
+async function* ingestCategory(category, dirPath) {
+	for await (let { filename, filepath, isDirectory } of readDir(dirPath)) {
+		if(isDirectory) { // content directory
+			// NB: avoiding `await` because we want non-blocking iteration here
+			yield ingestContentDirectory(filepath).
+				then(({ index, assets }) => ({
+					name: filename,
+					filepath: index,
+					assets,
+					category
+				}));
+		} else { // content file
+			let { name } = parse(filename);
+			yield { name, filepath, category };
+		}
+	}
+}
+
+async function ingestContentDirectory(dirPath) {
+	let index;
+	let assets = [];
+	for await (let { filename, filepath, isDirectory } of readDir(dirPath)) {
+		if(isDirectory) {
+			let reason = "must not include subdirectories";
+			throw new Error("INVALID_CONTENT",
+					`invalid content directory \`${filepath}\`: ${reason}`);
+		} else if(filename.startsWith("index.")) { // XXX: crude
+			if(index) {
+				let reason = "must not include more than one `index.*` file";
+				throw new Error("INVALID_CONTENT",
+						`invalid content directory \`${filepath}\`: ${reason}`);
+			}
+			index = filepath;
+		} else {
+			assets.push(filepath);
+		}
+	}
+	return { index, assets };
+}
+
+function disallow(field, headers, filepath) {
+	if(Object.hasOwn(headers, field)) {
 		throw new CustomError("INVALID_CONTENT",
-				`invalid \`category\` metadata in \`${file.path}\``);
+				`invalid \`category\` metadata in \`${filepath}\``);
 	}
 	return headers;
 }

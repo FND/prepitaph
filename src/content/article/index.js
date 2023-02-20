@@ -13,11 +13,11 @@ export class Article extends Page {
 		syntax: value => value === "true"
 	};
 
-	constructor(source, name, metadata, blocks) {
+	constructor(name, metadata, blocks, source, assets) {
 		if(blocks[0]?.type === "intro") { // extract intro, if any
 			var intro = blocks.shift(); // eslint-disable-line no-var
 		}
-		super(source, name, metadata, blocks);
+		super(name, metadata, blocks, source, assets);
 		this.intro = intro || null;
 	}
 
