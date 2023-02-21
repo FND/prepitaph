@@ -5,14 +5,22 @@
 }
 
 html {
+	--h-size: 60ch;
 	--spacing: 0.5rem;
 	--spacing-reduced: calc(var(--spacing) * 0.667); /* modular scale-ish */
 	--spacing-extra: calc(var(--spacing) * 3.375); /* modular scale-ish */
+	--border-size: 1px;
 	--color-fg: #000;
 	--color-bg: #FFF;
 	--color-acc: #333;
+	--color-border: #DDD;
 	--color-link: #00C;
 	--color-link-visited: #518;
+
+	/* outdent while keeping content box consistent */
+	--border-outdent-left: var(--spacing-reduced);
+	--spacing-outdent-left: calc(var(--spacing) + var(--border-outdent-left));
+	--spacing-outdent-right: calc(var(--spacing) + var(--border-size));
 
 	background-color: var(--color-acc);
 }
@@ -25,34 +33,23 @@ body {
 	background-color: var(--color-bg);
 }
 
+main {
+	--_offset: calc(2 * var(--border-size));
+	--_spacing-left: calc(var(--spacing-outdent-left) + var(--_offset));
+	--_spacing-right: calc(var(--spacing-outdent-right) + var(--_offset));
+
+	max-width: calc(var(--h-size) + var(--_spacing-left) + var(--_spacing-right));
+	margin-inline: auto;
+	padding-left: var(--_spacing-left);
+	padding-right: var(--_spacing-right);
+	padding-bottom: var(--spacing); /* XXX: hacky? */
+}
+
 a:link {
 	color: var(--color-link);
 }
 a:visited {
 	color: var(--color-link-visited);
-}
-
-pre {
-	--offset: calc(-1 * (var(--spacing-reduced) + calc(var(--spacing))));
-
-	overflow: auto;
-	margin-left: var(--offset);
-	margin-right: var(--offset);
-	border: 1px solid #DDD; /* XXX: magic color value */
-	border-left-width: var(--spacing-reduced);
-	border-radius: var(--spacing);
-	padding: var(--spacing);
-}
-
-main {
-	--h-size: 60ch;
-
-	max-width: calc(var(--h-size) + 2 * var(--spacing));
-	margin-left: auto;
-	margin-right: auto;
-	padding-left: var(--spacing);
-	padding-right: var(--spacing);
-	padding-bottom: var(--spacing); /* XXX: hacky? */
 }
 
 /* layout utilities */
@@ -129,13 +126,24 @@ main {
 	content: "• ";
 }
 
-.article img {
-	max-width: 100%;
+.article aside {
+	border-width: calc(3 * var(--border-size)) 0; /* XXX: magic value */
+	border-style: solid;
+	border-color: rgba(110, 140, 192, 0.8); /* XXX: magic value */
+	padding: var(--spacing) var(--spacing-extra); /* NB: also accounts for outdent */
+	background-color: rgba(220, 232, 255, 0.2); /* XXX: magic value */
 }
 
-.article aside { /* XXX: magic color values */
-	border: 3px solid rgba(110, 140, 192, 0.8);
-	border-width: 3px 0;
-	padding: var(--spacing) var(--spacing-extra);
-	background-color: rgba(220, 232, 255, 0.2);
+.article pre {
+	overflow: auto;
+	margin-left: calc(-1 * var(--spacing-outdent-left));
+	margin-right: calc(-1 * var(--spacing-outdent-right));
+	border: var(--border-size) solid var(--color-border);
+	border-left-width: var(--border-outdent-left);
+	border-radius: var(--spacing);
+	padding: var(--spacing);
+}
+
+.article img {
+	max-width: 100%;
 }
