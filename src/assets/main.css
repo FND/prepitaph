@@ -143,6 +143,16 @@ a:visited {
 	border-radius: var(--spacing);
 	padding: var(--spacing);
 }
+/* override Prism defaults */
+.article pre .token.class-name,
+.article pre .token.function {
+	color: var(--color-link-visited);
+}
+.article pre .token.regex,
+.article pre .token.important,
+.article pre .token.variable {
+	color: #9A6E3A; /* corresponds to Prism default for `.operator` */
+}
 
 .article img {
 	max-width: 100%;
