@@ -12,7 +12,8 @@ export {
 	markdown as intro
 };
 export let NONE = (content, params, context) => html`<pre>${content}</pre>`;
-export let javascript = code("javascript");
+export let javascript = await code("javascript");
+export let python = await code("python");
 
 export async function feed(content, { category, title = siteTitle }, context) {
 	let { renderAtom } = await import("./feed.js");
@@ -53,8 +54,13 @@ async function markdown(content, { allowHTML }, { store, config }) {
 	return html.replaceAll('<img src="inline://', '<img src="data:');
 }
 
-function code(lang, grammar = lang) {
+async function code(lang, grammar = lang) {
 	grammar = languages[grammar];
+	if(!grammar) {
+		let { default: loadLanguages } = await import("prismjs/components/index.js");
+		loadLanguages([lang]);
+		return code(lang, grammar);
+	}
 	return (content, params, context) => {
 		return html`<pre><code${{ class: `language-${lang}` }}>${{
 			[RAW]: highlight(content, grammar, lang)
