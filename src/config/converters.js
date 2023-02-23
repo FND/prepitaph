@@ -17,13 +17,14 @@ export let python = await code("python");
 
 export async function feed(content, { category, title = siteTitle }, context) {
 	let { renderAtom } = await import("./feed.js");
-	let pages = context.store.retrieve(category);
+	let pages = sortByDate(context.store.retrieve(category));
 	return renderAtom(pages, title, context);
 }
 
 export async function list(content, { category }, context) {
+	let pages = sortByDate(context.store.retrieve(category));
 	let res = [];
-	for(let page of context.store.retrieve(category)) {
+	for(let page of pages) {
 		let html = page.render(context, { isStandalone: false });
 		res.push(html);
 	}
@@ -66,4 +67,8 @@ async function code(lang, grammar = lang) {
 			[RAW]: highlight(content, grammar, lang)
 		}}</code></pre>`;
 	};
+}
+
+function sortByDate(pages) {
+	return [...pages].sort((a, b) => (b.updated || b.created) - (a.updated || a.created));
 }
