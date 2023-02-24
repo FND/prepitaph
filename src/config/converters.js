@@ -21,6 +21,32 @@ export async function feed(content, { category, title = siteTitle }, context) {
 	return renderAtom(pages, title, context);
 }
 
+export async function topics(content, { category }, context) {
+	let byTag = new Map();
+	let tags = [];
+	for(let page of context.store.retrieve(category)) {
+		for(let tag of page.tags) {
+			let entries = byTag.get(tag);
+			if(entries) {
+				entries.push(page);
+			} else {
+				byTag.set(tag, [page]);
+				tags.push(tag);
+			}
+		}
+	}
+	let { baseURL } = context.config;
+	return html`<dl class="topics">${{
+		[RAW]: tags.sort().map(tag => {
+			return html`<dt>${tag}</dt><dd><div>${{
+				[RAW]: byTag.get(tag).map(page => html`
+					<a${{ href: page.url(baseURL).pathname }}>${page.title}</a>
+				`.trim()).join(",</div><div>")
+			}}</div></dd>`;
+		}).join("\n")
+	}}</dl>`;
+}
+
 export async function list(content, { category }, context) {
 	let pages = sortByDate(context.store.retrieve(category));
 	let res = [];

@@ -20,6 +20,12 @@ export function html(strings, ...values) {
 	return res.join("");
 }
 
+export function trustedHTML(...args) {
+	return {
+		[RAW]: html(...args)
+	};
+}
+
 function serializeAttributes(attribs) {
 	let res = Object.entries(attribs).reduce((memo, [name, value]) => {
 		if(!value) {

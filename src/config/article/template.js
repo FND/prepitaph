@@ -1,5 +1,7 @@
 import layout from "../layout.js";
-import { html, RAW } from "../../ssg/html.js";
+import { html, trustedHTML, RAW } from "../../ssg/html.js";
+
+let TOPICS_LINK;
 
 export async function document(article, { includeHost, assets, store, config }) {
 	let { css } = config;
@@ -7,7 +9,12 @@ export async function document(article, { includeHost, assets, store, config }) 
 	return layout({
 		title: article.title,
 		summary: await article.intro,
-		content: await fragment(article, { isStandalone: true, includeHost, config }),
+		content: await fragment(article, {
+			isStandalone: true,
+			includeHost,
+			store,
+			config
+		}),
 		css: assets.register(styles),
 		store,
 		config
@@ -15,7 +22,7 @@ export async function document(article, { includeHost, assets, store, config }) 
 }
 
 export async function fragment(article,
-		{ isStandalone = false, includeHost, config } = {}) {
+		{ isStandalone = false, includeHost, store, config }) {
 	let ts = article.updated || article.created; // NB: design decision
 	let timestamp = ts.toISOString().substring(0, 10);
 	let date = ts.toLocaleDateString("en-US", {
@@ -24,7 +31,14 @@ export async function fragment(article,
 		day: "numeric"
 	});
 
-	let url = article.url(config.baseURL);
+	let { baseURL } = config;
+	if(!TOPICS_LINK) { // NB: cached; assumed to be identical for all articles
+		TOPICS_LINK = trustedHTML`<a${{
+			href: store.retrieve(null, "topics").url(baseURL).pathname
+		}}>topics</a>`;
+	}
+
+	let url = article.url(baseURL);
 	let title = isStandalone ?
 		html`<h1>${article.title}</h1>` :
 		html`<h2><a${{
@@ -47,7 +61,12 @@ export async function fragment(article,
 		</p>
 		${intro}
 	</header>
-	${isStandalone && { [RAW]: await article.content }}
+	${isStandalone && {
+		[RAW]: await article.content.
+			then(content => content + html`
+				<footer>${TOPICS_LINK}: ${article.tags.join(", ")}</footer>
+			`.trim())
+	}}
 </${tag}>
 	`.trim();
 }

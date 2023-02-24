@@ -109,6 +109,25 @@ a:visited {
 	transform-origin: top;
 }
 
+/* topics */
+
+dl.topics > * {
+	margin-block: 0; /* NB: vertical spacing corresponds to `.stack` */
+}
+
+dl.topics > dt ~ dt {
+	margin-top: var(--spacing);
+}
+
+dl.topics > dd {
+	margin-left: var(--spacing-extra);
+}
+
+dl.topics a ~ a {
+	display: inline-block;
+	margin-top: var(--spacing);
+}
+
 /* article */
 
 .article > header .metadata {
@@ -124,6 +143,12 @@ a:visited {
 }
 .article > header .metadata * + *::before {
 	content: "• ";
+}
+
+.article > footer {
+	font-size: small;
+	text-align: right;
+	color: var(--color-acc);
 }
 
 .article aside {
