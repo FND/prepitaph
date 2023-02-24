@@ -12,7 +12,7 @@ export async function renderMarkdown(txt,
 	if(resolveURI) {
 		for(let type of ["link", "image"]) {
 			visit(root, type, node => {
-				node.destination = resolveURI(node.destination, type);
+				node.destination = resolveURI(node.destination, type, node);
 			});
 		}
 	}
