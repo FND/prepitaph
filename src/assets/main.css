@@ -159,6 +159,25 @@ dl.topics a ~ a {
 	background-color: rgba(220, 232, 255, 0.2); /* XXX: magic value */
 }
 
+.article .footnote {
+	margin-left: var(--spacing-extra);
+	font-size: small;
+}
+.article .footnote > sup:first-child {
+	float: left;
+	margin-left: calc(-2 * var(--spacing)); /* XXX: magic value */
+}
+.article a[href^="#fn:"] {
+	font-size: x-small;
+	vertical-align: super;
+}
+.article .footnote > sup:first-child::before,
+.article a[href^="#fn:"]::before {
+	content: "¶";
+	display: inline-block;
+	opacity: 0.3; /* XXX: hacky */
+}
+
 .article pre {
 	overflow: auto;
 	margin-left: calc(-1 * var(--spacing-outdent-left));

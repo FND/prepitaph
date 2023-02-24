@@ -65,14 +65,28 @@ export async function aside(content, { backticks = "'''" }, context) {
 	}}</aside>`;
 }
 
-async function markdown(content, { allowHTML }, { store, config }) {
+export async function footnote(content, params, context) {
+	let name = Object.keys(params)[0];
+	let i = context.footnotes.indexOf(name) + 1;
+	return html`<div${{ id: `fn:${name}` }} class="footnote stack"><sup>${i}</sup>${{
+		[RAW]: await context.transformer.render(txt2blocks(content), context)
+	}}</div>`;
+}
+
+async function markdown(content, { allowHTML }, context) {
 	let html = await renderMarkdown(content, {
 		fragIDs: txt => txt.replace(/\s/g, "-").toLowerCase(), // XXX: crude
 		allowHTML: allowHTML === "true",
-		resolveURI(uri, type) {
-			if(uri.startsWith("page://")) {
-				let page = store.resolve(uri.substring(7));
-				return page.url(config.baseURL).pathname;
+		resolveURI(uri, type, node) {
+			if(uri === "footnote://") {
+				let { footnotes } = context;
+				let text = node.firstChild;
+				let name = text.literal;
+				text.literal = footnotes.push(name);
+				return `#fn:${name}`;
+			} else if(uri.startsWith("page://")) {
+				let page = context.store.resolve(uri.substring(7));
+				return page.url(context.config.baseURL).pathname;
 			}
 			return uri;
 		}
