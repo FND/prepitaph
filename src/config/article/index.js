@@ -7,6 +7,7 @@ export class Article extends Page {
 	static fields = {
 		...super.fields,
 		title: value => value || INVALID,
+		tags: value => value ? value.split(/, +/) : INVALID,
 		author: value => value || INVALID,
 		created: value => value ? iso2date(value) : INVALID,
 		updated: value => value ? iso2date(value) : null,
@@ -36,6 +37,7 @@ export class Article extends Page {
 			config: context.config
 		}) : fragment(page, {
 			includeHost,
+			store: context.store,
 			config: context.config
 		});
 	}
