@@ -16,6 +16,7 @@ export async function document(article, { includeHost, assets, store, config }) 
 			config
 		}),
 		css: assets.register(styles),
+		assets,
 		store,
 		config
 	});

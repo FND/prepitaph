@@ -11,7 +11,7 @@ export class InfoPage extends Page {
 
 	async render(context) {
 		context = this.augmentContext(context);
-		let { config } = context;
+		let { assets, config } = context;
 		if(this.format === "atom") { // XXX: special-casing
 			context.selfURL = this.url(config.baseURL).href;
 			return context.transformer.render(this.blocks, context);
@@ -28,7 +28,8 @@ export class InfoPage extends Page {
 			}}${{
 				[RAW]: await context.transformer.render(this.blocks, context)
 			}}</main>`,
-			css: context.assets.register(config.css.default),
+			css: assets.register(config.css.default),
+			assets,
 			store: context.store,
 			config
 		});

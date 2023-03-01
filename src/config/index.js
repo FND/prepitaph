@@ -11,6 +11,10 @@ export let host = "https://prepitaph.org";
 export let pathPrefix = process.env.PATH_PREFIX || "";
 
 export let siteTitle = "prepitaph";
+export let favicon = {
+	source: `${ROOT_DIR}/src/assets/icon.svg`,
+	uri: normalize(`${pathPrefix}/${assetsDir}/icon.svg`)
+};
 export let css = { // TODO: use `AssetManager` for URI generation
 	default: [{
 		source: `${ROOT_DIR}/src/assets/main.css`,
