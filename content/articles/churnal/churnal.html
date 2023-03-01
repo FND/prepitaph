@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>churnal</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	max-width: 60ch;
+	margin: 1rem auto;
+	font-family: sans-serif;
+	line-height: 1.5;
+}
+
+summary::marker,
+summary::-webkit-details-marker {
+	content: "";
+	display: none;
+}
+
+summary::after {
+	content: "▸";
+	float: right;
+	font-size: 1.2rem;
+	transition: transform 0.25s ease-in-out;
+}
+details[open] summary::after {
+	transform: rotate(90deg);
+}
+
+details > time {
+	font-size: 0.8rem;
+}
+
+nav {
+	display: flex;
+	margin-top: -1rem;
+	margin-bottom: 1rem;
+	gap: 0.5rem;
+	justify-content: flex-end;
+}
+
+article + article {
+	margin-top: 1rem;
+}
+
+article summary {
+	display: flex;
+	align-items: center;
+}
+
+article summary b {
+	flex-grow: 1;
+	font-weight: normal;
+}
+article details[open] summary b {
+	font-weight: bold;
+}
+
+article time::before {
+	content: "📆 ";
+}
+
+article .category {
+	display: block;
+	float: left;
+	flex: 0 0 5rem; /* don't shrink or grow */
+	align-self: start;
+	margin-right: 1rem;
+	border: 1px solid #AAA;
+    border-left: 1rem solid var(--category-color);
+	padding: 0.2rem;
+	font-weight: bold;
+	background-color: #EEE;
+}
+	</style>
+</head>
+
+<body>
+	<h1>churnal</h1>
+
+	<nav>
+		<a href="#">queue</a>
+		<a href="#">create item</a>
+	</nav>
+
+	<article>
+		<details>
+			<summary>
+				<b class="category" style="--category-color: #82B366">org</b>
+				<b>Task boards created to improve visibility</b>
+			</summary>
+			<time datetime="2022-08-26">Friday, August 26 <small>2022</small></time>
+			<p>
+				Jane has restructured our issues and created boards to provide
+				a better overview for everyone:
+			</p>
+			<ul>
+				<li>
+					<a href="#"
+						>by status</a>
+				</li>
+				<li>
+					<a href="#"
+						>timeline</a>
+				</li>
+			</ul>
+		</details>
+	</article>
+
+	<article>
+		<details>
+			<summary>
+				<b class="category" style="--category-color: #82B366">org</b>
+				<b>Quest for purpose continues with agency brief</b>
+			</summary>
+			<time datetime="2022-08-25">Thursday, August 25 <small>2022</small></time>
+			<p>
+				Given that nobody seems <em>thrilled</em> about any of the
+				suggestions so far, we're leaning towards giving an agency a
+				try.
+			</p>
+			<p>
+				That means we need a concise brief that captures our
+				vision/identity/ambition. We ask everyone to
+				<a href="#"
+					>contribute</a> their thoughts.
+			</p>
+		</details>
+	</article>
+
+	<article>
+		<details>
+			<summary>
+				<b class="category" style="--category-color: #6C8EBF">sales</b>
+				<b>
+					reconnaissance advances ideas around potential offerings
+				</b>
+			</summary>
+			<time datetime="2022-08-23">Tuesday, August 23 <small>2022</small></time>
+			<p>
+				In preparation for next week's C-level meeting, a conversation
+				with our primary contact helped us understand what everyone
+				might be interested in.
+			</p>
+			<p>
+				However, the details still need to be worked out; follow the
+				<a href="#"
+					>corresponding issue</a>
+				for minutiae.
+			</p>
+		</details>
+	</article>
+</body>
+
+</html>
