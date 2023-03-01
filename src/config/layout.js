@@ -1,14 +1,18 @@
 import { html, trustedHTML, RAW } from "../ssg/html.js";
 
+// NB: cached; these are assumed to be identical on all pages
+let ICON;
 let NAV = {
 	index: "prepitaph",
 	topics: "topics",
 	colophon: "colophon"
 };
 
-export default ({ title, summary = null, content, css = [], store, config }) => {
-	// NB: cached; global navigation is assumed to be identical on all pages
-	if(!NAV[RAW]) {
+export default ({ title, summary = null, content, css = [], assets, store, config }) => {
+	if(!ICON) {
+		ICON = trustedHTML`<link rel="icon" type="image/svg+xml"${{
+			href: assets.register(config.favicon)
+		}}>`;
 		let { baseURL } = config;
 		NAV = trustedHTML`<nav>${{
 			[RAW]: Object.entries(NAV).map(([slug, caption], i) => {
@@ -33,6 +37,7 @@ export default ({ title, summary = null, content, css = [], store, config }) => 
 	${summary && {
 		[RAW]: html`<meta name="description"${{ content: summary }}>`
 	}}
+	${ICON}
 	${{
 		[RAW]: css.
 			map(uri => html`<link rel="stylesheet"${{ href: uri }}>`).
