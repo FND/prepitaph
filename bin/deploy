@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -eu
+
+realpath() {
+	filepath="${1:?}"
+
+	node -r fs -p "fs.realpathSync(process.argv[1])" "$filepath"
+}
+
+root_dir=`dirname "$0"`
+root_dir=`realpath "$root_dir/.."`
+local_dir="$root_dir/dist"
+target="prepitaph.org:~/public_html/prepitaph/"
+
+cd "$root_dir"
+npm run rebuild
+
+cd "$local_dir"
+rsync -a --delete -c -P -z -e ssh ./ "$target"
