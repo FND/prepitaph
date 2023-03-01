@@ -1,0 +1,15 @@
+quay-naut h2 { /* XXX: hack to account for emoji-induced size inconsistencies */
+	height: 9vh;
+	line-height: 9vh;
+}
+
+/* override Prism defaults */
+
+quay-naut pre[class*="language-"] {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+quay-naut h2 + pre[class*="language-"] {
+	margin-top: -0.5em;
+}

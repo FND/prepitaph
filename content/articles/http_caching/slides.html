@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>HTTP Caching 101</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="quaynaut.css">
+	<link rel="stylesheet" href="custom.css">
+</head>
+
+<body>
+	<quay-naut class="ratio16-9">
+
+	<pre class="title" data-markdown>
+HTTP Caching 101
+================
+
+it's actually pretty straightforward
+	</pre>
+
+	<pre data-markdown>
+Simple `GET`
+------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+	</pre>
+
+	<pre data-markdown>
+Simple `GET`
+------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+
+
+```
+	</pre>
+
+	<pre data-markdown>
+Simple `GET`
+------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+
+(function() {
+```
+	</pre>
+
+	<pre data-markdown>
+Simple `GET`
+------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+
+(function() {
+…
+```
+	</pre>
+
+	<pre data-markdown>
+Simple `GET`
+------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+
+(function() {
+…
+}())
+```
+	</pre>
+
+	<pre data-markdown>
+Simple `GET` ♺
+--------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+	</pre>
+
+	<pre data-markdown>
+Simple `GET` ♺
+--------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+
+
+```
+	</pre>
+
+	<pre data-markdown>
+Simple `GET` ♺
+--------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+
+(function() {
+```
+	</pre>
+
+	<pre data-markdown>
+Simple `GET` ♺
+--------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+
+(function() {
+…
+```
+	</pre>
+
+	<pre data-markdown>
+Simple `GET` ♺
+--------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+
+(function() {
+…
+}())
+```
+	</pre>
+
+	<pre data-markdown>
+Simple `GET` ♺
+--------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: »87933«
+
+(function() {
+…
+}())
+```
+
+⇒ duplicate download (if the resource hasn't changed)
+	</pre>
+
+	<pre data-markdown>
+Conditional `GET`
+-----------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+
+(function() {
+…
+}())
+```
+	</pre>
+
+	<pre data-markdown>
+Conditional `GET` 🏷️
+-------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+ETag: "66dbb50c6c7535374984e5fccef39d71"
+
+(function() {
+…
+}())
+```
+	</pre>
+
+	<pre data-markdown>
+Conditional `GET` 🏷️ ♺
+----------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+	</pre>
+
+	<pre data-markdown>
+Conditional `GET` 🏷️ ♺
+----------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+If-None-Match: "66dbb50c6c7535374984e5fccef39d71"
+```
+	</pre>
+
+	<pre data-markdown>
+Conditional `GET` 🏷️ ♺
+----------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+If-None-Match: "66dbb50c6c7535374984e5fccef39d71"
+```
+
+```http
+HTTP/1.1 304 Not Modified
+```
+
+⇒ saves downloading ~90 kB multiple times
+
+however, still requires a request - thus latency (network + server response)
+	</pre>
+
+	<pre data-markdown>
+Conditional `GET` 🕰️
+-------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+ETag: "66dbb50c6c7535374984e5fccef39d71"
+
+(function() { … }())
+```
+	</pre>
+
+	<pre data-markdown>
+Conditional `GET` 🕰️
+-------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+ETag: "66dbb50c6c7535374984e5fccef39d71"
+Last-Modified: Mon, 5 June 2018 16:28:35 GMT
+
+(function() { … }())
+```
+
+both headers/mechanisms are mutually independent
+
+(`Last-Modified` also provides caching-indepenent semantic value)
+	</pre>
+
+	<pre data-markdown>
+Conditional `GET` 🕰️ ♺
+----------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+If-None-Match: "66dbb50c6c7535374984e5fccef39d71"
+```
+	</pre>
+
+	<pre data-markdown>
+Conditional `GET` 🕰️ ♺
+----------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+If-None-Match: "66dbb50c6c7535374984e5fccef39d71"
+If-Modified-Since: Mon, 5 June 2018 16:28:35 GMT
+```
+
+both headers/mechanisms are mutually independent
+
+client may construct arbitrary timestamp (e.g. periodic sync)
+	</pre>
+
+	<pre data-markdown>
+Conditional `GET` 🕰️ ♺
+----------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+If-None-Match: "66dbb50c6c7535374984e5fccef39d71"
+If-Modified-Since: Mon, 5 June 2018 16:28:35 GMT
+```
+
+```http
+HTTP/1.1 304 Not Modified
+```
+	</pre>
+
+	<pre data-markdown>
+Resource Expiry
+---------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+ETag: "66dbb50c6c7535374984e5fccef39d71"
+Last-Modified: Mon, 5 June 2018 16:28:35 GMT
+
+(function() { … }())
+```
+	</pre>
+
+	<pre data-markdown>
+Resource Expiry
+---------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+ETag: "66dbb50c6c7535374984e5fccef39d71"
+Last-Modified: Mon, 5 June 2018 16:28:35 GMT
+Expires: Sat, 30 June 2018 23:59:59 GMT
+
+(function() { … }())
+```
+	</pre>
+
+	<pre data-markdown>
+Resource Expiry
+---------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+ETag: "66dbb50c6c7535374984e5fccef39d71"
+Last-Modified: Mon, 5 June 2018 16:28:35 GMT
+Expires: Sat, 30 June 2018 23:59:59 GMT
+
+(function() { … }())
+```
+
+⇒ no more network requests until the end of the month
+
+⇒ avoids latency altogether
+	</pre>
+
+	<pre data-markdown>
+Resource Expiry
+---------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+ETag: "66dbb50c6c7535374984e5fccef39d71"
+Last-Modified: Mon, 5 June 2018 16:28:35 GMT
+Cache-Control: max-age=300
+
+(function() { … }())
+```
+
+⇒ no more network requests within 5 min.
+
+----
+
+❓ `ETag`/`Last-Modified` merely a fallback, just in case `Cache-Control` is unsupported?
+	</pre>
+
+	<pre data-markdown>
+Immutable Resources
+-------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+ETag: "66dbb50c6c7535374984e5fccef39d71"
+Last-Modified: Mon, 5 June 2018 16:28:35 GMT
+Cache-Control: max-age=31536000
+
+(function() { … }())
+```
+
+⇒ no more network requests within a year (modulo client expiry)
+
+----
+
+`max-age`
+[should not exceed one year](https://tools.ietf.org/html/rfc7234#section-5.3)
+	</pre>
+
+	<pre data-markdown>
+Immutable Resources
+-------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+ETag: "66dbb50c6c7535374984e5fccef39d71"
+Last-Modified: Mon, 5 June 2018 16:28:35 GMT
+Cache-Control: max-age=31536000, immutable
+
+(function() { … }())
+```
+
+⇒ no more network requests, ever (modulo client expiry)
+
+☝️ `immutable` not universally supported yet; `max-age` ensures backwards compatibility
+	</pre>
+
+	<pre data-markdown>
+Immutable Resources
+-------------------
+
+```http
+GET /bundle-a3d88d078ad305273d6c3c0467358016.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+ETag: "66dbb50c6c7535374984e5fccef39d71"
+Last-Modified: Mon, 5 June 2018 16:28:35 GMT
+Cache-Control: max-age=31536000, immutable
+
+(function() { … }())
+```
+
+fingerprinting allows for cache busting
+	</pre>
+
+	<pre data-markdown>
+Volatile Resources
+------------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+Cache-Control: no-cache, must-revalidate, max-age=0
+
+(function() { … }())
+```
+
+prohibits caching
+	</pre>
+
+	<pre data-markdown>
+Stale Resources
+---------------
+
+```http
+GET /bundle.js HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/javascript
+Content-Length: 87933
+Cache-Control: max-age=60, stale-while-revalidate=31556926
+
+(function() { … }())
+```
+
+serves potentially stale resource from cache while updating cache in the
+background
+	</pre>
+
+	<pre data-markdown>
+Private Resources
+-----------------
+
+```http
+GET /dashboard HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: 2174
+Cache-Control: max-age=31536000
+
+…
+```
+
+personalized or sensitive content might not be suitable for shared caches
+
+----
+
+* shared cache: e.g. intermediate proxies
+* private cache: user agents
+	</pre>
+
+	<pre data-markdown>
+Private Resources
+-----------------
+
+```http
+GET /dashboard HTTP/1.1
+Accept: */*
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: 2174
+Cache-Control: private, max-age=31536000
+
+…
+```
+	</pre>
+
+	<pre data-markdown>
+Tips
+----
+
+* avoid `Expires`; outdated dead weight
+* `Cache-Control`: `public` vs. `private` hints (e.g. for sensitive information)
+* `Vary: Accept` avoids confusion with content negotiation
+* beware of real-world behaviors (spec vs. implementations)
+* beware of snake oil
+	</pre>
+
+	<pre data-markdown>
+Resources
+---------
+
+* Souders: Cache Is King
+    * [video](https://www.youtube.com/watch?v=HKNZ-tQQnSY)
+    * [slides](https://www.slideshare.net/souders/cache-is-king)
+      ([PPT](https://stevesouders.com/docs/html5dev-cacheisking-20121015.pptx))
+    * [blog post](https://www.stevesouders.com/blog/2012/10/11/cache-is-king/)
+
+    → Caching 101 (pp. 30 ff. / 00:10:41) served as inspiration here
+
+* [Caching best practices & max-age gotchas](https://jakearchibald.com/2016/caching-best-practices/)
+
+* real-world analysis
+    * [The headers we want](https://www.fastly.com/blog/headers-we-want)
+    * [The headers we don't want](https://www.fastly.com/blog/headers-we-dont-want)
+	</pre>
+
+	<article class="title">
+		EOF
+	</article>
+
+	</quay-naut>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.10.0/document-register-element.js" defer></script>
+	<script src="quaynaut.js" defer></script>
+	<script src="https://cdn.rawgit.com/PrismJS/prism/v1.14.0/components/prism-http.js" defer></script>
+</body>
+
+</html>
