@@ -7,7 +7,7 @@ let ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
 export let contentDir = "./content"; // NB: relative to current working directory
 export let outputDir = "./dist"; // NB: relative to current working directory
 export let assetsDir = "./assets"; // NB: relative to `outputDir`
-export let host = "https://example.org";
+export let host = "https://prepitaph.org";
 export let pathPrefix = process.env.PATH_PREFIX || "";
 
 export let siteTitle = "prepitaph";
