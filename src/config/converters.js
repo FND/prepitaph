@@ -6,10 +6,12 @@ import Prism from "prismjs";
 
 let { highlight, languages } = Prism;
 
+export let _html = await code("html");
 export {
 	markdown as "default", // awkward, but necessary
 	markdown,
-	markdown as intro
+	markdown as intro,
+	_html as html
 };
 export let NONE = (content, params, context) => html`<pre>${content}</pre>`;
 export let javascript = await code("javascript");
@@ -58,9 +60,9 @@ export async function list(content, { category }, context) {
 	return res.join("\n");
 }
 
-export async function aside(content, { backticks = "'''" }, context) {
+export async function aside(content, { compact = false, backticks = "'''" }, context) {
 	content = content.replaceAll(backticks, "```");
-	return html`<aside class="stack">${{
+	return html`<aside class="${compact && "is-compact "}stack">${{
 		[RAW]: await context.transformer.render(txt2blocks(content), context)
 	}}</aside>`;
 }

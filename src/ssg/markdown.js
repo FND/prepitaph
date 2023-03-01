@@ -6,7 +6,7 @@ import { HtmlRenderer, Parser } from "commonmark";
 // `allowHTML`, if `true`, permits embedding raw HTML
 // `resolveURI` allows modifying link and image targets
 export async function renderMarkdown(txt,
-		{ smart, fragIDs, allowHTML, resolveURI } = {}) {
+		{ smart = true, fragIDs, allowHTML, resolveURI } = {}) {
 	let reader = new Parser({ smart });
 	let root = reader.parse(txt);
 	if(resolveURI) {

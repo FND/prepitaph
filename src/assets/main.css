@@ -6,9 +6,6 @@
 
 html {
 	--h-size: 60ch;
-	--spacing: 0.5rem;
-	--spacing-reduced: calc(var(--spacing) * 0.667); /* modular scale-ish */
-	--spacing-extra: calc(var(--spacing) * 3.375); /* modular scale-ish */
 	--border-size: 1px;
 	--color-fg: #000;
 	--color-bg: #FFF;
@@ -17,8 +14,14 @@ html {
 	--color-link: #00C;
 	--color-link-visited: #518;
 
+	/* modular scale-ish; cf. https://www.modularscale.com/?1.5 */
+	--spacing: 0.5rem;
+	--spacing-s1: calc(var(--spacing) * 0.667);
+	--spacing-l2: calc(var(--spacing) * 2.25);
+	--spacing-l3: calc(var(--spacing) * 3.375);
+
 	/* outdent while keeping content box consistent */
-	--border-outdent-left: var(--spacing-reduced);
+	--border-outdent-left: var(--spacing-s1);
 	--spacing-outdent-left: calc(var(--spacing) + var(--border-outdent-left));
 	--spacing-outdent-right: calc(var(--spacing) + var(--border-size));
 
@@ -28,6 +31,7 @@ html {
 body {
 	margin: 0;
 	font-family: system-ui, sans-serif;
+	font-size: 112.5%;
 	line-height: 1.5;
 	color: var(--color-fg);
 	background-color: var(--color-bg);
@@ -46,14 +50,39 @@ main {
 	padding-bottom: var(--spacing); /* XXX: hacky? */
 }
 
+h3 {
+	font-size: 1.1em;
+	font-variant: small-caps;
+}
+
 a:link {
 	color: var(--color-link);
 }
 a:visited {
 	color: var(--color-link-visited);
 }
+a[href^="http://"],
+a[href^="https://"] {
+	--_size: 0.65rem; /* XXX: magic value */
 
-/* layout utilities */
+	background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23666" viewBox="0 0 16 16"><path d="M1.5 3.5v11h11V10H14v5a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h5v1.5H1.5ZM16 1.2 7 10 6 9l8.9-9 1 1ZM7.5 0H16v1.5H7.5V0ZM16 0v8.5h-1.5V0H16Z"/></svg>');
+	background-position: calc(100% - var(--_size) / 4) 60%; /* XXX: magic value */
+	background-repeat: no-repeat;
+	background-size: var(--_size);
+	padding-right: calc(var(--_size) + var(--_size) / 2);
+}
+
+/* utilities */
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
 
 .stack > * {
 	display: block;
@@ -61,6 +90,10 @@ a:visited {
 }
 .stack > * + * {
 	margin-top: var(--spacing);
+}
+.stack > h2,
+.stack > h3 {
+	margin-top: var(--spacing-l2);
 }
 
 /* site header */
@@ -85,10 +118,10 @@ a:visited {
 }
 
 .site-header a:first-of-type {
-	padding-left: var(--spacing-extra);
+	padding-left: var(--spacing-l3);
 }
 .site-header a:first-of-type + * {
-	margin-left: var(--spacing-extra);
+	margin-left: var(--spacing-l3);
 }
 
 /* decoration */
@@ -102,7 +135,7 @@ a:visited {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: calc(100% + var(--spacing-extra));
+	width: calc(100% + var(--spacing-l3));
 	height: 100%;
 	background-color: var(--color-fg);
 	transform: skew(-30deg);
@@ -120,7 +153,7 @@ dl.topics > dt ~ dt {
 }
 
 dl.topics > dd {
-	margin-left: var(--spacing-extra);
+	margin-left: var(--spacing-l3);
 }
 
 dl.topics a ~ a {
@@ -155,12 +188,16 @@ dl.topics a ~ a {
 	border-width: calc(3 * var(--border-size)) 0; /* XXX: magic value */
 	border-style: solid;
 	border-color: rgba(110, 140, 192, 0.8); /* XXX: magic value */
-	padding: var(--spacing) var(--spacing-extra); /* NB: also accounts for outdent */
+	padding: var(--spacing) var(--spacing-l3); /* NB: also accounts for outdent */
 	background-color: rgba(220, 232, 255, 0.2); /* XXX: magic value */
+}
+.article aside.is-compact {
+	border-block-width: var(--border-size);
+	font-size: small;
 }
 
 .article .footnote {
-	margin-left: var(--spacing-extra);
+	margin-left: var(--spacing-l3);
 	font-size: small;
 }
 .article .footnote > sup:first-child {
@@ -198,6 +235,26 @@ dl.topics a ~ a {
 	color: #9A6E3A; /* corresponds to Prism default for `.operator` */
 }
 
+.article blockquote {
+	margin-inline: 0;
+	border-left: var(--spacing-s1) solid var(--color-border);
+	padding-block: var(--spacing-s1);
+	padding-left: var(--spacing);
+	font-style: italic;
+}
+/* NB: vertical spacing corresponds to `.stack` */
+.article blockquote > * {
+	margin-block: 0;
+}
+.article blockquote > * + * {
+	margin-top: var(--spacing);
+}
+
 .article img {
 	max-width: 100%;
+}
+
+.article ul {
+	margin-left: 1rem;
+	padding-left: 0;
 }
