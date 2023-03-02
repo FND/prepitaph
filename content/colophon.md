@@ -8,7 +8,7 @@ for posterity -- primarily our future selves.
 Both code and content can be found in the
 [public repository](https://github.com/FND/prepitaph).
 
-Thoughts or complaints can be directed at info@prepitaph.org.
+Thoughts or complaints can be directed at void@prepitaph.org.
 
 
 Privacy
