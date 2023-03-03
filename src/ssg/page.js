@@ -32,7 +32,13 @@ export class Page {
 				throw new CustomError("INVALID_CONTENT",
 						`invalid \`${field}\` value in \`${source}\``);
 			}
-			this[convert.isPrivate ? `_${field}` : field] = value;
+
+			if(convert.isPrivate) {
+				field = `_${field}`;
+			} else if(convert.prop) {
+				field = convert.prop;
+			}
+			this[field] = value;
 		}
 
 		let path = localPath(this);
