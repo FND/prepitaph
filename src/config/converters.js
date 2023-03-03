@@ -94,15 +94,17 @@ export async function aside(content, { compact = false, backticks = "'''" }, con
 export async function footnote(content, params, context) {
 	let name = Object.keys(params)[0];
 	let i = context.footnotes.indexOf(name) + 1;
-	return html`<div${{ id: `fn:${name}` }} class="footnote stack"><sup>${i}</sup>${{
+	return html`<aside${{ id: `fn:${name}` }} class="footnote stack"><sup${{
+		"aria-label": `footnote #${i}`
+	}}>${i}</sup>${{
 		[RAW]: await context.transformer.render(txt2blocks(content), context)
-	}}</div>`;
+	}}</aside>`;
 }
 
-async function markdown(content, { allowHTML }, context) {
+async function markdown(content, { allowHTML = false }, context) {
 	let html = await renderMarkdown(content, {
 		fragIDs: txt => txt.replace(/\s/g, "-").toLowerCase(), // XXX: crude
-		allowHTML: allowHTML === "true",
+		allowHTML,
 		resolveURI(uri, type, node) {
 			if(uri === "footnote://") {
 				let { footnotes } = context;

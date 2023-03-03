@@ -1,6 +1,6 @@
 title: NONE
 
-```markdown allowHTML=true
+```markdown allowHTML
 <h1 class="visually-hidden">Articles</h1>
 ```
 

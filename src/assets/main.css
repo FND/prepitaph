@@ -188,14 +188,14 @@ dl.topics a ~ a {
 	color: var(--color-acc);
 }
 
-.article aside {
+.article aside:not(.footnote) {
 	border-width: calc(3 * var(--border-size)) 0; /* XXX: magic value */
 	border-style: solid;
 	border-color: rgba(110, 140, 192, 0.8); /* XXX: magic value */
 	padding: var(--spacing) var(--spacing-l3); /* NB: also accounts for outdent */
 	background-color: rgba(220, 232, 255, 0.2); /* XXX: magic value */
 }
-.article aside.is-compact {
+.article aside:not(.footnote).is-compact {
 	border-block-width: var(--border-size);
 	font-size: small;
 }
