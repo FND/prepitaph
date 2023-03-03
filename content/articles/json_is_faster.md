@@ -1,5 +1,5 @@
 title: "JSON is faster"
-tags: web, javascript
+tags: web, javascript, performance
 author: FND
 created: 2014-11-18
 syntax: true

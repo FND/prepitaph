@@ -1,5 +1,5 @@
 title: HTTP Caching 101
-tags: http
+tags: http, performance
 author: FND
 created: 2018-06-23
 
