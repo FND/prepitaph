@@ -1,5 +1,5 @@
 title: HTTP Caching 101
-tags: http
+tags: http, performance
 author: FND
 created: 2018-06-23
 _origin_: https://gist.github.com/FND/7b39cea74df8ba69b5b6477fb152f42f

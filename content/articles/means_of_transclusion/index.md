@@ -185,8 +185,8 @@ Many CDNs have more powerful scripting facilities for
 [manipulating outgoing HTML](https://developers.cloudflare.com/workers/runtime-apis/html-rewriter/),
 allowing for pretty much the same flexibility as with client-side JavaScript.
 Some even support
-[streaming HTML](https://dev.to/tigt/the-weirdly-obscure-art-of-streamed-html-4gc2),
-which can be a huge performance boost.
+[streaming HTML](page://articles/streaming-html), which can provide a huge
+performance boost.
 
 Various [companies](https://github.com/zalando/tailor) and
 [individuals](https://twitter.com/wcbytes/status/1541546418539732997) have
