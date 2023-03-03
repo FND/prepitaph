@@ -8,7 +8,16 @@ let NAV = {
 	colophon: "colophon"
 };
 
-export default ({ title, summary = null, content, css = [], assets, store, config }) => {
+export default ({
+	title,
+	summary = null,
+	canonicalURL = null,
+	content,
+	css = [],
+	assets,
+	store,
+	config
+}) => {
 	if(!ICON) {
 		ICON = trustedHTML`<link rel="icon" type="image/svg+xml"${{
 			href: assets.register(config.favicon)
@@ -34,6 +43,9 @@ export default ({ title, summary = null, content, css = [], assets, store, confi
 	<meta charset="utf-8">
 	<title>${title}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	${canonicalURL && {
+		[RAW]: html`<link rel="canonical"${{ href: canonicalURL }}>`
+	}}
 	${summary && {
 		[RAW]: html`<meta name="description"${{ content: summary }}>`
 	}}
