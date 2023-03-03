@@ -9,6 +9,7 @@ export async function document(article, { includeHost, assets, store, config }) 
 	return layout({
 		title: article.title,
 		summary: await article.intro,
+		canonicalURL: article.canonicalURL,
 		content: await fragment(article, {
 			isStandalone: true,
 			includeHost,

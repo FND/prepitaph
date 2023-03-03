@@ -55,6 +55,10 @@ h3 {
 	font-variant: small-caps;
 }
 
+figure {
+	margin: 0;
+}
+
 a:link {
 	color: var(--color-link);
 }
@@ -248,6 +252,10 @@ dl.topics a ~ a {
 }
 .article blockquote > * + * {
 	margin-top: var(--spacing);
+}
+
+.article figure.is-compact {
+	font-size: small;
 }
 
 .article img {

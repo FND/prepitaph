@@ -1,7 +1,7 @@
 import { siteTitle } from "./index.js"; // XXX: circular
 import { renderMarkdown } from "../ssg/markdown.js";
 import { txt2blocks } from "../ssg/ingestion.js";
-import { html, RAW } from "../ssg/html.js";
+import { html, trustedHTML, RAW } from "../ssg/html.js";
 import Prism from "prismjs";
 
 let { highlight, languages } = Prism;
@@ -58,6 +58,30 @@ export async function list(content, { category }, context) {
 	}
 	res = await Promise.all(res);
 	return res.join("\n");
+}
+
+export async function figure(content, {
+	caption = null,
+	img = null,
+	compact = false,
+	id = null,
+	lazy = false,
+	backticks = "'''"
+}, context) {
+	let cls = compact && "is-compact ";
+	let res = html`<figure${{ id }} class="${cls}stack">${
+		img ? trustedHTML`<img${{
+			src: img,
+			alt: content,
+			loading: lazy && "lazy"
+		}}>` : {
+			[RAW]: await context.transformer.
+				render(txt2blocks(content.replaceAll(backticks, "```")), context)
+		}
+	}${
+		caption && trustedHTML`<figcaption>${content}</figcaption>`
+	}</figure>`;
+	return id === null ? res : html`<a${{ href: `#${id}` }}>${{ [RAW]: res }}</a>`;
 }
 
 export async function aside(content, { compact = false, backticks = "'''" }, context) {

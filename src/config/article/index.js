@@ -11,6 +11,10 @@ export class Article extends Page {
 		author: value => value || INVALID,
 		created: value => value ? iso2date(value) : INVALID,
 		updated: value => value ? iso2date(value) : null,
+		canonical: {
+			prop: "canonicalURL",
+			call: value => value || null
+		},
 		syntax: value => value === "true"
 	};
 
