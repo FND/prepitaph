@@ -43,6 +43,10 @@ have yet to find an approach I'm truly comfortable with.
 
 Also see [this discussion](https://github.com/complate/complate-stream/pull/52)
 for performance considerations.
+
+Note that there's now an experimental
+[API for sanitizing HTML](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API)
+in some browsers.
 ```
 
 We can use that for safer stitches:

@@ -55,6 +55,10 @@ h3 {
 	font-variant: small-caps;
 }
 
+pre {
+	overflow: auto;
+}
+
 figure {
 	margin: 0;
 }
@@ -220,7 +224,6 @@ dl.topics a ~ a {
 }
 
 .article pre {
-	overflow: auto;
 	margin-left: calc(-1 * var(--spacing-outdent-left));
 	margin-right: calc(-1 * var(--spacing-outdent-right));
 	border: var(--border-size) solid var(--color-border);
