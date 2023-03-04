@@ -15,14 +15,17 @@ Privacy
 -------
 
 This website avoids collecting personal data whenever possible. There are no
-cookies, third-party trackers or analytics. HTTP server logs only record
-requests' date and time as well as protocol, method and URL (e.g.
-`GET / HTTP/1.1`) along with the
+cookies, analytics or third-party trackers. HTTP server logs only record
+requests' date and time as well as protocol, method and URL along with
 [referrer](https://en.wikipedia.org/wiki/HTTP_referer) and the corresponding
-response's
-[status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes). IP
-addresses or user-agent details are not recorded. Logs are retained for about a
-month.
+response's status code:
+
+```
+[01/Mar/2023:11:27:59 +0000] "GET /colophon/ HTTP/1.1" 200 "https://example.org/"
+```
+
+IP addresses or user-agent details are not recorded. Logs are retained for about
+a month.
 
 Content is encrypted via [HTTPS](https://en.wikipedia.org/wiki/HTTPS). Network
 providers and other intermediaries may still be able to observe connections to
