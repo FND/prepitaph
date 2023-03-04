@@ -1,7 +1,7 @@
 import { html, trustedHTML, RAW } from "../ssg/html.js";
 
 // NB: cached; these are assumed to be identical on all pages
-let ICON;
+let FEED, ICON;
 let NAV = {
 	index: "prepitaph",
 	topics: "topics",
@@ -18,11 +18,14 @@ export default ({
 	store,
 	config
 }) => {
-	if(!ICON) {
+	if(!FEED) {
+		let { baseURL } = config;
+		FEED = trustedHTML`<link rel="alternate" type="application/atom+xml"${{
+			href: store.retrieve(null, "index", "atom").url(baseURL).pathname
+		}}>`;
 		ICON = trustedHTML`<link rel="icon" type="image/svg+xml"${{
 			href: assets.register(config.favicon)
 		}}>`;
-		let { baseURL } = config;
 		NAV = trustedHTML`<nav>${{
 			[RAW]: Object.entries(NAV).map(([slug, caption], i) => {
 				let uri = store.retrieve(null, slug).url(baseURL).pathname;
@@ -49,6 +52,7 @@ export default ({
 	${summary && {
 		[RAW]: html`<meta name="description"${{ content: summary }}>`
 	}}
+	${FEED}
 	${ICON}
 	${{
 		[RAW]: css.
