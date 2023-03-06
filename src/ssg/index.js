@@ -4,7 +4,7 @@ import { AssetRegistry } from "./assets.js";
 import { ContentStore } from "./store.js";
 import { createFile, realpath } from "./fs.js";
 import { normalizeURI, clone, CustomError } from "./util.js";
-import * as globalConfig from "../config/index.js";
+import * as _globalConfig from "../config/index.js";
 import { copyFile, mkdir, constants } from "node:fs/promises";
 import { resolve, basename, dirname } from "node:path";
 
@@ -20,6 +20,8 @@ try {
 }
 
 async function main() {
+	let globalConfig = { ..._globalConfig };
+
 	let host = normalizeURI(globalConfig.host);
 	let pathPrefix = normalizeURI(globalConfig.pathPrefix);
 	let config = clone(globalConfig, {

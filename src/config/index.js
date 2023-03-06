@@ -1,8 +1,8 @@
 import * as blocks from "./converters.js";
-import { fileURLToPath } from "node:url";
-import { resolve, normalize, dirname } from "node:path";
+import { normalize, dirname } from "node:path";
 
-let ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
+let ENTRY_POINT = process.argv[1];
+let ROOT_DIR = dirname(ENTRY_POINT);
 
 export let contentDir = "./content"; // NB: relative to current working directory
 export let outputDir = "./dist"; // NB: relative to current working directory

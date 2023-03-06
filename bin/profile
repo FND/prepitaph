@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -eu
+
+realpath() {
+	filepath="${1:?}"
+
+	node -r fs -p "fs.realpathSync(process.argv[1])" "$filepath"
+}
+
+root_dir=`dirname "$0"`
+root_dir=`realpath "$root_dir/.."`
+entry_point="$root_dir/src/ssg/index.js"
+regular="$root_dir/bundle.js"
+minified="$root_dir/bundle.min.js"
+site_dir="$root_dir/dist"
+target_dir="$root_dir/profiling"
+
+mkdir "$target_dir"
+
+./node_modules/.bin/esbuild --bundle --format=esm \
+		--platform=node --target=node19.4 --packages=external "$entry_point" \
+		--outfile="$regular"
+
+./node_modules/.bin/esbuild --bundle --format=esm --minify \
+		--platform=node --target=node19.4 --packages=external "$entry_point" \
+		--outfile="$minified"
+
+rm -rf "$site_dir"
+node --cpu-prof --cpu-prof-dir "$target_dir" --cpu-prof-name "regular.cpuprofile" "$regular"
+rm "$regular"
+
+rm -rf "$site_dir"
+node --cpu-prof --cpu-prof-dir "$target_dir" --cpu-prof-name "minified.cpuprofile" "$minified"
+rm "$minified"
