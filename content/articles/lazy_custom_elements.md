@@ -31,4 +31,6 @@ Plus we highlight the importance of taking performance into account.
 
 Of course this article merely scratches the surface and there are
 [more elaborate tutorials](https://webcomponents.guide/tutorials/mastodon-toot-embed/).
-It might still be a handy reference, for myself and others.
+It might still be a handy reference, for myself and others -- and it's likely
+more tangible than
+[earlier attempts](https://gist.github.com/FND/3967cddfa35ff95820303dae52de29d3).
