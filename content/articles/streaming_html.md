@@ -65,9 +65,17 @@ Progressive rendering has
 been a feature of web browsers, yet many applications and frameworks flat out
 ignore this possibility, instead generating the entire document -- potentially
 held up by database queries or other complex operations -- before sending the
-first byte over the wire (not to mention
+first byte over the wire[servers](footnote://) (not to mention
 [SPAs'](https://en.wikipedia.org/wiki/Single-page_application) empty-`<body>`
 approach).
+
+```footnote servers
+I sometimes illustrate the difference with minimal server implementations, e.g.
+using [WSGI](https://gist.github.com/FND/76cf34ddca1e258aa502d70ec98d551d) or
+[Express](https://gist.github.com/FND/b0db6be61b71b19acf555171be0f9022). Those
+of course don't address templating libraries or any other part of the system
+which might interfere.
+```
 
 Critics sometimes point to a perceived mismatch with HTTP status codes, which
 need to be determined before sending body content (given it's the first line in
