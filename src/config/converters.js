@@ -53,7 +53,13 @@ export async function list(content, { category }, context) {
 	let pages = sortByDate(context.store.retrieve(category));
 	let res = [];
 	for(let page of pages) {
-		let html = page.render(context, { isStandalone: false });
+		let html = page.render(context, {
+			isDocument: false,
+			heading: true,
+			metadata: true,
+			intro: true,
+			main: false
+		});
 		res.push(html);
 	}
 	res = await Promise.all(res);

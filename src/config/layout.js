@@ -46,12 +46,10 @@ export default ({
 	<meta charset="utf-8">
 	<title>${title}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	${canonicalURL && {
-		[RAW]: html`<link rel="canonical"${{ href: canonicalURL }}>`
-	}}
-	${summary && {
-		[RAW]: html`<meta name="description"${{ content: summary }}>`
-	}}
+	${canonicalURL &&
+			trustedHTML`<link rel="canonical"${{ href: canonicalURL }}>`}
+	${summary &&
+			trustedHTML`<meta name="description"${{ content: summary }}>`}
 	${FEED}
 	${ICON}
 	${{

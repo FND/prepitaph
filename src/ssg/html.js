@@ -12,7 +12,7 @@ export function html(strings, ...values) {
 			res.push(value.replaceAll("&", "&amp;").
 				replaceAll("<", "&lt;").
 				replaceAll(">", "&gt;"));
-		} else if(value !== null && value !== false) {
+		} else if(value !== null && value !== undefined && value !== false) {
 			res.push(value[RAW] || serializeAttributes(value));
 		}
 		res.push(strings[i]);
