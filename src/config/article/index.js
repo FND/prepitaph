@@ -1,4 +1,4 @@
-import { document, fragment } from "./template.js";
+import { renderArticle } from "./template.js";
 import { Page, INVALID } from "../../ssg/page.js";
 import { iso2date, clone } from "../../ssg/util.js";
 
@@ -26,24 +26,21 @@ export class Article extends Page {
 		this.intro = intro || null;
 	}
 
-	async render(context, { isStandalone = true, includeHost } = {}) {
+	async render(context, options = {}) {
 		context = this.augmentContext(context);
 		context.footnotes = []; // XXX: hacky
-		let { intro } = this;
+
 		let { transformer } = context;
+		let intro = options.intro !== false && this.intro;
 		let page = clone(this, {
 			intro: intro && transformer.render([intro], context),
-			content: transformer.render(this.blocks, context)
+			content: options.main !== false && transformer.render(this.blocks, context)
 		});
-		return isStandalone ? document(page, {
-			includeHost,
+
+		return renderArticle(page, {
 			assets: context.assets,
 			store: context.store,
 			config: context.config
-		}) : fragment(page, {
-			includeHost,
-			store: context.store,
-			config: context.config
-		});
+		}, options);
 	}
 }
