@@ -2,6 +2,7 @@
 	"scripts": {
 		"build": "node ./src/ssg/index.js",
 		"rebuild": "rm -rf ./dist && npm run build",
+		"rebuild:local": "rm -rf ./dist && PATH_PREFIX=\"`pwd`/dist\" npm run build",
 		"test": "eslint --cache ./src && echo ✓"
 	},
 	"type": "module",
