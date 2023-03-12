@@ -27,6 +27,11 @@ html {
 
 	background-color: var(--color-acc);
 }
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}
 
 body {
 	margin: 0;
