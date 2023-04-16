@@ -4,7 +4,7 @@
 	box-sizing: border-box;
 }
 
-html {
+:root {
 	--h-size: 60ch;
 	--border-size: 1px;
 	--color-fg: #000;
@@ -24,7 +24,9 @@ html {
 	--border-outdent-left: var(--spacing-s1);
 	--spacing-outdent-left: calc(var(--spacing) + var(--border-outdent-left));
 	--spacing-outdent-right: calc(var(--spacing) + var(--border-size));
+}
 
+html {
 	background-color: var(--color-acc);
 }
 @media (prefers-reduced-motion: no-preference) {

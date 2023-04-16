@@ -1,5 +1,11 @@
 export let RAW = Symbol("raw HTML");
 
+export function trustedHTML(...args) {
+	return {
+		[RAW]: html(...args)
+	};
+}
+
 export function html(strings, ...values) {
 	let i = 0;
 	let res = [strings[i]];
@@ -12,7 +18,7 @@ export function html(strings, ...values) {
 			res.push(value.replaceAll("&", "&amp;").
 				replaceAll("<", "&lt;").
 				replaceAll(">", "&gt;"));
-		} else if(value !== null && value !== undefined && value !== false) {
+		} else if((value ?? false) !== false) {
 			res.push(value[RAW] || serializeAttributes(value));
 		}
 		res.push(strings[i]);
@@ -20,16 +26,13 @@ export function html(strings, ...values) {
 	return res.join("");
 }
 
-export function trustedHTML(...args) {
-	return {
-		[RAW]: html(...args)
-	};
-}
-
 function serializeAttributes(attribs) {
 	let res = Object.entries(attribs).reduce((memo, [name, value]) => {
 		if(!value) {
 			return memo;
+		}
+		if(typeof value === "number") {
+			value = value.toString();
 		}
 		value = value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
 		return memo.concat(`${name}="${value}"`);

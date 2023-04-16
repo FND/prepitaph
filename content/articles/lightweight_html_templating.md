@@ -145,7 +145,7 @@ function html(strings, ...values) {
     for(let value of values) {
         i++;
         if(typeof value === "string") {
-            res.push(encodeContent(value));
+            res.push(encodeHTML(value));
         } else if(value) {
             res.push(value[RAW] || serializeAttributes(value));
         }
