@@ -237,6 +237,7 @@ dl.topics a ~ a {
 	border-left-width: var(--border-outdent-left);
 	border-radius: var(--spacing);
 	padding: var(--spacing);
+	font-size: 1rem;
 }
 /* override Prism defaults */
 .article pre .token.class-name,
@@ -256,11 +257,15 @@ dl.topics a ~ a {
 	padding-left: var(--spacing);
 	font-style: italic;
 }
-/* NB: vertical spacing corresponds to `.stack` */
-.article blockquote > * {
+/* NB: vertical spacing corresponds to `.stack` (required for Markdown content) */
+.article blockquote > *,
+.article li,
+.article li > p {
 	margin-block: 0;
 }
-.article blockquote > * + * {
+.article blockquote > * + *,
+.article li + li,
+.article li > p + p {
 	margin-top: var(--spacing);
 }
 
