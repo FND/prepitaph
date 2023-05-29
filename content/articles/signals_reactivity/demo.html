@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Signals Demo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: var(--spacing);
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+h1 {
+	margin-block: 0 var(--spacing);
+}
+
+button {
+	display: block;
+	margin-bottom: var(--spacing);
+}
+button:first-of-type {
+	float: left;
+	margin-right: var(--spacing);
+}
+
+ol,
+output {
+	font-family: monospace;
+}
+
+ol {
+	padding-left: 0;
+	list-style-type: none;
+}
+
+ol > :last-child::before, /* XXX: hacky */
+output::before { /* XXX: hacky */
+	content: "🧮 ";
+	visibility: hidden;
+}
+	</style>
+</head>
+
+<body>
+	<h1>Signals Demo</h1>
+
+	<script type="module" src="./demo.js"></script>
+</body>
+
+</html>

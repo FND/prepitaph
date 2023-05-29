@@ -281,3 +281,8 @@ dl.topics a ~ a {
 	margin-left: 1rem;
 	padding-left: 0;
 }
+
+.article iframe {
+	width: 100%;
+	min-height: 20rem;
+}
