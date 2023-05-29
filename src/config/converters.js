@@ -18,16 +18,23 @@ export let json = await code("json");
 export let javascript = await code("javascript");
 export let python = await code("python");
 
-export async function feed(content, { category, title = siteTitle }, context) {
+export async function feed(content, { category, exclude, title = siteTitle }, context) {
 	let { renderAtom } = await import("./feed.js");
 	let pages = sortByDate(context.store.retrieve(category));
+	if(exclude) {
+		pages = pages.filter(page => page.slug !== exclude);
+	}
 	return renderAtom(pages, title, context);
 }
 
-export async function topics(content, { category }, context) {
+export async function topics(content, { category, exclude }, context) {
 	let byTag = new Map();
 	let tags = [];
 	for(let page of context.store.retrieve(category)) {
+		if(page.slug === exclude) {
+			continue;
+		}
+
 		for(let tag of page.tags) {
 			let entries = byTag.get(tag);
 			if(entries) {
@@ -50,10 +57,14 @@ export async function topics(content, { category }, context) {
 	}}</dl>`;
 }
 
-export async function list(content, { category }, context) {
+export async function list(content, { category, exclude }, context) {
 	let pages = sortByDate(context.store.retrieve(category));
 	let res = [];
 	for(let page of pages) {
+		if(page.slug === exclude) {
+			continue;
+		}
+
 		let html = page.render(context, {
 			isDocument: false,
 			heading: true,
