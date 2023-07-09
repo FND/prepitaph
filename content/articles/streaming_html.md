@@ -52,8 +52,8 @@ application-specific enhancements, in this case by re-arranging the source order
 of elements:
 
 > I've been playing with streaming Declarative Shadow DOM recently and it
-> enables some pretty unique behaviour - e.g.
-> [enamel.pages.dev](https://enamel.pages.dev) - a completely JS free, backend
+> enables some pretty unique behaviour -- e.g.
+> [enamel.pages.dev](https://enamel.pages.dev) -- a completely JS free, backend
 > agnostic way to deliver your page shell instantly and progressively load in
 > slotted content as it's received
 
