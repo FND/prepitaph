@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>View Transitions vs. Animations</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+output {
+	display: block;
+	text-align: justify;
+}
+output:first-of-type::before {
+	content: "⏱️ ";
+}
+
+canvas {
+	display: block;
+	border: 1px solid #CCC;
+}
+
+button::before {
+	content: attr(data-icon) " ";
+}
+
+.stack > * {
+	margin-block: 0;
+}
+.stack > * + * {
+	margin-top: var(--spacing);
+}
+
+.error {
+	border: 1px solid #F1AEB5;
+	border-radius: var(--spacing);
+	padding: var(--spacing);
+	color: #58151C;
+	background-color: #F8D7DA;
+}
+
+.toolbar {
+	display: flex;
+	gap: var(--spacing);
+	padding-block: var(--spacing);
+}
+.toolbar button {
+	font-size: 1.2rem;
+}
+
+.items {
+	max-width: calc(var(--h-size) / 3);
+	padding-left: 0;
+	list-style-type: none;
+}
+
+.items > li {
+	display: flex;
+	justify-content: space-between;
+	transition-property: transform, background-color;
+	transition-duration: var(--animation-duration); /* NB: injected by JavaScript */
+	transition-timing-function: ease-in-out;
+}
+.items > li.is-pending {
+	transform: translate(25%, 100%);
+	background-color: #FFFFA5;
+}
+	</style>
+</head>
+
+<body class="stack">
+	<h1>View Transitions vs. Animations</h1>
+	<div class="toolbar">
+		<button type="button" data-action="add" data-icon="🆕">add</button>
+		<button type="button" data-action="rearrange" data-icon="🔀">rearrange</button>
+	</div>
+
+	<noscript>
+		<p class="error">
+			This demo requires JavaScript, which appears to be unavailable.
+		</p>
+	</noscript>
+
+	<script type="module" src="./demo.js"></script>
+</body>
+
+</html>
