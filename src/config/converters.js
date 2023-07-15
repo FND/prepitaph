@@ -10,7 +10,6 @@ export let _html = await code("html");
 export {
 	markdown as "default", // awkward, but necessary
 	markdown,
-	markdown as intro,
 	_html as html
 };
 export let NONE = (content, params, context) => html`<pre>${content}</pre>`;
@@ -100,6 +99,17 @@ export async function figure(content, {
 		caption && trustedHTML`<figcaption>${content}</figcaption>`
 	}</figure>`;
 	return id === null ? res : html`<a${{ href: `#${id}` }}>${{ [RAW]: res }}</a>`;
+}
+
+export async function intro(content, { backticks = "'''" }, context) {
+	return context.transformer.render(txt2blocks(content.
+		replaceAll(backticks, "```")), context);
+}
+
+export async function infobox(content, params, context) {
+	return html`<div class="infobox stack">${{
+		[RAW]: await context.transformer.render(txt2blocks(content), context)
+	}}</div>`;
 }
 
 export async function aside(content, { compact = false, backticks = "'''" }, context) {
