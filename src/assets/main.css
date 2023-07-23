@@ -40,6 +40,7 @@ body {
 	font-family: system-ui, sans-serif;
 	font-size: 112.5%;
 	line-height: 1.5;
+	text-wrap: pretty;
 	color: var(--color-fg);
 	background-color: var(--color-bg);
 }

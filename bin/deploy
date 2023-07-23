@@ -18,3 +18,8 @@ npm run rebuild
 
 cd "$local_dir"
 rsync -a --delete -c -P -z -e ssh ./ "$target"
+
+read -r -n1 -p "enter 'y' to push repository updates: " confirmation; echo
+if [ "$confirmation" = "y" ]; then
+	git push
+fi

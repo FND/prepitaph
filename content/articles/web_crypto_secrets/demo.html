@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Text Encryption/Decryption</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: var(--spacing) auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+body > *,
+form > * {
+	margin-block: 0;
+}
+body > * + *,
+form > * + * {
+	margin-top: var(--spacing);
+}
+
+h1 {
+	font-size: 1.5rem;
+}
+
+textarea {
+	display: block;
+	width: 100%;
+	height: 3rem;
+}
+
+label,
+label b,
+output {
+	display: block;
+}
+
+label b {
+	font-size: smaller;
+	font-variant: small-caps;
+}
+
+output[name=encrypted] {
+	word-break: break-all;
+}
+
+output[name=decrypted] {
+	white-space: pre;
+}
+
+.is-inactive {
+	display: none;
+}
+	</style>
+</head>
+
+<body>
+	<h1>Text Encryption/Decryption</h1>
+	<p>
+		Use the text box to encrypt an arbitrary message with a password of your
+		choice, then use it again to decrypt the encoded string. All of this
+		happens entirely on your own device.
+	</p>
+
+	<form method="dialog">
+		<textarea>lörεm ipsüm dølœr ßit ämзt</textarea>
+		<button name="encrypt">encrypt</button>
+		<button name="decrypt">decrypt</button>
+		<label>
+			<b>password</b>
+			<input value="s33kr1t">
+		</label>
+		<label class="is-inactive">
+			<b>encrypted</b>
+			<output name="encrypted"></output>
+		</label>
+		<label class="is-inactive">
+			<b>decrypted</b>
+			<output name="decrypted"></output>
+		</label>
+	</form>
+
+	<script type="module">
+import { encrypt, decrypt } from "./crypto.js";
+
+document.querySelector("form").addEventListener("submit", onSubmit);
+
+async function onSubmit(ev) {
+	let content = this.querySelector("textarea").value;
+	let password = this.querySelector("input").value;
+	let encrypted, decrypted;
+	if(ev.submitter.name === "encrypt") {
+		encrypted = {
+			call: () => encrypt(content, password),
+			desc: "encryption"
+		};
+		decrypted = content;
+	} else {
+		encrypted = content;
+		decrypted = {
+			call: () => decrypt(content, password),
+			desc: "decryption"
+		};
+	}
+
+	Object.entries({ encrypted, decrypted }).forEach(async ([name, value]) => {
+		let field = this.querySelector(`[name=${name}]`);
+		let el = field.closest("label");
+		el.classList.add("is-inactive");
+		if(value.call) {
+			try {
+				value = await value.call();
+			} catch(err) {
+				value = `${value.desc} failed: ${err.message || err}`;
+			}
+			el.classList.remove("is-inactive");
+		}
+		field.textContent = value;
+	});
+}
+	</script>
+</body>
+
+</html>
