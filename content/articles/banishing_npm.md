@@ -104,27 +104,19 @@ As noted above, `package.json` and `deno.json` are working in tandem:
         "dev": "deno task build --watch=forever"
     },
     "fmt": {
-        "files": {
-            "include": ["./src", "./test"]
-        },
-        "options": {
-            "lineWidth": 90,
-            "useTabs": true,
-            "indentWidth": 4
-        }
+        "include": ["./src", "./test"],
+        "lineWidth": 90,
+        "useTabs": true,
+        "indentWidth": 4
     },
     "lint": {
-        "files": {
-            "include": ["./src", "./test"]
-        },
+        "include": ["./src", "./test"],
         "rules": {
             "exclude": ["prefer-const"]
         }
     },
     "test": {
-        "files": {
-            "include": ["./test"]
-        }
+        "include": ["./test"]
     }
 }
 ```
