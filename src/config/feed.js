@@ -47,6 +47,7 @@ async function renderEntry(page, context, baseAttr) {
 	<id>${url}</id>
 	<title>${page.title}</title>
 	<link${{ href: url }}/>
+	<published>${page.created.toISOString()}</published>
 	<updated>${(page.updated || page.created).toISOString()}</updated>
 	<author><name>${page.author}</name></author>
 	<summary type="html"${baseAttr}>${await summary}</summary>
