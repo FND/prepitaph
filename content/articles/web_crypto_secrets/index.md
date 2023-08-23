@@ -98,3 +98,5 @@ simplistic demo:
 ```markdown allowHTML
 <iframe src="./demo.html"></iframe>
 ```
+
+That same code might also be used in a [simple command-line script](cli.js).
