@@ -86,18 +86,18 @@ function spawnTimestamp(parent) {
 	};
 }
 
-function spawnMap(parent, size = 100) {
+function spawnMap(parent, size = 100, step = size / 20) {
 	let ctx = createElement("canvas", { width: size, height: size }, body).
 		getContext("2d");
 	let [x, y] = [size / 2, size / 2];
 	return () => {
 		ctx.beginPath();
 		ctx.moveTo(x, y);
-		x = Math.random() > 0.5 ? Math.min(x + 5, size) : Math.max(0, x - 5);
-		y = Math.random() > 0.5 ? Math.min(y + 5, size) : Math.max(0, y - 5);
+		x = Math.random() < 0.5 ? Math.max(0, x - step) : Math.min(x + step, size);
+		y = Math.random() < 0.5 ? Math.max(0, y - step) : Math.min(y + step, size);
 		ctx.lineTo(x, y);
-		ctx.fillStyle = Math.random() > 0.5 ? "blue" : "green";
-		ctx.fill();
+		ctx.strokeStyle = Math.random() > 0.5 ? "blue" : "green";
+		ctx.stroke();
 	};
 }
 
