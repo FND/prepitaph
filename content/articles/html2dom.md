@@ -101,8 +101,12 @@ for (let node of document.querySelectorAll("script")) {
 }
 ```
 
-Transferring `<html>` attributes between old and new document is left as an
-exercise for the reader.
+([Turns out](https://twitter.com/jaffathecake/status/1565355352962768896)
+`node.replaceWith(node.cloneNode(true))` does _not_ suffice here.)
+
+In this example, we're replacing the entire document. Well, almost: Transferring
+`<html>` attributes between old and new document is left as an exercise for the
+reader.
 
 ```aside
 If you ever need to do the reverse, i.e. serialize the entire DOM, this might be
