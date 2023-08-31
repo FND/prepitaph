@@ -95,8 +95,7 @@ function str2int(txt) {
 These little wrappers around native functionality are all we need to create a
 simplistic demo:
 
-```markdown allowHTML
-<iframe src="./demo.html"></iframe>
+```embed uri=./demo.html
 ```
 
 That same code might also be used in a [simple command-line script](cli.js).

@@ -119,6 +119,22 @@ export async function aside(content, { compact = false, backticks = "'''" }, con
 	}}</aside>`;
 }
 
+export async function embed(content, { uri }, context) {
+	let page, path;
+	if(uri.startsWith("./")) {
+		page = context.page;
+		path = uri.slice(2);
+	} else {
+		let [category, _page, ..._path] = uri.split("/");
+		page = [category, _page].join("/");
+		page = context.store.resolve(page);
+		path = _path.join("/");
+	}
+	return html`<iframe ${{
+		src: page.url(context.config.baseURL).href + path
+	}}></iframe>`;
+}
+
 export async function footnote(content, params, context) {
 	let name = Object.keys(params)[0];
 	let i = context.footnotes.indexOf(name) + 1;

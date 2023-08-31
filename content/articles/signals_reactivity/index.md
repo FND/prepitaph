@@ -23,8 +23,7 @@ I went with the now stereotypical example of a counter and added two types of
 historical visualization: A basic log recording current and past values as well
 as a histogram-style chart of the respective trend (up or down).
 
-```markdown allowHTML
-<iframe src="./demo.html"></iframe>
+```embed uri=./demo.html
 ```
 
 ```aside compact

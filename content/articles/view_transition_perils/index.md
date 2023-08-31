@@ -72,8 +72,7 @@ Jake adds:
 In accordance with local regulations, I've created a not-quite-minimal test case
 which simulates a mutable list along with a few simple animations:
 
-```markdown allowHTML
-<iframe src="./demo.html"></iframe>
+```embed uri=./demo.html
 ```
 
 Hopefully the

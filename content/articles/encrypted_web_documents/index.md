@@ -22,8 +22,7 @@ apply what we've learned about [web crypto](page://articles/web-crypto-secrets)
 and [DOM manipulation](page://articles/html2dom) to create a self-contained
 alternative:
 
-```markdown allowHTML
-<iframe src="./demo.html"></iframe>
+```embed uri=./demo.html
 ```
 
 This example is just a single HTML file, containing two distinct documents: The
