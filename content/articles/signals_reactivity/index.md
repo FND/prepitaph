@@ -86,7 +86,7 @@ Of course, nobody actually seems to be interested. Let's rectify that:
 import { effect } from "@preact/signals-core";
 
 effect(() => {
-    let timestamp = new Date().toISOString().substring(11, 19);
+    let timestamp = new Date().toISOString().slice(11, 19);
     console.log(`[${timestamp}] counter is at ${counter.value}`);
 });
 ```
@@ -141,7 +141,7 @@ let log = document.createElement("ol");
 document.body.appendChild(log);
 
 effect(() => {
-    let timestamp = new Date().toISOString().substring(11, 19);
+    let timestamp = new Date().toISOString().slice(11, 19);
     let el = document.createElement("li");
     el.textContent = `[${timestamp}] counter is at ${counter.value}`;
     log.prepend(el);
@@ -227,7 +227,7 @@ import { computed, signal } from "@preact/signals-core";
 // …
 
 let summary = computed(() => {
-    let timestamp = new Date().toISOString().substring(11, 19);
+    let timestamp = new Date().toISOString().slice(11, 19);
     let symbol = trend.value?.symbol || "";
     return `${symbol} [${timestamp}] counter is at ${counter.value}`.trim();
 });

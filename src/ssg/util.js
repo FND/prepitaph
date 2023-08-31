@@ -1,5 +1,5 @@
 export function normalizeURI(uri) {
-	return uri.endsWith("/") ? uri.substring(0, uri.length - 1) : uri;
+	return uri.endsWith("/") ? uri.slice(0, uri.length - 1) : uri;
 }
 
 export function iso2date(value) { // TODO: validation

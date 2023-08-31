@@ -157,7 +157,7 @@ async function markdown(content, { allowHTML = false }, context) {
 				text.literal = footnotes.push(name);
 				return `#fn:${name}`;
 			} else if(uri.startsWith("page://")) {
-				let page = context.store.resolve(uri.substring(7));
+				let page = context.store.resolve(uri.slice(7));
 				return page.url(context.config.baseURL).pathname;
 			}
 			return uri;

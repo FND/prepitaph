@@ -6,7 +6,7 @@ let INITIAL_VALUE = randomInt(1, 100);
 let counter = signal(INITIAL_VALUE);
 let trend = signal(null);
 let summary = computed(() => {
-	let timestamp = new Date().toISOString().substring(11, 19);
+	let timestamp = new Date().toISOString().slice(11, 19);
 	let symbol = trend.value?.symbol || "";
 	return `${symbol} [${timestamp}] counter is at ${counter.value}`.trim();
 });

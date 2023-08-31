@@ -35,7 +35,7 @@ async function render(article, context,
 
 	if(metadata !== false) {
 		let ts = article.updated || article.created; // NB: design decision
-		let datetime = ts.toISOString().substring(0, 10);
+		let datetime = ts.toISOString().slice(0, 10);
 		let date = ts.toLocaleDateString("en-US", {
 			year: "numeric",
 			month: "long",
