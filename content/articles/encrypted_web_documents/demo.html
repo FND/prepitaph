@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Document Vault</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 45ch;
+	--spacing: 0.5rem;
+	/* modular scale-ish; cf. <https://www.modularscale.com/?1.5> */
+	--spacing-sm1: calc(0.667 * var(--spacing));
+	--spacing-lg2: calc(2.25 * var(--spacing));
+}
+
+html,
+body {
+	height: 100%;
+	margin: 0;
+}
+
+body {
+	display: flex;
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 0 auto;
+	padding-inline: var(--spacing);
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+h1:not(.extra-specificity) {
+	--_size: 2rem;
+
+	font-size: var(--_size);
+	margin-top: calc(-2 * var(--_size)); /* XXX: hacky */
+}
+
+footer:not(.extra-specificity) {
+	margin-top: var(--spacing-lg2);
+	font-size: small;
+}
+
+p {
+	text-align: center;
+}
+
+label,
+label b {
+	display: block;
+}
+
+label b {
+	font-size: small;
+}
+
+form,
+input {
+	width: 100%;
+}
+
+input {
+	padding: var(--spacing);
+}
+
+button {
+	width: 100%;
+	padding: var(--spacing-sm1);
+	font-size: 1.125rem;
+}
+
+.stack > * {
+	margin-block: 0;
+}
+.stack > * + * {
+	margin-top: var(--spacing);
+}
+
+.error {
+	border: 1px solid #F1AEB5;
+	border-radius: var(--spacing);
+	padding: var(--spacing);
+	color: #58151C;
+	background-color: #F8D7DA;
+}
+	</style>
+</head>
+
+<body class="stack">
+	<h1>Document Vault</h1>
+	<p>Please enter your password to access the document within.</p>
+
+	<form method="dialog" class="stack">
+		<label>
+			<b>Password</b>
+			<input type="password" name="password" value="s33kr1t" required autofocus>
+		</label>
+		<button>Decrypt</button>
+		<output></output>
+	</form>
+
+	<noscript>
+		<p class="error">
+			It appears client-side scripting is unavailable, thus private
+			decryption is not possible.
+		</p>
+	</noscript>
+
+	<footer>Hint: The password is "s33kr1t".</footer>
+
+	<template>
+MjMzLDEwMiw1Niw4Niw3MiwxMDEsMTU0LDE0MiwxODQsMTg1LDE4OSwxMjYsMTg2LDE0Miw5OCwxMDQ=|NjgsMTg3LDExMiwyNTAsMjA0LDIyOSwxNjcsMjQ5LDI1MSw4OSwwLDg4LDE2OSwyMjYsMTc2LDIxOSwxMDQsNTMsMCwxODcsMjQ4LDE2MCwxMjAsMTg5LDE3LDExLDEwOCw1MCw5NywyNCwxNTYsMTYxLDE2NiwyNiwzMyw5NiwyNTIsMjAyLDE2MSwyMTEsMTUzLDEyMCwxODgsMjcsNDAsMTEzLDE2LDE4NSwyMSw2NSw3NSw5MiwxODUsMjA0LDMyLDI0MSw5NSwxNDgsMTEsNjEsODMsMTYsMjUsNzAsMjA5LDEzNSw4NCwyOSwxMjMsMTc0LDMyLDIzMCwxMjcsMzIsOTQsMTAsMTk4LDMwLDE2OCwxMCw1NywxODUsMjA5LDEyMCw0Miw1NSwyOCwyOSwxMjcsMjMzLDIyLDY0LDQxLDk4LDI0NCwxMTAsMjA1LDI0OSw2Nyw2Myw5Nyw1MywxOTcsMTYyLDAsMTAwLDExMyw4NywyMjYsNjMsMTQxLDk4LDg0LDE5MCwyMTUsMTk2LDkzLDczLDIzNiw3MSwyMzgsMjUsMTg1LDI0MSwxNywyMDgsMTcxLDgwLDI0NiwxODcsMjIyLDE3OCwxNDYsNSwyMjIsMTczLDIxNSw3LDE0OSwxNTAsMTAyLDEzOSwyMjAsMjE3LDI1LDIxMiw3OCwxNDMsMTI3LDgzLDQzLDkxLDE2LDU4LDQ5LDEwNiw2NSwxNzIsMjQxLDEyNSwxMDMsNTksMTg4LDEyMCwyNTAsMTg2LDU4LDI1NSwxNzUsMTAyLDI2LDE4LDExNywyMTIsMjMzLDE0NywyMzAsMTEyLDQ3LDEwNCwyNDQsNDIsMjI1LDM5LDQ3LDExLDE1LDEzNSwxNDMsODUsMTQ2LDE5NCw1OCwyNiwxNjUsMTc1LDIyMSw1Myw4NCwxNjcsMTA3LDI1MSwxODEsMzAsMTc0LDIwOCw0OSwyMjMsODksMTI1LDU3LDg5LDE0MCwxNjYsMzgsNzgsMzgsMjUwLDgxLDI0MCwxNTYsMTk4LDI1MywyMTUsMzYsMTMxLDMwLDEyOSwyMjcsMTE4LDEzNCwyMzQsODQsNTYsMTE1LDQsMTIwLDIyNiwzMCwxMSw0OCwxMjYsODcsMjksMzIsNTAsNSwxMDcsMyw3NCw5OCw3MCwyMTQsMTg1LDEwMywyOCwxMDIsMTQwLDEzMCwyMjYsMTY4LDEwMiwxMCw1OCw1OCw4OCwxNjEsMjI0LDExOSwyMTEsMTkxLDEzNCwxODUsMTAsMjEwLDE5MCwxOTEsMjE3LDEyNywyNCwxMDksMjMzLDEwNSwxNDcsODUsMjA1LDIyOSw1OSwxODUsMjE5LDE4NSw5OCwxMTksMzIsMjEyLDE1NiwxMDcsMjUxLDgxLDI1MSwxMDQsMjA4LDczLDE0NSw2NiwyNDcsNzYsOSwxMDYsMjA4LDE0MCw5MCwxNzYsODEsMTI2LDIwOCwxOSw0MiwxLDE4NSwxOTgsMjAsMTAsNDYsMjAyLDIyOSwxMTAsMTY3LDkxLDEyNiwxMzksMTQwLDExNywxMSwxODIsODUsMjQxLDUsMjEwLDk4LDIxMiwxMjYsMjM5LDcsNjMsMTg1LDIwOSwyNCwyOCwxNDAsMTgxLDE1NSwxMTAsMjIyLDIxLDIxMCw1OSw0NywyNTUsODQsNzQsNDUsMTIyLDIsNzMsMjI5LDI1NCwxMjYsMTU0LDI2LDExNCwxMDAsMjQ2LDE3NiwxMTAsNTgsMjA4LDE1MSwyNTIsMjAzLDk4LDM1LDEyMCwyNTMsOTAsOTMsMjUzLDQxLDYsMTEsMjI4LDI1MywxNjEsMjgsMTY4LDEyNyw5NCwxMzMsMjIsMjA5LDE4MiwxNDMsMTcxLDY2LDEwMywxNzIsMjE4LDI0OSwyMzksMTc4LDE2MywxMDUsMjA2LDkzLDE5NCw2NiwyMzEsMTM4LDEyOCwxNTEsMTk3LDE1MywxNzUsMjE3LDIwMywxMTIsMTYxLDIzNSw0Nyw3OSwxNDIsNTEsMTcxLDY4LDg2LDIyOSwxNTcsMSw5NywxNTUsNTIsMzgsMjUyLDkwLDExMiwxNjAsMTU3LDEzNCw3NSw3Niw5MSwxMjgsMjQzLDgxLDIyMSwxMCw1Miw1NiwyNTIsMTA4LDQ3LDIwNCwxNTAsMTk3LDEyNSwxNDgsMTU1LDEzNywxOTcsMjQxLDI0MCw5MywxNzUsMTY5LDI0OCwxNjcsMTA1LDcsNDIsOTgsMjgsOTgsMTgsMjE3LDk5LDU3LDIzMSwxNzMsMTI4LDE5NSwxMTcsMTI3LDM4LDE3NiwyMTIsMTc4LDE4LDIzLDgzLDczLDYxLDIwMSwyMjgsOTEsMjE4LDIzMCw5NSwxOTksODYsNjcsMTczLDQ3LDY3LDkyLDEyOSwxMzgsMywxMzcsODcsMTI1LDY2LDE3MiwxMDMsMTAwLDEzNiw5Miw4NSwyNDUsMjA3LDEzMCwyMDksNTAsOTEsMTI1LDExMywxMzksMzEsMTY3LDMsNDMsMTQwLDI0NywyMSwyMzIsMTU4LDEyNiwxODAsMzAsOTEsMjM0LDQwLDg5LDE2NiwxNzIsNDksNzQsMjE2LDExNyw5NCwyMTEsMTMwLDIyNywyMDIsNzMsMjEsMjE0LDE5NywyMTIsMTYzLDEzNywyMTUsMTUyLDE4MCw3LDIxNyw2NiwyNDAsNDYsMTk1LDI0MSw4NiwxMzQsNDUsMTk2LDEwMSw5OCw5Nyw0Nyw2NCwyMzMsNzEsMTk1LDI0Miw5MiwxMjIsNDcsMTI2LDE3MSw1NSwxNTQsMTAzLDM1LDIwOCw1NywyMjgsMTYwLDE0NCwxMTEsMjM5LDIwNiwyNDQsMTYyLDIxNCwyMjcsMTA1LDE2OCw1MiwyMzAsMTIzLDIwNiwyMzYsNTYsMTk1LDg1LDIxMSwxNjYsMTUxLDgwLDEwMywxMjcsMjIxLDgxLDgzLDEzNyw4Miw2OSwxNzIsMTI5LDE4MiwyMjAsMzEsMjQ5LDU1LDI0NSwxNzIsMTUsMzAsMTcxLDE2NywxOTgsMjU0LDk5LDk1LDEzMCwyMzAsNzUsNDgsMjMxLDMsMjQzLDIxMCwxOSw4Niw5NiwxMiwxNjgsMjAyLDIyMCwxMTQsMjUzLDIzNSwxNywyMjUsMjMyLDE0OCwyNTMsMjUzLDIzNiwxNzksMzYsMjEsMTc0LDI1LDEyNSw3MCwxOTUsMzYsODQsMTE4LDI4LDc4LDAsODEsMjAxLDI4LDE2MiwxNDUsMTg0LDAsODQsMjUwLDcwLDEwOCw0OSw5NSwxOTMsNDcsODcsNTYsMTIsNzMsMjExLDI0MiwyMTcsMTAyLDE5NSwyMjgsMTY1LDQ0LDcsMTU5LDEyLDE0MCwxNzAsMjI1LDIzNiwxOTUsMTg1LDUwLDM0LDcyLDM0LDgwLDIzNywxOTIsMTMyLDQyLDE0MywxLDEzOSw1MywxNiwxNzgsMjMsMTcxLDI0MiwyMTcsMTIwLDE5MSwxNzUsMjA4LDI1NSwxNzYsNjMsMTA5LDE1Miw5NCwyMzksMjUyLDMxLDE0MSw4MSw5MiwwLDIxMywxMSwyMDAsMjQ2LDY2LDExMCwyMDAsMTgsMTkzLDE0LDIwNiw0NCw0Niw1OCwyNDUsMjQ0LDcyLDc1LDU4LDE1MCwxNzUsNSwxMSwyNyw4OSwxMywxNzUsMTEyLDE4Myw0OSw4MSwzMiwyMDgsMjMsMjM0LDgwLDE0OSwyMTAsMTQ5LDExNiw0OSwyMjUsMjM3LDUxLDIwNCwxMTksNiwxMywxMTYsMTA1LDE4Miw5Nyw5OCw0MiwyMDAsMTM3LDYyLDE1MCwyOCw2NywxNTQsNywyMjUsOTAsODUsMTI4LDEyMSwxOTIsMjAyLDE1MSw5MiwyMTMsMTg1LDEyOSwxMTMsNzMsMTc4LDIxNiw2NiwzOSwxMTMsMTg1LDEwMSwyMiwxNjEsOTksMTgsMjA4LDEyMiwxNjgsMTcyLDYzLDIxNiwyNTUsMTY3LDMzLDE1NywxNjgsOTIsMTkyLDE1NywyOSw5OSwwLDE0MCwxMTAsMTYsOTEsMTEzLDE5NCwxOTUsMjIzLDcyLDE2MCw1Nyw5Nyw0MywyNTAsMjQsMjUsNTEsMjIxLDIxMiwxNTYsMjM2LDgyLDcxLDIwOCwyMzksMjcsMjM3LDAsMjAzLDcsMTMxLDg1LDgsMTIzLDE3LDY3LDQyLDE2NiwxOTEsMTEwLDEwNiw2MSwyMDEsMTYxLDE1OCwxOTQsMTc2LDE5Nyw5NCwxMTQsMjQyLDE4Miw2MSw1NSw3NCwyNDQsMTc1LDEwOCw0OSw5MywxMjQsMjAsMTksMTk5LDI1MywxMzIsNjUsMjEsMTUzLDEwMywxOSw1MywyMDAsMjQ4LDE3MywxNTksMTgzLDE3NiwyNCwxODAsNTgsMjM5LDIyNCwxMTgsMTE0LDc0LDg5LDE1OCw5MCw0MiwxMywyMTksNDYsNjcsMjIyLDE1Nyw5MCwxNTgsMjExLDIzOCwxMzksMTQ4LDE5Myw5NSwyNDIsNTUsMTI5LDM4LDgsMjU1LDEwNSwxNjAsMCwxOTMsMjU1LDE3NywwLDcyLDEyMiwxNDEsMTQzLDY1LDI2LDI0MywxNTYsNTIsOTcsMjEyLDgzLDc4LDEzNiwxNzMsMjA1LDEzOSw4NCwxNjgsMjMsMTM3LDQyLDkxLDg0LDExOSwyNCwxNTIsMzIsMzksMjM4LDIyLDYsMTI2LDEyMyw5NCw0NCw2Miw1NSwyMzMsMTcsMjIsMjA0LDI2LDIwNSwyMzcsMjE1LDIyNCwyMCw4OCwxODcsMjA2LDE1NCwyMjksMjExLDQ5LDI0NCwyNDEsNDEsNDMsMTg2LDgzLDUzLDgyLDIxMywxMiwxNDcsMjcsODUsMjAyLDEzOCwxNzEsOTksNzQsMjM4LDE4MSwxNzksNTksMjExLDcsMjI3LDY0LDgzLDM1LDEzNiwxNSwxMTIsMjA0LDI0MSwyMCw1MCwyMTgsMTQwLDcsMTEsMTc2LDIyOSwyMjUsMCwyMDcsMTgsMTEyLDE0Nyw0LDI3LDE5LDI1MCwyMjQsMzgsNDYsMTQ0LDI1NCwyNTAsMjEzLDEsMzAsNzgsMTY0LDU0LDExOSwxMTgsNDgsMjEsMTQxLDE2OSw5NCwxMjMsMTI4LDIwNiwxNjksMjIyLDc1LDE3MSw0NCwxOTcsMTUxLDU4LDY1LDIwMCw3NCwxODUsOTcsMjI1LDE2NSwyNTMsNjQsODgsMTQ1LDE5NiwyMzcsMTQwLDIwNCwxNjcsMTU4LDEzLDI5LDE0OSw1NiwyMzQsMTM0LDIwNCwxNDIsMjE5LDYsMjI4LDEyMiwyMTgsNSwxNiwxNTQsNTYsMTM3LDIyMiwyMDYsMjIzLDE1NiwyMTUsOTEsMTgyLDIzNiwyNDAsMjE0LDUyLDE4NCwxOTgsOTMsMjUsMCw1NSwxOTEsMTU1LDEzNyw1MywyMzQsMjA1LDI1MywxMTYsMTE3LDE1NCwyNywxNTMsODMsMTE0LDE5NCwyMjUsNTYsNiwxMzUsNzIsMTkxLDEzMiwxODEsMTY1LDEwNiwyMzYsMTcwLDEyMiwyMCwyOCw2LDE0Myw5NSw0NCwxMzksMTExLDIzMiwxMzksMTQ4LDIzNiwyNCw5OSwyNDcsNjIsMjQzLDI0MywyMTMsMzAsMjUyLDIzMiw2MywyNDgsMTQ0LDE4OCwxMDMsMjIyLDEzNCw5NywxNTQsMTQ2LDI1NSwyMzUsMTQwLDEzNSwxODUsOCwzNywxOTQsMjQyLDE5OSwxNjMsMjU1LDE3LDE5MiwyNDIsMjgsMjYsOTEsMzYsMTAsMjA5LDQ3LDExMCwxODAsMjI2LDIxNywxNzQsNSw0MCwxMzMsMTA5LDk1LDExMywzNCwwLDQxLDYzLDg2LDMwLDI3LDg5LDI0MSwyNSwxNjMsMTk2LDI4LDE5NywyMjgsMTQyLDIxNSwyMjcsMjM3LDE3LDU1LDExNiwyNDQsNSw2NSwxNjUsMjUyLDIyOSwyNDEsMTk3LDU3LDc3LDIxNywyMzEsMjYsMTEwLDE5Myw1MywxMywyNDQsMTYwLDI0OCwwLDk5LDE3MiwyMzUsMTU2LDE1MSwyMDAsMTc1LDEzLDM2LDIzNiwxNjEsMTE5LDEzLDIzNiwxMjcsNjIsMTA4LDE4MiwyNTMsMjM2LDE3NSwyLDExNSwxNjcsMTIxLDkzLDIxNywxMjgsMTExLDU0LDE4MCwyNTEsMjQwLDEsNCwyNDQsMTg2LDIwOSwxMDUsMTIxLDQwLDIxOSwyNDksNzMsMTUzLDEwLDE1LDE4MSwyNDUsMjIsMTQxLDE0NiwxMzcsMTk2LDIwMCwxMCwxMTAsMTY5LDU0LDE0OCw5LDYzLDE5MiwxMTAsNjEsMTIsMTQ1LDEwNCwyMDUsNCwyMywxMTgsMzIsMTA1LDE1Miw0OCwyMTQsMjM2LDE4NCwxNzIsMTI2LDUyLDYyLDIwMywxNDMsMjA3LDEzMywyNDEsNTYsMTMyLDksMjQxLDEwMCw4MSwxOTQsMTQsMzcsNDQsODYsMjA0LDIzLDEwMCw3LDIxNywxOTUsNiwxMiw1MiwyMCwxMjAsMzcsMjUyLDE2NCwyMTMsNzgsNDEsNzIsODksMTc0LDEwMywyNDAsMSwyNTMsMTkyLDExNiwxMzMsMjQzLDE5NSwxODMsMjMsMjQ0LDIyMyw3NSwyNDQsMTY4LDIwLDEzNyw1Miw4NiwxMTYsMjgsMjE2LDI3LDE3Nyw0MiwxODQsMTU3LDE3NiwxNTksMTUxLDIxNywxNDAsMTkzLDExMSw4OSwyNDgsMTA0LDM1LDI0NCwyMTMsMTYsNTMsMjU0LDcxLDMyLDU1LDI1NCwxNCw2NSwyMDEsMzcsMTc1LDE2MywxNDU=
+	</template>
+
+	<script type="module">
+let FORM = document.querySelector("form");
+let SRC = document.querySelector("template").content.textContent.trim();
+let SALT = "c65272a0-f461-40c2-ac98-f50ed333e553";
+
+FORM.addEventListener("submit", async ev => {
+	let form = ev.target;
+	let msg = form.querySelector("output");
+	msg.innerHTML = ""; // reset previous error, if any
+
+	let password = new FormData(form).get("password");
+	try {
+		var html = await decrypt(SRC, password);
+	} catch(err) {
+		msg.innerHTML = `
+<p class="error">Decryption failed; password might be incorrect?</p>
+		`.trim();
+		return;
+	}
+
+	// replace current document; cf. <https://prepitaph.org/articles/html2dom/>
+	let doc = new DOMParser().parseFromString(html, "text/html");
+	document.documentElement.innerHTML = doc.documentElement.innerHTML;
+	for(let el of document.querySelectorAll("script")) {
+		let fragment = document.createRange().createContextualFragment(el.outerHTML);
+		el.replaceWith(fragment);
+	}
+});
+
+/* crypto; cf. <https://prepitaph.org/articles/web-crypto-secrets/> */
+
+let CRYTPO = window.crypto.subtle;
+let ALGO = "AES-GCM";
+SALT = str2bytes(SALT).buffer;
+
+async function decrypt(txt, password) {
+	let [iv, encrypted] = txt.split("|").
+		map(block => Uint8Array.from(atob(block).split(","), str2int));
+	let decrypted = await CRYTPO.decrypt({ name: ALGO, iv },
+			await deriveKey(password), encrypted);
+	return new window.TextDecoder().decode(new Uint8Array(decrypted));
+}
+
+async function deriveKey(password) {
+	let secret = await CRYTPO.importKey("raw", str2bytes(password), "PBKDF2",
+			false, ["deriveBits", "deriveKey"]);
+	return await CRYTPO.deriveKey({
+		name: "PBKDF2",
+		salt: SALT,
+		iterations: 100000,
+		hash: "SHA-256"
+	}, secret, { name: ALGO, length: 256 }, true, ["encrypt", "decrypt"]);
+}
+
+function str2bytes(txt) {
+	return new TextEncoder().encode(txt);
+}
+
+function str2int(txt) {
+	return parseInt(txt, 10);
+}
+	</script>
+</body>
+
+</html>
