@@ -98,4 +98,4 @@ simplistic demo:
 ```embed uri=./demo.html
 ```
 
-That same code might also be used in a [simple command-line script](cli.js).
+That same code might also be used in a [simple command-line script](./cli.js).

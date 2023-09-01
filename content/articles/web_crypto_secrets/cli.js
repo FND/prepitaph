@@ -8,13 +8,13 @@ main();
 async function main() {
 	let [cmd, password, salt] = process.argv.slice(2);
 	SALT = str2bytes(salt).buffer;
-	let input = await consumeInput();
 	if(!password) {
 		abort("missing password argument");
 	}
 	if(!salt) {
 		abort("missing salt argument");
 	}
+	let input = await consumeInput();
 
 	let fn = { encrypt, decrypt }[cmd];
 	if(!fn) {

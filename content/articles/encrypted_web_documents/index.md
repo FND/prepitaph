@@ -6,8 +6,8 @@ syntax: true
 
 ```intro
 There are many options these days for securely sharing sensitive data, but they
-all require some kind of shared infrastructure. Sometimes all you can rely on is
-the web.
+typically require some kind of shared infrastructure. Sometimes all you can rely
+on is the web.
 ```
 
 Say you've acquired an almanac from the future and want to share it with a
@@ -17,7 +17,7 @@ encrypted file archive
 ([careful though](https://en.wikipedia.org/wiki/ZIP_(file_format)#Encryption)).
 
 However, all of that requires some kinda setup and agreement among trustees. Web
-browsers, on the other hand, can typically be considered ubiquitous -- so let's
+browsers, on the other hand, can often be considered ubiquitous -- so let's
 apply what we've learned about [web crypto](page://articles/web-crypto-secrets)
 and [DOM manipulation](page://articles/html2dom) to create a self-contained
 alternative:
@@ -30,6 +30,8 @@ This example is just a single HTML file, containing two distinct documents: The
 CSS and JavaScript -- as well as our secret almanac. The latter is encrypted and
 resides within a `<template>`, thus starting out inert; the decryption
 interface's job is to decrypt and display that embedded document.
+
+(I use a [command-line script](./cli.js) for generating such vaults.)
 
 ```infobox
 All the security caveats from

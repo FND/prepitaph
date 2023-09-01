@@ -123,19 +123,19 @@ MjMzLDEwMiw1Niw4Niw3MiwxMDEsMTU0LDE0MiwxODQsMTg1LDE4OSwxMjYsMTg2LDE0Miw5OCwxMDQ=
 
 	<script type="module">
 let FORM = document.querySelector("form");
+let MSG = FORM.querySelector("output");
 let SRC = document.querySelector("template").content.textContent.trim();
 let SALT = "c65272a0-f461-40c2-ac98-f50ed333e553";
 
 FORM.addEventListener("submit", async ev => {
 	let form = ev.target;
-	let msg = form.querySelector("output");
-	msg.innerHTML = ""; // reset previous error, if any
+	MSG.innerHTML = ""; // reset previous error, if any
 
 	let password = new FormData(form).get("password");
 	try {
 		var html = await decrypt(SRC, password);
 	} catch(err) {
-		msg.innerHTML = `
+		MSG.innerHTML = `
 <p class="error">Decryption failed; password might be incorrect?</p>
 		`.trim();
 		return;
