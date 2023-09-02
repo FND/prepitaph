@@ -104,7 +104,7 @@ a[href^="https://"] {
 	display: block;
 	margin-block: 0;
 }
-.stack > * + * {
+.stack > :not(.visually-hidden:first-child) + * {
 	margin-top: var(--spacing);
 }
 .stack > h2,

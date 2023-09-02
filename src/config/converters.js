@@ -107,14 +107,16 @@ export async function intro(content, { backticks = "'''" }, context) {
 }
 
 export async function infobox(content, params, context) {
-	return html`<div class="infobox stack">${{
+	return html`<div class="infobox stack"><b class="visually-hidden">NB:</b>${{
 		[RAW]: await context.transformer.render(txt2blocks(content), context)
 	}}</div>`;
 }
 
 export async function aside(content, { compact = false, backticks = "'''" }, context) {
 	content = content.replaceAll(backticks, "```");
-	return html`<aside class="${compact && "is-compact "}stack">${{
+	return html`<aside class="${compact && "is-compact "}stack"><b${{
+		class: "visually-hidden"
+	}}>Aside:</b>${{
 		[RAW]: await context.transformer.render(txt2blocks(content), context)
 	}}</aside>`;
 }
