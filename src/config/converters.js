@@ -17,23 +17,16 @@ export let json = await code("json");
 export let javascript = await code("javascript");
 export let python = await code("python");
 
-export async function feed(content, { category, exclude, title = siteTitle }, context) {
+export async function feed(content, { category, title = siteTitle }, context) {
 	let { renderAtom } = await import("./feed.js");
-	let pages = sortByDate(context.store.retrieve(category));
-	if(exclude) {
-		pages = pages.filter(page => page.slug !== exclude);
-	}
-	return renderAtom(pages, title, context);
+	let pages = retrievePages(category, context.store);
+	return renderAtom(sortByDate(pages), title, context);
 }
 
-export async function topics(content, { category, exclude }, context) {
+export async function topics(content, { category }, context) {
 	let byTag = new Map();
 	let tags = [];
-	for(let page of context.store.retrieve(category)) {
-		if(page.slug === exclude) {
-			continue;
-		}
-
+	for(let page of retrievePages(category, context.store)) {
 		for(let tag of page.tags) {
 			let entries = byTag.get(tag);
 			if(entries) {
@@ -56,14 +49,9 @@ export async function topics(content, { category, exclude }, context) {
 	}}</dl>`;
 }
 
-export async function list(content, { category, exclude }, context) {
-	let pages = sortByDate(context.store.retrieve(category));
+export async function list(content, { category }, context) {
 	let res = [];
-	for(let page of pages) {
-		if(page.slug === exclude) {
-			continue;
-		}
-
+	for(let page of sortByDate(retrievePages(category, context.store))) {
 		let html = page.render(context, {
 			isDocument: false,
 			heading: true,
@@ -181,6 +169,14 @@ async function code(lang, grammar = lang) {
 			[RAW]: highlight(content, _grammar, lang)
 		}}</code></pre>`;
 	};
+}
+
+function* retrievePages(category, store) {
+	for(let page of store.retrieve(category)) {
+		if(!page.tags.includes("unlisted")) {
+			yield page;
+		}
+	}
 }
 
 function sortByDate(pages) {
