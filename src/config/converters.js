@@ -47,11 +47,11 @@ export async function topics(content, { category, exclude }, context) {
 	let { baseURL } = context.config;
 	return html`<dl class="topics">${{
 		[RAW]: tags.sort().map(tag => {
-			return html`<dt>${tag}</dt><dd><div>${{
+			return html`<dt>${tag}</dt><dd><ul><li>${{
 				[RAW]: byTag.get(tag).map(page => html`
 					<a${{ href: page.url(baseURL).pathname }}>${page.title}</a>
-				`.trim()).join(",</div><div>")
-			}}</div></dd>`;
+				`.trim()).join("</li><li>")
+			}}</li></ul></dd>`;
 		}).join("\n")
 	}}</dl>`;
 }

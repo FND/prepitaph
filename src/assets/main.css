@@ -160,21 +160,20 @@ a[href^="https://"] {
 
 /* topics */
 
-dl.topics > * {
-	margin-block: 0; /* NB: vertical spacing corresponds to `.stack` */
+.topics > * { /* NB: vertical spacing corresponds to `.stack` */
+	margin-block: 0;
 }
-
-dl.topics > dt ~ dt {
+.topics > dt ~ dt {
 	margin-top: var(--spacing);
 }
 
-dl.topics > dd {
-	margin-left: var(--spacing-l3);
+.topics dd {
+	margin-left: 0;
 }
 
-dl.topics a ~ a {
-	display: inline-block;
-	margin-top: var(--spacing);
+.topics ul {
+	margin-block: 0;
+	padding-left: var(--spacing-l2);
 }
 
 /* article */
