@@ -6,7 +6,7 @@ import Prism from "prismjs";
 
 let { highlight, languages } = Prism;
 
-export let _html = await code("html");
+let _html = await code("html");
 export {
 	markdown as "default", // awkward, but necessary
 	markdown,
