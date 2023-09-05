@@ -8,12 +8,26 @@ realpath() {
 	node -r fs -p "fs.realpathSync(process.argv[1])" "$filepath"
 }
 
+abort() {
+	message="$@"
+
+	echo "$message" >&2
+	exit 1
+}
+
 root_dir=`dirname "$0"`
 root_dir=`realpath "$root_dir/.."`
 local_dir="$root_dir/dist"
 target="prepitaph.org:~/public_html/prepitaph/"
 
 cd "$root_dir"
+
+git diff --exit-code --quiet && \
+		git diff --cached --exit-code --quiet || \
+		abort "ERROR: there are unstaged changes"
+git ls-files --others --exclude-standard | grep --quiet content && \
+		abort "ERROR: there is untracked content"
+
 npm run rebuild
 
 cd "$local_dir"
