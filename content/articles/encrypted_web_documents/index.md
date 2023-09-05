@@ -43,7 +43,7 @@ here just the same. There's no protection against brute-force attacks either.
 <form method="dialog">
     <label>
         <b>Password</b>
-        <input type="password" name="password" required autofocus>
+        <input type="password" name="password" required>
     </label>
     <button>Decrypt</button>
     <output></output>
