@@ -107,8 +107,7 @@ a[href^="https://"] {
 .stack > :not(.visually-hidden:first-child) + * {
 	margin-top: var(--spacing);
 }
-.stack > h2,
-.stack > h3 {
+.stack > :is(h1, h2, h3) {
 	margin-top: var(--spacing-l2);
 }
 
@@ -177,6 +176,10 @@ a[href^="https://"] {
 }
 
 /* article */
+
+.article h1 {
+	font-size: 1.7rem;
+}
 
 .article > header .metadata {
 	margin-top: 0;

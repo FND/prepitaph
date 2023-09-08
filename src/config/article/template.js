@@ -4,8 +4,9 @@ import { html, trustedHTML, RAW } from "../../ssg/html.js";
 let TOPICS_LINK; // NB: cached; assumed to be identical for all articles
 
 export async function renderArticle(article, { assets, store, config }, options) {
+	let isDocument = options.isDocument = options.isDocument !== false; // normalize
 	let html = render(article, { store, config }, options);
-	if(options.isDocument === false) {
+	if(isDocument === false) {
 		return html;
 	}
 
@@ -26,11 +27,10 @@ export async function renderArticle(article, { assets, store, config }, options)
 async function render(article, context,
 		{ isDocument, heading, metadata, intro, main }) {
 	if(heading !== false) {
-		heading = isDocument ?
-			trustedHTML`<h1>${article.title}</h1>` :
-			trustedHTML`<h2><a${{
-				href: article.url(context.config.baseURL).pathname
-			}}>${article.title}</a></h2>`;
+		let tag = isDocument === false ? "h2" : "h1";
+		heading = trustedHTML`<${tag}><a${{
+			href: article.url(context.config.baseURL).pathname
+		}}>${article.title}</a></${tag}>`;
 	}
 
 	if(metadata !== false) {
