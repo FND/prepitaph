@@ -89,6 +89,14 @@ the web-crypto demo's. View source for details.
 One might also consider using `<iframe>` or `<dialog>` instead of replacing the
 host document, but this proved to be the most straightforward approach.
 
+```aside compact
+Note that even though we're replacing the entire DOM, it's still the same page
+as far as the browser is concerned. As such, there's no way to unload the host
+document's JavaScript -- all the more reason to keep that decryption interface
+small and simple. (CSS, however, is effectively unloaded automatically when the
+corresponding `<link>` or `<style>` element is removed.)
+```
+
 Of course you'd still need a way to transmit both the HTML file and the
 corresponding password to your trustees, ideally via separate and secure
 channels. But apart from that, here we have a web-native document that only
