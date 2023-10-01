@@ -15,6 +15,7 @@ export {
 export let NONE = (content, params, context) => html`<pre>${content}</pre>`;
 export let json = await code("json");
 export let javascript = await code("javascript");
+export let typescript = await code("typescript");
 export let python = await code("python");
 
 export async function feed(content, { category, title = siteTitle }, context) {
@@ -125,7 +126,8 @@ export async function embed(content, { uri }, context) {
 	}}></iframe>`;
 }
 
-export async function footnote(content, params, context) {
+export async function footnote(content, { backticks = "'''", ...params }, context) {
+	content = content.replaceAll(backticks, "```");
 	let name = Object.keys(params)[0];
 	let i = context.footnotes.indexOf(name) + 1;
 	return html`<aside${{ id: `fn:${name}` }} class="footnote stack"><sup${{
