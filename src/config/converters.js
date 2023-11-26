@@ -14,6 +14,7 @@ export {
 };
 export let NONE = (content, params, context) => html`<pre>${content}</pre>`;
 export let json = await code("json");
+export let css = await code("css");
 export let javascript = await code("javascript");
 export let typescript = await code("typescript");
 export let python = await code("python");

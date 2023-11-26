@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Theming with Constructed Style Sheets</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+p {
+	text-align: center;
+}
+
+button {
+	width: 100%;
+	font-size: inherit;
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-top: var(--spacing);
+	}
+}
+
+.controls {
+	display: grid;
+	gap: var(--spacing);
+	grid-template-columns: 1fr 1fr;
+
+	> p {
+		grid-column: 1 / -1;
+		margin-block: 0;
+		font-size: small;
+	}
+}
+
+my-component {
+	display: block;
+	border-radius: var(--spacing);
+	padding: var(--spacing);
+	color: var(--color-foreground);
+	background-color: var(--color-background);
+	box-shadow: 0 0.2rem 0.8rem var(--color-shadow);
+}
+	</style>
+</head>
+
+<body class="stack">
+	<h1>Theming with Constructed Style Sheets</h1>
+	<my-component class="stack">
+		<p>lorem ipsum dolor sit amet</p>
+	</my-component>
+
+	<script type="module">
+let LIGHT = {
+	foreground: "#000",
+	background: "#FFF",
+	shadow: "#0008"
+};
+let DARK = {
+	foreground: "#FFF",
+	background: "#000"
+};
+
+let ROOT = document.documentElement;
+let THEME = new CSSStyleSheet();
+document.adoptedStyleSheets.push(THEME);
+applyTheme(LIGHT);
+
+createElement("div", {
+	class: "controls",
+	parent: document.body,
+	children: [
+		createElement("button", {
+			type: "button",
+			text: "toggle theme (style sheet)"
+		}),
+		createElement("button", {
+			type: "button",
+			text: "toggle theme (inline)",
+			"data-inline": ""
+		}),
+		createElement("p", {
+			text: "Check developer tools to observe differences."
+		})
+	]
+}).addEventListener("click", onToggle);
+
+function onToggle(ev) {
+	let btn = ev.target;
+	if(btn.localName !== "button") {
+		return;
+	}
+
+	let colors = ROOT.classList.toggle("theme-dark") ? DARK : LIGHT;
+	let inline = btn.hasAttribute("data-inline");
+	applyTheme(colors, inline);
+}
+
+function applyTheme(colors, inline = false) {
+	if(inline) {
+		THEME.replaceSync(""); // reset alternative
+		for(let [name, value] of Object.entries(colors)) {
+			ROOT.style.setProperty(`--color-${name}`, value);
+		}
+		return;
+	}
+
+	ROOT.setAttribute("style", ""); // reset alternative
+	let css = Object.entries(colors).
+		map(([name, value]) => `--color-${name}: ${value};`).
+		join("\n");
+	THEME.replace(`:root { ${css} }`);
+}
+
+function createElement(tag, { parent, children = [], text, ...attribs }) {
+	let el = document.createElement(tag);
+	if(text) {
+		el.textContent = text;
+	}
+	for(let [name, value] of Object.entries(attribs)) {
+		el.setAttribute(name, value);
+	}
+	if(children) {
+		el.append(...children);
+	}
+	parent?.appendChild(el);
+	return el;
+}
+	</script>
+</body>
+
+</html>
