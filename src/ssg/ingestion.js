@@ -82,12 +82,12 @@ async function ingestContentDirectory(dirPath) {
 	for await (let { filename, filepath, isDirectory } of readDir(dirPath)) {
 		if(isDirectory) {
 			let reason = "must not include subdirectories";
-			throw new Error("INVALID_CONTENT",
+			throw new CustomError("INVALID_CONTENT",
 					`invalid content directory \`${filepath}\`: ${reason}`);
 		} else if(filename.startsWith("index.")) { // XXX: crude
 			if(index) {
 				let reason = "must not include more than one `index.*` file";
-				throw new Error("INVALID_CONTENT",
+				throw new CustomError("INVALID_CONTENT",
 						`invalid content directory \`${filepath}\`: ${reason}`);
 			}
 			index = filepath;

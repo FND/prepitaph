@@ -70,6 +70,10 @@ pre {
 figure {
 	margin: 0;
 }
+figcaption.is-filename {
+	font-family: monospace;
+	font-size: small;
+}
 
 a:link {
 	color: var(--color-link);
@@ -90,12 +94,11 @@ a[href^="https://"] {
 
 /* utilities */
 
-.visually-hidden {
+.visually-hidden:not(:focus, :active) {
 	position: absolute;
 	width: 1px;
 	height: 1px;
 	overflow: hidden;
-	clip: rect(0 0 0 0);
 	clip-path: inset(50%);
 	white-space: nowrap;
 }
@@ -262,6 +265,21 @@ a[href^="https://"] {
 .article pre .token.important,
 .article pre .token.variable {
 	color: #9A6E3A; /* corresponds to Prism default for `.operator` */
+}
+/* code block with file name -- XXX: awkward coupling */
+.article figure:has(figcaption.is-filename) {
+	position: relative;
+
+	& pre:first-child + figcaption.is-filename {
+		position: absolute;
+		top: 0;
+		right: calc(-1 * var(--spacing-outdent-right)); /* corresponds to `<pre>` */
+		margin-top: 0; /* neutralizes `.stack` */
+		border-top-right-radius:var(--spacing); /* corresponds to `<pre>` */
+		border-bottom-left-radius:var(--spacing-s1);
+		padding: var(--spacing-s1) var(--spacing);
+		background-color: color-mix(in srgb, var(--color-border), transparent 50%);
+	}
 }
 
 .article blockquote {

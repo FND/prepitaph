@@ -61,7 +61,7 @@ E = mc^2
 '''
 ```
 
-(Showing `'''` here in place of backticks, for technical reasons.)
+(Showing `'''` and `^^^` here in place of backticks, for technical reasons.)
 
 
 ### Markdown
@@ -212,10 +212,30 @@ A placeholder image.
 '''
 ```
 
+```figure filename=util.js
+'''javascript
+export function log(prefix, ...msg) {
+    console.log(`[${prefix}]`, ...msg);
+}
+'''
+```
+
+```
+'''figure filename=util.js
+^^^javascript
+export function log(prefix, ...msg) {
+    console.log(`[${prefix}]`, ...msg);
+}
+^^^
+'''
+```
+
 Available parameters:
 
 * `compact` can be used to reduce prominence.
 * `caption` results in the respective block's content being used as caption.
+* `filename` works just like `caption`, but results in custom styling for code
+  blocks.
 * `img` generates an image element using the parameter value as URI, with the
   respective block's content being used as fallback content.
 * `lazy` activates lazy loading for image elements (i.e. only valid in

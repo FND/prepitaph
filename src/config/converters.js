@@ -68,7 +68,8 @@ export async function list(content, { category }, context) {
 }
 
 export async function figure(content, {
-	caption = null,
+	filename = null,
+	caption = filename,
 	img = null,
 	compact = false,
 	id = null,
@@ -82,32 +83,31 @@ export async function figure(content, {
 			alt: content,
 			loading: lazy && "lazy"
 		}}>` : {
-			[RAW]: await context.transformer.
-				render(txt2blocks(content.replaceAll(backticks, "```")), context)
+			[RAW]: await render(content, { backticks }, context)
 		}
 	}${
-		caption && trustedHTML`<figcaption>${content}</figcaption>`
+		caption && trustedHTML`<figcaption${{
+			class: filename && "is-filename"
+		}}>${caption}</figcaption>`
 	}</figure>`;
 	return id === null ? res : html`<a${{ href: `#${id}` }}>${{ [RAW]: res }}</a>`;
 }
 
-export async function intro(content, { backticks = "'''" }, context) {
-	return context.transformer.render(txt2blocks(content.
-		replaceAll(backticks, "```")), context);
+export async function intro(content, params, context) {
+	return render(content, params, context);
 }
 
 export async function infobox(content, params, context) {
 	return html`<div class="infobox stack"><b class="visually-hidden">NB:</b>${{
-		[RAW]: await context.transformer.render(txt2blocks(content), context)
+		[RAW]: await render(content, params, context)
 	}}</div>`;
 }
 
-export async function aside(content, { compact = false, backticks = "'''" }, context) {
-	content = content.replaceAll(backticks, "```");
-	return html`<aside class="${compact && "is-compact "}stack"><b${{
+export async function aside(content, params, context) {
+	return html`<aside class="${params.compact && "is-compact "}stack"><b${{
 		class: "visually-hidden"
 	}}>Aside:</b>${{
-		[RAW]: await context.transformer.render(txt2blocks(content), context)
+		[RAW]: await render(content, params, context)
 	}}</aside>`;
 }
 
@@ -127,14 +127,13 @@ export async function embed(content, { uri }, context) {
 	}}></iframe>`;
 }
 
-export async function footnote(content, { backticks = "'''", ...params }, context) {
-	content = content.replaceAll(backticks, "```");
+export async function footnote(content, params, context) {
 	let name = Object.keys(params)[0];
 	let i = context.footnotes.indexOf(name) + 1;
 	return html`<aside${{ id: `fn:${name}` }} class="footnote stack"><sup${{
 		"aria-label": `footnote #${i}`
 	}}>${i}</sup>${{
-		[RAW]: await context.transformer.render(txt2blocks(content), context)
+		[RAW]: await render(content, params, context)
 	}}</aside>`;
 }
 
@@ -180,6 +179,11 @@ function* retrievePages(category, store) {
 			yield page;
 		}
 	}
+}
+
+function render(content, { backticks = "'''" }, context) {
+	return context.transformer.
+		render(txt2blocks(content.replaceAll(backticks, "```")), context);
 }
 
 function sortByDate(pages) {
