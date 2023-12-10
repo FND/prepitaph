@@ -17,6 +17,7 @@ export let json = await code("json");
 export let css = await code("css");
 export let javascript = await code("javascript");
 export let typescript = await code("typescript");
+export let shell = await code("shell");
 export let python = await code("python");
 
 export async function feed(content, { category, title = siteTitle }, context) {
