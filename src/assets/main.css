@@ -197,10 +197,6 @@ a[href^="https://"] {
 
 /* article */
 
-.article h1 {
-	font-size: 1.7rem; /* XXX: magic value */
-}
-
 .article > header {
 	& {
 		display: grid;
@@ -286,6 +282,10 @@ a[href^="https://"] {
 	font-size: inherit;
 }
 
+.article h1 {
+	font-size: 1.7rem; /* XXX: magic value */
+}
+
 .article pre {
 	margin-left: calc(-1 * var(--spacing-outdent-left));
 	margin-right: calc(-1 * var(--spacing-outdent-right));
@@ -358,4 +358,9 @@ a[href^="https://"] {
 .article iframe {
 	width: 100%;
 	min-height: 20rem;
+}
+
+.article.article.article hr { /* XXX: smell; extra specificity overrides `.stack` */
+	width: 80%;
+	margin-block: var(--spacing-l3);
 }
