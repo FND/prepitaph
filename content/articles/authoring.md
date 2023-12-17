@@ -261,17 +261,17 @@ Embeds are typically used for demo pages:
 
 ### List
 
-Used to generate a list of pages for the respective category. Pages tagged with
-"unlisted" are excluded.
+Used to generate a list of pages for the respective categories (`,`-delimited).
+Pages tagged with "unlisted" are excluded.
 
 
 ### Topics
 
-Used to generate an index of topics for the respective category. Pages tagged
-with "unlisted" are excluded.
+Used to generate an index of topics for the respective categories
+(`,`-delimited). Pages tagged with "unlisted" are excluded.
 
 
 ### Feed
 
-Used to generate an Atom feed for the respective category. Pages tagged with
-"unlisted" are excluded.
+Used to generate an Atom feed for the respective categories (`,`-delimited).
+Pages tagged with "unlisted" are excluded.

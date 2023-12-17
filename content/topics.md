@@ -1,4 +1,4 @@
-title: Articles by Topic
+title: Posts by Topic
 
-```topics category=articles
+```topics categories=articles,snippets
 ```

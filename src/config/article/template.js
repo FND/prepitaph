@@ -41,10 +41,13 @@ async function render(article, context,
 			month: "long",
 			day: "numeric"
 		});
-		metadata = trustedHTML`<p class="metadata">
-			by <b>${article.author}</b>
-			<time${{ datetime }}>${date}</time>
-		</p>`;
+		metadata = trustedHTML`
+			${article.renderType()}
+			<p class="metadata">
+				by <b>${article.author}</b>
+				<time${{ datetime }}>${date}</time>
+			</p>
+		`;
 	}
 
 	intro = intro !== false && article.intro;
@@ -56,7 +59,7 @@ async function render(article, context,
 
 	if(heading !== false || metadata !== false || intro !== false) {
 		// eslint-disable-next-line no-var
-		var header = trustedHTML`<header class="stack">
+		var header = trustedHTML`<header>
 			${heading}
 			${metadata}
 			${intro}
@@ -82,7 +85,9 @@ async function render(article, context,
 		[RAW]: isDocument === false ? "article" : "main"
 	};
 	return html`
-<${tag} class="article stack">
+<${tag}${{
+	class: [...new Set([article.constructor.type, "article", "stack"])].join(" ")
+}}>
 	${header}
 	${main}
 </${tag}>

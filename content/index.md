@@ -1,12 +1,12 @@
 title: NONE
 
 ```markdown allowHTML
-<h1 class="visually-hidden">Articles</h1>
+<h1 class="visually-hidden">All Posts</h1>
 ```
 
-Listed below are articles in chronological order. You might want to explore
+Listed below are posts in chronological order. You might want to explore
 [topics](page://topics) instead. There's also a
-[web feed](https://aboutfeeds.com) for [latest articles](page://index.atom).
+[web feed](https://aboutfeeds.com) for [latest posts](page://index.atom).
 
-```list category=articles
+```list categories=articles,snippets
 ```

@@ -1,8 +1,11 @@
 import { renderArticle } from "./template.js";
 import { Page, INVALID } from "../../ssg/page.js";
+import { trustedHTML } from "../../ssg/html.js";
 import { iso2date, clone } from "../../ssg/util.js";
 
 export class Article extends Page {
+	static type = "article";
+
 	// TODO: stricter validation required to reduce risk of subtle breakage
 	static fields = {
 		...super.fields,
@@ -42,5 +45,11 @@ export class Article extends Page {
 			store: context.store,
 			config: context.config
 		}, options);
+	}
+
+	renderType() {
+		let { type } = this.constructor;
+		return type !== Article.type &&
+				trustedHTML`<small class="content-type">${type}</small>`;
 	}
 }

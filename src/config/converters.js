@@ -20,16 +20,16 @@ export let typescript = await code("typescript");
 export let shell = await code("shell");
 export let python = await code("python");
 
-export async function feed(content, { category, title = siteTitle }, context) {
+export async function feed(content, { categories, title = siteTitle }, context) {
 	let { renderAtom } = await import("./feed.js");
-	let pages = retrievePages(category, context.store);
+	let pages = retrievePages(categories, context.store);
 	return renderAtom(sortByDate(pages), title, context);
 }
 
-export async function topics(content, { category }, context) {
+export async function topics(content, { categories }, context) {
 	let byTag = new Map();
 	let tags = [];
-	for(let page of retrievePages(category, context.store)) {
+	for(let page of retrievePages(categories, context.store)) {
 		for(let tag of page.tags) {
 			let entries = byTag.get(tag);
 			if(entries) {
@@ -46,15 +46,16 @@ export async function topics(content, { category }, context) {
 			return html`<dt>${tag}</dt><dd><ul><li>${{
 				[RAW]: byTag.get(tag).map(page => html`
 					<a${{ href: page.url(baseURL).pathname }}>${page.title}</a>
+					${page.renderType()}
 				`.trim()).join("</li><li>")
 			}}</li></ul></dd>`;
 		}).join("\n")
 	}}</dl>`;
 }
 
-export async function list(content, { category }, context) {
+export async function list(content, { categories }, context) {
 	let res = [];
-	for(let page of sortByDate(retrievePages(category, context.store))) {
+	for(let page of sortByDate(retrievePages(categories, context.store))) {
 		let html = page.render(context, {
 			isDocument: false,
 			heading: true,
@@ -174,10 +175,12 @@ async function code(lang, grammar = lang) {
 	};
 }
 
-function* retrievePages(category, store) {
-	for(let page of store.retrieve(category)) {
-		if(!page.tags.includes("unlisted")) {
-			yield page;
+function* retrievePages(categories, store) {
+	for(let category of categories.split(",")) {
+		for(let page of store.retrieve(category)) {
+			if(!page.tags.includes("unlisted")) {
+				yield page;
+			}
 		}
 	}
 }

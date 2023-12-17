@@ -114,6 +114,15 @@ a[href^="https://"] {
 	margin-top: var(--spacing-l2);
 }
 
+.content-type {
+	margin-left: var(--spacing);
+	font-size: 0.8rem; /* XXX: magic value */
+
+	&::before{
+		content: "📝 ";
+	}
+}
+
 /* site header */
 
 .site-header {
@@ -189,7 +198,29 @@ a[href^="https://"] {
 /* article */
 
 .article h1 {
-	font-size: 1.7rem;
+	font-size: 1.7rem; /* XXX: magic value */
+}
+
+.article > header {
+	& {
+		display: grid;
+		row-gap: var(--spacing); /* ≙ `.stack` */
+		grid-template-columns: auto 1fr;
+	}
+
+	> * {
+		margin-block: 0; /* ≙ `.stack` */
+	}
+
+	> :not(h1, h2, .content-type) {
+		grid-column: 1 / -1;
+	}
+
+	> .content-type {
+		align-self: end;
+		margin-left: var(--spacing-l2);
+		margin-bottom: var(--spacing-s1); /* XXX: magic value */
+	}
 }
 
 .article > header .metadata {

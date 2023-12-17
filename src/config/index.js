@@ -1,8 +1,9 @@
-import * as blocks from "./converters.js";
 import { fileURLToPath } from "node:url";
 import { resolve, normalize, dirname } from "node:path";
 
 let ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
+
+export * as blocks from "./converters.js";
 
 export let contentDir = "./content"; // NB: relative to current working directory
 export let outputDir = "./dist"; // NB: relative to current working directory
@@ -15,6 +16,7 @@ export let favicon = {
 	source: `${ROOT_DIR}/src/assets/icon.svg`,
 	uri: normalize(`${pathPrefix}/${assetsDir}/icon.svg`)
 };
+
 export let css = { // TODO: use `AssetManager` for URI generation
 	default: [{
 		source: `${ROOT_DIR}/src/assets/main.css`,
@@ -25,10 +27,12 @@ export let css = { // TODO: use `AssetManager` for URI generation
 		uri: normalize(`${pathPrefix}/${assetsDir}/prism.min.css`)
 	}]
 };
+
 export let categories = {
 	NONE: () => import("./info_page.js").
 		then(m => m.InfoPage),
 	articles: () => import("./article/index.js").
-		then(m => m.Article)
+		then(m => m.Article),
+	snippets: () => import("./snippet.js").
+		then(m => m.Snippet)
 };
-export { blocks };
