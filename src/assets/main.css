@@ -131,8 +131,16 @@ a[href^="https://"] {
 	align-items: center;
 }
 
-.site-header nav a {
+.site-header a {
 	padding: var(--spacing);
+
+	&:focus-visible,
+	&:focus-visible::before { /* required due to decoration below */
+		--_size: 2px;
+
+		outline: var(--_size) solid dodgerblue;
+		outline-offset: calc(-1 * var(--_size));
+	}
 }
 
 .site-header a:first-of-type {
