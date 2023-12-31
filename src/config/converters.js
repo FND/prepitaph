@@ -100,7 +100,7 @@ export async function intro(content, params, context) {
 }
 
 export async function infobox(content, params, context) {
-	return html`<div class="infobox stack"><b class="visually-hidden">NB:</b>${{
+	return html`<div class="infobox stack"><b class="visually-hidden">NB: </b>${{
 		[RAW]: await render(content, params, context)
 	}}</div>`;
 }
@@ -108,7 +108,7 @@ export async function infobox(content, params, context) {
 export async function aside(content, params, context) {
 	return html`<aside class="${params.compact && "is-compact "}stack"><b${{
 		class: "visually-hidden"
-	}}>Aside:</b>${{
+	}}>Aside: </b>${{
 		[RAW]: await render(content, params, context)
 	}}</aside>`;
 }

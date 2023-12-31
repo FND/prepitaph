@@ -10,11 +10,15 @@ export async function renderArticle(article, { assets, store, config }, options)
 		return html;
 	}
 
+	let summary = await article.intro;
+	if(summary) { // NB: parsing HTML the Cthulhu way seems acceptable here
+		summary = summary.replace(/<[A-Za-z/][^>]*>/g, "").replace(/\s+/g, " ").trim();
+	}
 	let { css } = config;
 	let styles = article.syntax ? css.default.concat(css.syntax) : css.default;
 	return layout({
 		title: article.title,
-		summary: await article.intro,
+		summary,
 		canonicalURL: article.canonicalURL,
 		content: await html,
 		css: assets.register(styles),
