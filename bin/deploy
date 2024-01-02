@@ -18,7 +18,7 @@ abort() {
 root_dir=`dirname "$0"`
 root_dir=`realpath "$root_dir/.."`
 local_dir="$root_dir/dist"
-target="prepitaph.org:~/public_html/prepitaph/"
+target="prepitaph.org:~/prepitaph/"
 
 cd "$root_dir"
 
@@ -31,6 +31,8 @@ git ls-files --others --exclude-standard | grep --quiet content && \
 npm run rebuild
 
 cd "$local_dir"
+cp -R "$root_dir/artifacts" "$local_dir/~fnd"
+rm -rf "$local_dir/~fnd/.git"
 rsync -a --delete -c -P -z -e ssh ./ "$target"
 
 read -r -n1 -p "enter 'y' to push repository updates: " confirmation; echo
