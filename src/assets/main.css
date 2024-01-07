@@ -216,6 +216,7 @@ a[href^="https://"] {
 		align-self: end;
 		margin-left: var(--spacing-l2);
 		margin-bottom: var(--spacing-s1); /* XXX: magic value */
+		white-space: nowrap;
 	}
 }
 
