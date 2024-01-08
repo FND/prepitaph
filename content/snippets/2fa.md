@@ -18,7 +18,7 @@ With that, we can use the following script to generate
 [TOTPs](https://en.wikipedia.org/wiki/One-time_password):
 
 ```shell
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 set -e
 
@@ -54,4 +54,13 @@ realpath() {
     node -r fs -p "fs.realpathSync(process.argv[1])" "$filepath"
 }
 '''
+
+Of course
+[Python could be used](https://docs.python.org/3/library/os.path.html#os.path.realpath)
+just as well, or even just `readlink -f` (as suggested by
+[cdent](https://anticdent.org)).
+
+However, turns out there's a good chance realpath(1) might actually be portable
+these days; at least it's available in FreeBSD -- and thus macOS? -- now
+(thanks, [mkhl](https://mkhl.codeberg.page)).
 ```
