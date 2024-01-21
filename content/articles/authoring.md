@@ -259,6 +259,33 @@ Embeds are typically used for demo pages:
 (URIs starting with `./` are treated as assets from the respective page.)
 
 
+### Disclosure
+
+Disclosures hide content which can then be revealed via user interaction:
+
+```disclosure caption="Here's some additional context."
+ES5-style code might looks like this:
+
+'''javascript
+var foo = "bar";
+'''
+
+YMMV.
+```
+
+```
+'''disclosure caption="Here's some additional context."
+ES5-style code might looks like this:
+
+^^^javascript
+var foo = "bar";
+^^^
+'''
+
+YMMV.
+```
+
+
 ### List
 
 Used to generate a list of pages for the respective categories (`,`-delimited).
