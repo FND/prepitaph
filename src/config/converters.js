@@ -130,6 +130,12 @@ export async function embed(content, { uri }, context) {
 	}}></iframe>`;
 }
 
+export async function disclosure(content, params, context) {
+	return html`<details class="stack"><summary>${params.caption}</summary>${{
+		[RAW]: await render(content, params, context)
+	}}</details>`;
+}
+
 export async function footnote(content, params, context) {
 	let name = Object.keys(params)[0];
 	let i = context.footnotes.indexOf(name) + 1;
