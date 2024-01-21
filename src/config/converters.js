@@ -114,7 +114,7 @@ export async function aside(content, params, context) {
 	}}</aside>`;
 }
 
-export async function embed(content, { uri }, context) {
+export async function embed(content, { uri, resize }, context) {
 	let page, path;
 	if(uri.startsWith("./")) {
 		page = context.page;
@@ -125,9 +125,33 @@ export async function embed(content, { uri }, context) {
 		page = context.store.resolve(page);
 		path = _path.join("/");
 	}
-	return html`<iframe ${{
+
+	let id = resize === true ? `embed${crypto.randomUUID()}` : resize;
+	return html`<iframe${{
+		id,
 		src: page.url(context.config.baseURL).href + path
-	}}></iframe>`;
+	}}></iframe>${id && trustedHTML`<script type="module" class="visually-hidden">
+let IFRAME = document.getElementById("${id}");
+
+init();
+
+function init() {
+	let doc = IFRAME.contentDocument;
+	if(doc?.location.href === "about:blank") {
+		setTimeout(init, 50);
+	} else if(doc?.documentElement) {
+		autoResize();
+	} else {
+		IFRAME.addEventListener("load", autoResize);
+	}
+}
+
+function autoResize() {
+	new ResizeObserver(([entry]) => {
+		IFRAME.style.height = entry.borderBoxSize[0].blockSize + "px";
+	}).observe(IFRAME.contentDocument.documentElement);
+}
+		</script>`}`;
 }
 
 export async function disclosure(content, params, context) {

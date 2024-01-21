@@ -248,15 +248,17 @@ Available parameters:
 
 Embeds are typically used for demo pages:
 
-```embed uri=articles/encrypted-web-documents/demo.html
+```embed uri=articles/encrypted-web-documents/demo.html resize=sample
 ```
 
 ```
-'''embed uri=articles/encrypted-web-documents/demo.html
+'''embed uri=articles/encrypted-web-documents/demo.html resize=sample
 '''
 ```
 
-(URIs starting with `./` are treated as assets from the respective page.)
+* URIs starting with `./` are treated as assets from the respective page.
+* `resize` or `resize=$id` activates automatic resizing based on the respective
+  content.
 
 
 ### Disclosure
