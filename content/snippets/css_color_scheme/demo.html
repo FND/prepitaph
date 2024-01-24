@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Native Color Scheme</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 35ch;
+	--spacing: 0.5rem;
+
+	color-scheme: light;
+
+	&:has(input[name=theme][value=dark]:checked) {
+		color-scheme: dark;
+	}
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+label,
+label:not(:has(input:is([type=checkbox], [type=radio]))) b {
+	display: block;
+}
+
+label:has(input:is([type=checkbox], [type=radio])) b {
+	font-weight: normal;
+}
+
+input:not([type=checkbox], [type=radio]),
+textarea {
+	width: 100%;
+}
+
+textarea {
+	min-height: 10em;
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-block-start: var(--spacing);
+
+		&:is(h1, h2, h3, h4, h5, h6) {
+			margin-block-start: max(0.5em, var(--spacing));
+		}
+	}
+}
+
+.form-group {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--spacing);
+}
+	</style>
+</head>
+
+<body class="stack">
+	<h1>Native Color Scheme</h1>
+	<div class="form-group">
+		<label>
+			<input type="radio" name="theme" value="light" checked>
+			<b>Light Mode</b>
+		</label>
+		<label>
+			<input type="radio" name="theme" value="dark">
+			<b>Dark Mode</b>
+		</label>
+	</div>
+	<h2>Sample Form</h2>
+	<form method="dialog" class="stack">
+		<label>
+			<b>Name</b>
+			<input type="text">
+		</label>
+		<div class="form-group">
+			<label>
+				<b>Amount</b>
+				<input type="number">
+			</label>
+			<label>
+				<b>Date</b>
+				<input type="date">
+			</label>
+		</div>
+		<fieldset>
+			<legend>Assessment</legend>
+			<label>
+				<input type="radio" name="mood" value="good">
+				<b>Good</b>
+			</label>
+			<label>
+				<input type="radio" name="mood" value="bad" checked>
+				<b>Bad</b>
+			</label>
+			<label>
+				<input type="radio" name="mood" value="ugly">
+				<b>Ugly</b>
+			</label>
+		</fieldset>
+		<label>
+			<b>Description</b>
+			<textarea></textarea>
+		</label>
+		<label>
+			<input type="checkbox">
+			<b>Active</b>
+		</label>
+
+		<div class="form-group">
+			<button>Submit</button>
+			<button type="reset">Reset</button>
+		</div>
+	</form>
+</body>
+
+</html>
