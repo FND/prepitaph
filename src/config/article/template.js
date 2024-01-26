@@ -20,7 +20,7 @@ export async function renderArticle(article, { assets, store, config }, options)
 		title: article.title,
 		summary,
 		canonicalURL: article.canonicalURL,
-		content: await html,
+		content: await html.then(injectPermalinks),
 		css: assets.register(styles),
 		assets,
 		store,
@@ -95,5 +95,20 @@ async function render(article, context,
 	${header}
 	${main}
 </${tag}>
+	`.trim();
+}
+
+function injectPermalinks(html) {
+	return html + `
+<script class="visually-hidden">
+document.querySelectorAll(":is(h2, h3, h4, h5, h6)[id]").forEach(node => {
+	let link = document.createElement("a");
+	link.href = "#" + node.id;
+	link.className = "permalink";
+	link.setAttribute("aria-label", "permalink");
+	link.textContent = "#";
+	node.append(document.createTextNode(" "), link);
+});
+</script>
 	`.trim();
 }
