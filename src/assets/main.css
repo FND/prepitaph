@@ -243,6 +243,18 @@ a[href^="https://"] {
 	color: var(--color-acc);
 }
 
+.article .permalink {
+	font-size: 0.8rem; /* XXX: magic value */
+	color: var(--color-acc);
+	transition: none 0.25s ease-in-out;
+	transition-property: opacity, text-decoration-color;
+
+	&:not(:focus, :hover, :active) {
+		text-decoration-color: color-mix(in srgb, currentColor, transparent 50%);
+		opacity: 0.5;
+	}
+}
+
 .article aside:not(.footnote),
 .article .infobox {
 	border-width: calc(3 * var(--border-size)) 0; /* XXX: magic value */
