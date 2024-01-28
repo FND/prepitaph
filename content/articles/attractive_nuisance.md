@@ -16,8 +16,8 @@ decontextualization of architectural choices.
 > then kill or injure themselves. And you must take reasonable steps to
 > [protect] those children.
 
-— Brian Marick,
-  [Oddly Influenced](https://podcast.oddly-influenced.dev/episodes/glenn-vanderburg-on-engineering/transcript)
+--- Brian Marick,
+    [Oddly Influenced](https://podcast.oddly-influenced.dev/episodes/glenn-vanderburg-on-engineering/transcript)
 ```
 
 It occurred to me that this analogy applies to many technology choices these
