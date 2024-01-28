@@ -11,7 +11,7 @@ Say we have a list of value groups:
     <li>
         <var>📐 30</var>
         <var>📏 30</var>
-        <var>🔗 7</output>
+        <var>🔗 7</var>
     </li>
     <li>
         <var>📐 70</var>
