@@ -38,6 +38,9 @@ NB:
   (i.e. linting and formatting).
 * Naturally, I advocate [using tabs](https://chriscoyier.net/2022/12/13/tabs/)
   by default.
+* Strictly speaking, `indent_size = 4` invalidates the "tabs can be configured"
+  argument (as pointed out by [mkhl](https://mkhl.codeberg.page)) -- including
+  it here is a pragmatic compromise; YMMV.
 
 ----
 
