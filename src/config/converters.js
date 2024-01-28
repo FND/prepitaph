@@ -201,7 +201,9 @@ async function code(lang, grammar = lang) {
 	}
 	return (content, params, context) => {
 		return html`<pre><code${{ class: `language-${lang}` }}>${{
-			[RAW]: highlight(content, _grammar, lang)
+			[RAW]: highlight(content, _grammar, lang).
+				replaceAll("«", "<mark>").
+				replaceAll("»", "</mark>")
 		}}</code></pre>`;
 	};
 }

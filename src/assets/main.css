@@ -310,6 +310,13 @@ a[href^="https://"] {
 	padding: var(--spacing);
 	font-size: 1rem;
 }
+.article pre mark {
+	text-shadow: none;
+	background-color: #FF0;
+}
+.article pre mark mark { /* XXX: hacky? */
+	background-color: rgb(130, 255, 173);
+}
 /* override Prism defaults */
 .article pre .token.class-name,
 .article pre .token.function {
