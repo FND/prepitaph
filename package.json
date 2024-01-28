@@ -3,7 +3,7 @@
 		"build": "node ./src/ssg/index.js",
 		"rebuild": "rm -rf ./dist && npm run build",
 		"rebuild:local": "rm -rf ./dist && PATH_PREFIX=\"`pwd`/dist\" npm run build",
-		"test": "eslint --cache ./src && echo ✓"
+		"test": "eslint --cache ./src && ./bin/validate && echo ✓"
 	},
 	"type": "module",
 	"dependencies": {
@@ -13,6 +13,7 @@
 		"prismjs": "^1.29.0"
 	},
 	"devDependencies": {
-		"eslint-config-fnd": "^1.13.0"
+		"eslint-config-fnd": "^1.13.0",
+		"vnu-jar": "^23.4.11"
 	}
 }

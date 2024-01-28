@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -eu
+
+ignore=".*(void elements|aria-label|“style” not allowed as child of element “main”|CSS:( “[^”]+”:)? Parse Error).*"
+
+abort() {
+	message="$@"
+
+	echo "$message" >&2
+	exit 1
+}
+
+java -jar "$(node -e 'console.log(require("vnu-jar"))')" --skip-non-html \
+		--filterpattern "$ignore" ./dist
+
+git grep prepitaph.org ./content | grep \.md &&
+		abort "ERROR: detected hard-coded URL; use internal link instead"
