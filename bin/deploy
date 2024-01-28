@@ -24,9 +24,11 @@ cd "$root_dir"
 
 git diff --exit-code --quiet && \
 		git diff --cached --exit-code --quiet || \
-		abort "ERROR: there are unstaged changes"
+		abort "ERROR: detected unstaged changes"
 git ls-files --others --exclude-standard | grep --quiet content && \
-		abort "ERROR: there is untracked content"
+		abort "ERROR: detected untracked content"
+git ls-files ./content | grep - &&
+		abort "ERROR: detected invalid hyphen in file name"
 
 npm run rebuild
 
