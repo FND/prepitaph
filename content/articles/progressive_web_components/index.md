@@ -48,8 +48,8 @@ reinventing the browser
 > ad-hoc, informally-specified, bug-ridden, slow implementation of half a
 > browser.
 
-— Stefan Tilkov ([@stilkov](https://tilkov.com), with apologies to
-  Philip Greenspun
+--- Stefan Tilkov ([@stilkov](https://tilkov.com), with apologies to
+    Philip Greenspun
 ```
 
 It's now commonplace for applications to ship code that does a whole bunch of
@@ -68,7 +68,7 @@ JS-first
 > Hard to put into words how utterly broken JS-first web development is. So
 > many parts of the system work against you when you take the reins.
 
-— Alex Russell
+--- Alex Russell
   ([@slightlylate](https://twitter.com/slightlylate/status/793617048253247488))
 ```
 
@@ -327,7 +327,7 @@ progressive enhancement and browsers
 > Progressive enhancement is not about dealing with old browsers, it's about
 > dealing with new browsers.
 
-— Jeremy Keith ([@adactio](https://adactio.com))
+--- Jeremy Keith ([@adactio](https://adactio.com))
 ```
 
 So the point here isn't to _avoid_ JavaScript. On the contrary: Because we have

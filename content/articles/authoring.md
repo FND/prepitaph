@@ -191,14 +191,14 @@ A figure can be used to caption images, quotations or
 ```figure compact
 > I don't believe you.
 
-— Everyone
+--- Everyone
 ```
 
 ```
 '''figure compact
 > I don't believe you.
 
-— Everyone
+--- Everyone
 '''
 ```
 
