@@ -210,19 +210,20 @@ a[href^="https://"] {
 		margin-block: 0; /* ≙ `.stack` */
 	}
 
-	> :not(h1, h2, .content-type) {
+	> :is(h1, h2, .teaser) {
 		grid-column: 1 / -1;
 	}
 
 	> .content-type {
-		align-self: end;
+		grid-column: 2 / -1;
+		grid-row: 2;
 		margin-left: var(--spacing-l2);
-		margin-bottom: var(--spacing-s1); /* XXX: magic value */
 		white-space: nowrap;
 	}
 }
 
 .article > header .metadata {
+	min-width: 12rem; /* XXX: magic value */
 	margin-top: 0;
 	font-size: small;
 }
