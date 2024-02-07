@@ -23,9 +23,16 @@ seems like a reasonable approach. (This isn't an entirely new idea of course:
 Both Closure Compiler and Flow did pretty much the same thing to maintain syntax
 compatibility.)
 
+Once we get past superficial sensibilities, this approach enables us to directly
+execute our source code, without requiring any transformations, in browsers and
+other JavaScript runtime environments (think unit tests). Such parity can
+greatly reduce overall complexity, as we don't need out-of-band build systems
+(which always come with setup and maintenance costs of their own) and avoid
+indirections that complicate debugging.
+
 Let's start with the inevitable `tsconfig.json` (a
 [potential quagmire](https://docs.deno.com/runtime/manual/advanced/typescript/configuration)
-unto itself):
+unto itself), if only for editors' benefit:
 
 ```json
 {
@@ -39,9 +46,8 @@ unto itself):
 ```
 
 The first two options make the compiler ingest JavaScript files, `noEmit`
-relegates it to be a mere type checker (because JavaScript already constitutes
-executable source files; no transpiling required). Strictness is a matter of
-taste, but a good default for new projects.
+relegates it to be a mere type checker -- thus runtime code remains unaffected.
+Strictness is a matter of taste, but a good default for new projects.
 
 With that in place, we might [invoke](page://articles/banishing-npm) the
 `typescript` package's compiler via `tsc --project ./tsconfig.json`. Of course
@@ -81,9 +87,9 @@ export function analyze(item, verbose) {
 
 That's still vanilla JavaScript, but augmented with
 [JSDoc annotations](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html)
-referencing TypeScript constructs, allowing for type checking beyond inference.
-Note that we're using such annotations both for the function signature and
-within the function body.[syntax](footnote://)
+referencing TypeScript constructs, allowing for type checking beyond mere
+inference. Note that we're using such annotations both for the function
+signature and within the function body.[syntax](footnote://)
 
 ```footnote syntax
 Brackets make `verbose` optional, the rest should be self-explanatory:
@@ -136,3 +142,9 @@ recommended because it avoids scoping issues.
 A somewhat unexpected advantage of this approach could be _increased_ friction:
 Clearly separating types from runtime code might leave us less inclined to
 produce complexity only for static typing's sake.
+
+```infobox
+After living with such a setup for a couple of months, this offhand prediction
+proved true to an astonishing extent: The mental shift is palpable and, to my
+own surprise, led to a much improved code base overall.
+```
