@@ -132,3 +132,9 @@ employing it as development tooling for a browser-based application. While
 ignoring its original purpose might seem odd, that actually makes perfect sense
 in this context -- and it certainly feels much more sensible than the previous
 setup.
+
+This approach also avoids becoming overly
+[dependent on Deno](https://www.baldurbjarnason.com/2024/disillusioned-with-deno/):
+Replaceability is an important factor for projects' long-term sustainability. It
+should be fairly straightforward and painless to substitute this auxiliary
+tooling with a different setup in the future, should that become necessary.
