@@ -8,9 +8,9 @@ syntax: true
 Every so often I create another
 [local web application](https://paul.kinlan.me/the-local-only-web/), for myself
 or others -- mostly because not relying on a server seems more sustainable and
-[eternally trustworthy](page://articles/creative-privacy), especially for
-personal, single-purpose projects. Sometimes all you want to rely on is a web
-browser.
+[eternally](https://stephango.com/file-over-app)
+[trustworthy](page://articles/creative-privacy), especially for personal,
+single-purpose projects. Sometimes all you want to rely on is a web browser.
 ```
 
 In the [early TiddlyWiki](https://classic.tiddlywiki.com/archive/) days, local
