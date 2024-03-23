@@ -164,7 +164,7 @@ items.)
     --cell-padding: calc(0.5 * var(--spacing)) var(--spacing);
     --cell-border: 1px dashed #CCC;
 
-    margin-inline: var(--spacing-l3);
+    margin-inline: var(--spacing-lg3);
 }
 
 .snippet table {

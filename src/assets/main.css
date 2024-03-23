@@ -16,12 +16,13 @@
 
 	/* modular scale-ish; cf. https://www.modularscale.com/?1.5 */
 	--spacing: 0.5rem;
-	--spacing-s1: calc(var(--spacing) * 0.667);
-	--spacing-l2: calc(var(--spacing) * 2.25);
-	--spacing-l3: calc(var(--spacing) * 3.375);
+	--spacing-sm1: calc(var(--spacing) * 0.667);
+	--spacing-lg1: calc(var(--spacing) * 1.5);
+	--spacing-lg2: calc(var(--spacing) * 2.25);
+	--spacing-lg3: calc(var(--spacing) * 3.375);
 
 	/* outdent while keeping content box consistent */
-	--border-outdent-left: var(--spacing-s1);
+	--border-outdent-left: var(--spacing-sm1);
 	--spacing-outdent-left: calc(var(--spacing) + var(--border-outdent-left));
 	--spacing-outdent-right: calc(var(--spacing) + var(--border-size));
 }
@@ -113,7 +114,7 @@ a[href^="https://"] {
 	margin-top: var(--spacing);
 }
 .stack > :is(h1, h2, h3) {
-	margin-top: var(--spacing-l2);
+	margin-top: var(--spacing-lg2);
 }
 
 .content-type {
@@ -155,10 +156,10 @@ a[href^="https://"] {
 }
 
 .site-header a:first-of-type {
-	padding-left: var(--spacing-l3);
+	padding-left: var(--spacing-lg3);
 }
 .site-header a:first-of-type + * {
-	margin-left: var(--spacing-l3);
+	margin-left: var(--spacing-lg3);
 }
 
 /* decoration */
@@ -172,7 +173,7 @@ a[href^="https://"] {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: calc(100% + var(--spacing-l3));
+	width: calc(100% + var(--spacing-lg3));
 	height: 100%;
 	background-color: var(--color-fg);
 	transform: skew(-30deg);
@@ -194,7 +195,7 @@ a[href^="https://"] {
 
 .topics ul {
 	margin-block: 0;
-	padding-left: var(--spacing-l2);
+	padding-left: var(--spacing-lg2);
 }
 
 /* article */
@@ -217,7 +218,7 @@ a[href^="https://"] {
 	> .content-type {
 		grid-column: 2 / -1;
 		grid-row: 2;
-		margin-left: var(--spacing-l2);
+		margin-left: var(--spacing-lg2);
 		white-space: nowrap;
 	}
 }
@@ -261,7 +262,7 @@ a[href^="https://"] {
 	border-width: calc(3 * var(--border-size)) 0; /* XXX: magic value */
 	border-style: solid;
 	border-color: rgba(110, 140, 192, 0.8); /* XXX: magic value */
-	padding: var(--spacing) var(--spacing-l3); /* NB: also accounts for outdent */
+	padding: var(--spacing) var(--spacing-lg3); /* NB: also accounts for outdent */
 	background-color: rgba(220, 232, 255, 0.2); /* XXX: magic value */
 }
 .article aside:not(.footnote).is-compact,
@@ -277,7 +278,7 @@ a[href^="https://"] {
 }
 
 .article .footnote {
-	margin-left: var(--spacing-l3);
+	margin-left: var(--spacing-lg3);
 	font-size: small;
 }
 .article .footnote > sup:first-child {
@@ -338,16 +339,16 @@ a[href^="https://"] {
 		right: calc(-1 * var(--spacing-outdent-right)); /* corresponds to `<pre>` */
 		margin-top: 0; /* neutralizes `.stack` */
 		border-top-right-radius:var(--spacing); /* corresponds to `<pre>` */
-		border-bottom-left-radius:var(--spacing-s1);
-		padding: var(--spacing-s1) var(--spacing);
+		border-bottom-left-radius:var(--spacing-sm1);
+		padding: var(--spacing-sm1) var(--spacing);
 		background-color: color-mix(in srgb, var(--color-border), transparent 50%);
 	}
 }
 
 .article blockquote {
 	margin-inline: 0;
-	border-left: var(--spacing-s1) solid var(--color-border);
-	padding-block: var(--spacing-s1);
+	border-left: var(--spacing-sm1) solid var(--color-border);
+	padding-block: var(--spacing-sm1);
 	padding-left: var(--spacing);
 	font-style: italic;
 }
@@ -385,5 +386,5 @@ a[href^="https://"] {
 
 .article.article.article hr { /* XXX: smell; extra specificity overrides `.stack` */
 	width: 80%;
-	margin-block: var(--spacing-l3);
+	margin-block: var(--spacing-lg3);
 }
