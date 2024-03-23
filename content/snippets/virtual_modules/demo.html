@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Worker Sample</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+output {
+	display: block;
+	white-space: pre;
+	font-family: monospace;
+	line-height: 1.2;
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-top: var(--spacing);
+	}
+}
+	</style>
+</head>
+
+<body class="stack">
+	<h1>Worker Sample</h1>
+	<p>Here we mock <code>WebSocket</code> using a Web Worker.</p>
+	<p>See console for details.</p>
+
+	<script type="text/x-javascript-worker" id="server">
+console.log("[WORKER] initializing");
+
+self.addEventListener("message", ev => {
+	console.log(`[WORKER] received \`${ev.type}\` event:`, ev.data);
+	self.postMessage("welcome");
+});
+
+self.postMessage("I'm alive");
+	</script>
+
+	<script type="module">
+let SERVER = script2worker("#server");
+let LOG = document.createElement("output");
+document.body.appendChild(LOG);
+
+globalThis.WebSocket = class MockSocket extends EventTarget {
+	constructor(...args) {
+		log("[MOCK] WebSocket", args);
+		super();
+		SERVER.addEventListener("message", this);
+	}
+
+	send(data) {
+		SERVER.postMessage(data);
+	}
+
+	handleEvent(ev) {
+		log(`[MAIN] received \`${ev.type}\` event:`, ev.data);
+	}
+};
+
+let conn = new WebSocket("wss://example.org", "imaginary-protocol");
+conn.send("hi there");
+
+function script2worker(selector) {
+	let code = document.querySelector(selector).textContent;
+	let { uri, release } = code2uri(code)
+	let worker = new Worker(uri, { type: "module" });
+	release();
+	return worker;
+}
+
+function code2uri(txt, type = "text/javascript") {
+	let blob = new Blob([txt], { type });
+	return {
+		uri: URL.createObjectURL(blob),
+		release: () => URL.revokeObjectURL(blob)
+	};
+}
+
+function log(...msg) {
+	console.log(...msg);
+
+	let txt = msg.map(item => {
+		return typeof item === "string" ? item : `\`${jsonify(item)}\``;
+	}).join(" ");
+	LOG.appendChild(document.createTextNode(txt + "\n"));
+}
+
+function jsonify(value) {
+	return JSON.stringify(value, null, 1).
+		replace(/\n */g, " "). // discard line breaks
+		replace(/([^ ]) \]/g, "$1]").replace(/\[ ([^ ])/g, "[$1"); // prettify arrays
+}
+	</script>
+</body>
+
+</html>

@@ -125,12 +125,14 @@ function generateDownloadLink(filename, content, type = "text/plain") {
 }
 ```
 
+```ref memleak
 **NB:** `revokeObjectURL` is required to
 [avoid memory leaks](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static#memory_management),
 discarding `blob` when it's no longer needed (thanks,
 [tillsc](https://nrw.social/@tillsc)). It depends on the respective application
 when best to invoke `release`, though a custom element's `disconnectedCallback`
 would make that fairly straightforward.
+```
 
 Now that we have those two saving mechanisms, we can put them to use:
 
