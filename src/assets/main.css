@@ -17,6 +17,7 @@
 	/* modular scale-ish; cf. https://www.modularscale.com/?1.5 */
 	--spacing: 0.5rem;
 	--spacing-sm1: calc(var(--spacing) * 0.667);
+	--spacing-sm2: calc(var(--spacing) * 0.444);
 	--spacing-lg1: calc(var(--spacing) * 1.5);
 	--spacing-lg2: calc(var(--spacing) * 2.25);
 	--spacing-lg3: calc(var(--spacing) * 3.375);
@@ -221,6 +222,9 @@ a[href^="https://"] {
 		margin-left: var(--spacing-lg2);
 		white-space: nowrap;
 	}
+}
+article.article header { /* collection instead of entity -- XXX: brittle */
+	row-gap: var(--spacing-sm2);
 }
 
 .article > header .metadata {
