@@ -170,6 +170,13 @@ export async function footnote(content, params, context) {
 	}}</aside>`;
 }
 
+export async function ref(content, params, context) {
+	let name = Object.keys(params)[0];
+	return html`<a${{ id: `ref:${name}` }}></a>${{
+		[RAW]: await render(content, params, context)
+	}}`;
+}
+
 async function markdown(content, { allowHTML = false }, context) {
 	let html = await renderMarkdown(content, {
 		fragIDs: txt => txt.replace(/\s/g, "-").toLowerCase(), // XXX: crude
@@ -182,8 +189,10 @@ async function markdown(content, { allowHTML = false }, context) {
 				text.literal = footnotes.push(name);
 				return `#fn:${name}`;
 			} else if(uri.startsWith("page://")) {
-				let page = context.store.resolve(uri.slice(7));
-				return page.url(context.config.baseURL).pathname;
+				let [ref, fragID] = uri.slice(7).split("#");
+				let page = context.store.resolve(ref);
+				let suffix = fragID ? `#${fragID}` : "";
+				return page.url(context.config.baseURL).pathname + suffix;
 			}
 			return uri;
 		}

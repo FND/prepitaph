@@ -201,6 +201,22 @@ aliquip ex ea commodo consequat._
 Link caption and definition name must be identical.
 
 
+### Reference
+
+A reference inserts an invisible anchor which we can link to via
+[`#ref:$name`](#ref:lipsum):
+
+```ref lipsum
+Lorem ipsum dolor sit amet.
+```
+
+```
+'''ref lipsum
+Lorem ipsum dolor sit amet.
+'''
+```
+
+
 ### Figure
 
 A figure can be used to caption images, quotations or
