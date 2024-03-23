@@ -4,10 +4,12 @@ author: FND
 created: 2024-03-22
 syntax: true
 
+```intro
 I've always liked
 [Python's `defaultdict`](https://docs.python.org/3/library/collections.html#collections.defaultdict)
 and occasionally find myself reimplementing it in other languages, notably
-JavaScript -- typically for some kind of dynamic indexing:
+JavaScript -- typically for some kind of dynamic indexing.
+```
 
 ```javascript
 let index = new DefaultMap(() => []);

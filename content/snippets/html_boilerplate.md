@@ -4,11 +4,13 @@ author: FND
 created: 2023-12-17
 syntax: true
 
+```intro
 I probably create dozens of HTML documents each month, usually for experiments
 or [minimal test cases](https://css-tricks.com/reduced-test-cases/).
 Consequently, I've long maintained a carefully crafted HTML template, included
 below, which I typically reduce to only retain pieces that are strictly
 necessary (e.g. removing the external style sheet or `.stack` utility).
+```
 
 Occasionally I refer to
 [A Minimal HTML5 Document](https://brucelawson.co.uk/2010/a-minimal-html5-document/)
