@@ -462,7 +462,7 @@ It's been in the making for a number of years now, but it's finally becoming a
 reality. Chrome has shipped
 [v1](https://developers.google.com/web/fundamentals/getting-started/primers/customelements),
 Firefox has implemented it,
-[others](http://jonrimmer.github.io/are-we-componentized-yet/) are soon to
+[others](https://jonrimmer.github.io/are-we-componentized-yet/) are soon to
 follow. There's also a fairly lightweight
 [polyfill](https://github.com/WebReflection/document-register-element), which
 means you can safely retrofit this functionality for older browsers. Thus you

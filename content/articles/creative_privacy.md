@@ -24,7 +24,7 @@ listening to Jeremy's explanation there for a minute or two.)
 
 I was recently reminded of this upon encountering a discussion on collaboration
 tools (via [Blaine](https://twitter.com/blaine), who also happens to be an
-[Osmonaut](http://web.archive.org/web/20110202100921/http://osmosoft.com/)),
+[Osmonaut](https://web.archive.org/web/20110202100921/http://osmosoft.com/)),
 where Geoffrey Litt
 [used](https://twitter.com/geoffreylitt/status/1633954417522413568) the term
 "creative privacy" -- I hadn't encountered that before.

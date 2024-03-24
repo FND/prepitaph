@@ -220,7 +220,7 @@ Lorem ipsum dolor sit amet.
 ### Figure
 
 A figure can be used to caption images, quotations or
-[similar content elements](http://html5doctor.com/the-figure-figcaption-elements/).
+[similar content elements](https://html5doctor.com/the-figure-figcaption-elements/).
 
 ```figure compact
 > I don't believe you.
