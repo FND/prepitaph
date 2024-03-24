@@ -42,6 +42,7 @@ async function renderEntry(page, context, baseAttr) {
 		intro: true,
 		main: true
 	});
+	summary = (await summary).replaceAll("\n", " "); // discard line breaks
 	return html`
 <entry>
 	<id>${url}</id>
@@ -50,7 +51,7 @@ async function renderEntry(page, context, baseAttr) {
 	<published>${page.created.toISOString()}</published>
 	<updated>${(page.updated || page.created).toISOString()}</updated>
 	<author><name>${page.author}</name></author>
-	<summary type="html"${baseAttr}>${await summary}</summary>
+	<summary type="html"${baseAttr}>${summary}</summary>
 	<content type="html"${baseAttr}>${await content}</content>
 </entry>
 	`.trim();
