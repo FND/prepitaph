@@ -69,6 +69,13 @@ pre {
 	overflow: auto;
 }
 
+code,
+kbd {
+	/* cf. https://mkhl.codeberg.page/monospace-font-size/ */
+	font-family: "", monospace;
+	font-size: 90%; /* XXX: magic number */
+}
+
 figure {
 	margin: 0;
 }
