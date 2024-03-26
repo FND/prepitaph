@@ -19,9 +19,10 @@ respective source code:
 ```javascript
 function code2uri(txt, type = "text/javascript") {
     let blob = new Blob([txt], { type });
+    let uri = URL.createObjectURL(blob);
     return {
-        uri: URL.createObjectURL(blob),
-        release: () => URL.revokeObjectURL(blob)
+        uri,
+        release: () => URL.revokeObjectURL(uri)
     };
 }
 ```

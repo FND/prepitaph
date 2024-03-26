@@ -106,9 +106,9 @@ download the respective file instead:
 ```javascript
 function generateDownloadLink(filename, content, type = "text/plain") {
     // create virtual document
-    let blob, uri;
+    let uri;
     try {
-        blob = new Blob([content], { type });
+        let blob = new Blob([content], { type });
         uri = URL.createObjectURL(blob);
     } catch(err) { // fallback for ancient browsers
         uri = `data:${type},${encodeURIComponent(content)}`;
@@ -120,7 +120,7 @@ function generateDownloadLink(filename, content, type = "text/plain") {
     el.setAttribute("href", uri);
     return {
         el,
-        release: () => blob && URL.revokeObjectURL(blob)
+        release: () => uri && URL.revokeObjectURL(uri)
     };
 }
 ```
