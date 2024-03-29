@@ -20,13 +20,14 @@ export let favicon = {
 };
 
 // TODO: use `AssetManager` for URI generation
+let prism = `${ROOT_DIR}/node_modules/prismjs`; // TODO: use `import.meta.resolve`
 export let css = {
 	default: [{
 		source: `${ROOT_DIR}/src/assets/main.css`,
 		uri: normalize(`${_assetsDir}/main.css`)
 	}],
-	syntax: [{ // TODO: use `import.meta.resolve`
-		source: `${ROOT_DIR}/node_modules/prismjs/themes/prism.min.css`,
+	syntax: [{
+		source: `${prism}/themes/prism.min.css`,
 		uri: normalize(`${_assetsDir}/prism.min.css`)
 	}]
 };
@@ -34,6 +35,24 @@ export let js = {
 	embed: [{
 		source: `${ROOT_DIR}/src/assets/embed.js`,
 		uri: normalize(`${_assetsDir}/embed.js`)
+	}, {
+		source: `${prism}/components/prism-core.min.js`,
+		uri: normalize(`${_assetsDir}/prism-core.min.js`)
+	}, {
+		source: `${prism}/components/prism-markup.min.js`,
+		uri: normalize(`${_assetsDir}/prism-markup.min.js`)
+	}, {
+		source: `${prism}/components/prism-css.min.js`,
+		uri: normalize(`${_assetsDir}/prism-css.min.js`)
+	}, {
+		source: `${prism}/components/prism-clike.min.js`,
+		uri: normalize(`${_assetsDir}/prism-clike.min.js`)
+	}, {
+		source: `${prism}/components/prism-javascript.min.js`,
+		uri: normalize(`${_assetsDir}/prism-javascript.min.js`)
+	}, {
+		source: `${prism}/plugins/autoloader/prism-autoloader.min.js`,
+		uri: normalize(`${_assetsDir}/prism-autoloader.min.js`)
 	}]
 };
 

@@ -1,3 +1,6 @@
+/* eslint-env browser */
+/* global Prism */
+
 let CSS = new CSSStyleSheet();
 CSS.replace(`
 web-demo {
@@ -32,6 +35,18 @@ web-demo {
 `);
 document.adoptedStyleSheets.push(CSS);
 
+let ASSETS_URI = "/assets";
+window.Prism ||= {};
+Prism.manual = true;
+let HIGHLIGHTER = () => {
+	HIGHLIGHTER = import(`${ASSETS_URI}/prism-core.min.js`).
+		then(() => import(`${ASSETS_URI}/prism-autoloader.min.js`)).
+		then(() => {
+			Prism.plugins.autoloader.languages_path = `${ASSETS_URI}/`;
+		});
+	return HIGHLIGHTER;
+};
+
 customElements.define("web-demo", class WebDemo extends HTMLElement {
 	#elements = makeDialog();
 
@@ -55,6 +70,9 @@ customElements.define("web-demo", class WebDemo extends HTMLElement {
 		let { dialog, code } = this.#elements;
 		dialog.showModal();
 		code.textContent = await res;
+
+		await (HIGHLIGHTER.call ? HIGHLIGHTER() : HIGHLIGHTER);
+		Prism.highlightElement(code);
 	}
 
 	initResize(defer) {
@@ -97,7 +115,7 @@ function makeDialog() {
 <form method="dialog">
 	<button>Close</button>
 </form>
-<pre><code></code></pre>
+<pre><code class="language-markup" data-dependencies="markup,css,js"></code></pre>
 	`.trim();
 	return {
 		dialog: el,

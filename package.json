@@ -7,7 +7,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"commonmark": "^0.30.0",
+		"commonmark": "^0.31.0",
 		"lampenfieber": "^1.1.0",
 		"metacolon": "^1.1.1",
 		"prismjs": "^1.29.0"
