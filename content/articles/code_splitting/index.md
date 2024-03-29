@@ -1,5 +1,5 @@
 title: Code Splitting for Humans
-tags: web, javascript
+tags: javascript
 author: FND
 created: 2023-12-10
 syntax: true

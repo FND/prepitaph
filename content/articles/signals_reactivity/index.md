@@ -1,5 +1,5 @@
 title: Signals for Reactivity
-tags: web, javascript
+tags: javascript
 author: FND
 created: 2023-05-29
 syntax: true

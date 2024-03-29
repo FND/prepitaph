@@ -1,5 +1,5 @@
 title: Scroll Shadows
-tags: web, css
+tags: css
 author: FND
 created: 2024-01-28
 syntax: true

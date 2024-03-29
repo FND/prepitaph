@@ -1,5 +1,5 @@
 title: Theming with Constructed Style Sheets
-tags: web, css, javascript
+tags: css, javascript
 author: FND
 created: 2023-11-26
 syntax: true

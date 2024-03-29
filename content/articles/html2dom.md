@@ -1,5 +1,5 @@
 title: From HTML to DOM Nodes
-tags: web, html, javascript
+tags: html, javascript
 author: FND
 created: 2023-08-17
 syntax: true

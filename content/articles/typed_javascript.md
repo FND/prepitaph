@@ -1,5 +1,5 @@
 title: Augmenting JavaScript with Static Typing
-tags: web, javascript, typescript
+tags: javascript, typescript
 author: FND
 created: 2023-10-01
 syntax: true
