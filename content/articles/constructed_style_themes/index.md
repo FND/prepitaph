@@ -97,7 +97,7 @@ general. The downside is that this kind of string concatenation always feels a
 little icky compared to key-value assignments, though it doesn't seem so bad in
 this context.
 
-```embed uri=./demo.html
+```embed uri=./demo.html resize
 ```
 
 ```aside

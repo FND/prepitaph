@@ -392,6 +392,8 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 
 .article iframe {
 	width: 100%;
+}
+.article iframe:not([style]) {
 	min-height: 20rem;
 }
 

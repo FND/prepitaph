@@ -33,6 +33,8 @@ function serializeAttributes(attribs) {
 		}
 		if(typeof value === "number") {
 			value = value.toString();
+		} else if(value === true) {
+			value = "";
 		}
 		value = value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
 		return memo.concat(`${name}="${value}"`);

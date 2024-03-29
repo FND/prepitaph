@@ -16,6 +16,7 @@ export async function renderArticle(article, { assets, store, config }, options)
 	}
 	let { css } = config;
 	let styles = article.syntax ? css.default.concat(css.syntax) : css.default;
+	assets.register(config.js.embed);
 	return layout({
 		title: article.title,
 		summary,

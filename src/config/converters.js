@@ -126,32 +126,10 @@ export async function embed(content, { uri, resize }, context) {
 		path = _path.join("/");
 	}
 
-	let id = resize === true ? `embed${crypto.randomUUID()}` : resize;
-	return html`<iframe${{
-		id,
+	return html`<web-demo${{ resize }}><iframe${{
 		src: page.url(context.config.baseURL).href + path
-	}}></iframe>${id && trustedHTML`<script type="module" class="nonvisual">
-let IFRAME = document.getElementById("${id}");
-
-init();
-
-function init() {
-	let doc = IFRAME.contentDocument;
-	if(doc?.location.href === "about:blank") {
-		setTimeout(init, 50);
-	} else if(doc?.documentElement) {
-		autoResize();
-	} else {
-		IFRAME.addEventListener("load", autoResize);
-	}
-}
-
-function autoResize() {
-	new ResizeObserver(([entry]) => {
-		IFRAME.style.height = entry.borderBoxSize[0].blockSize + "px";
-	}).observe(IFRAME.contentDocument.documentElement);
-}
-		</script>`}`;
+	}}></iframe></web-demo>
+	<script type="module" src="/assets/embed.js" async></script>`;
 }
 
 export async function disclosure(content, params, context) {

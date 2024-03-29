@@ -45,7 +45,7 @@ control its markup.
 
 Inevitably, we end up with nested cards:
 
-```embed uri=./demo2.html
+```embed uri=./demo2.html resize
 ```
 
 Note that we've highlighted an individual card by customizing `--card-accent`
@@ -54,7 +54,7 @@ contract.
 
 But what if we highlight our top-level card instead?
 
-```embed uri=./demo3.html
+```embed uri=./demo3.html resize
 ```
 
 That's a bit garish! Nested cards inherit the customization; that's not what we
@@ -82,7 +82,7 @@ meaning we can suppress inheritance for this particular customization option:
 in Firefox.
 ```
 
-```embed uri=./demo4.html
+```embed uri=./demo4.html resize
 ```
 
 Having said that, in this particular case we could have just moved the
@@ -97,7 +97,7 @@ custom-property definition into our `.card` rule set instead:
 }
 ```
 
-```embed uri=./demo5.html
+```embed uri=./demo5.html resize
 ```
 
 So we don't actually need this newfangled bit of CSS here. In fact, after
@@ -142,7 +142,7 @@ able to limit selectors' reach without foregoing inheritance wholesale.
 I'm not entirely sure yet how that might apply to the challenges described
 above, so I've created a separate demo instead:
 
-```embed uri=./demo6.html
+```embed uri=./demo6.html resize
 ```
 
 Here both `button` and `.title` styling is limited to `my-card` descendants

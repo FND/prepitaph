@@ -95,7 +95,7 @@ function str2int(txt) {
 These little wrappers around native functionality are all we need to create a
 simplistic demo:
 
-```embed uri=./demo.html
+```embed uri=./demo.html resize
 ```
 
 That same code might also be used in a [simple command-line script](./cli.js).

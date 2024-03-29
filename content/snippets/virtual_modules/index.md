@@ -68,7 +68,7 @@ For example, if you misguidedly employ
 might wanna <s>ridicule</s> mock such connections for testing purposes:
 ```
 
-```embed uri=./demo.html
+```embed uri=./demo.html resize
 ```
 
 ```aside

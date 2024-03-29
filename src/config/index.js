@@ -11,20 +11,29 @@ export let assetsDir = "./assets"; // NB: relative to `outputDir`
 export let host = "https://prepitaph.org";
 export let pathPrefix = process.env.PATH_PREFIX || "";
 
+let _assetsDir = `${pathPrefix}/${assetsDir}`;
+
 export let siteTitle = "prepitaph";
 export let favicon = {
 	source: `${ROOT_DIR}/src/assets/icon.svg`,
-	uri: normalize(`${pathPrefix}/${assetsDir}/icon.svg`)
+	uri: normalize(`${_assetsDir}/icon.svg`)
 };
 
-export let css = { // TODO: use `AssetManager` for URI generation
+// TODO: use `AssetManager` for URI generation
+export let css = {
 	default: [{
 		source: `${ROOT_DIR}/src/assets/main.css`,
-		uri: normalize(`${pathPrefix}/${assetsDir}/main.css`)
+		uri: normalize(`${_assetsDir}/main.css`)
 	}],
 	syntax: [{ // TODO: use `import.meta.resolve`
 		source: `${ROOT_DIR}/node_modules/prismjs/themes/prism.min.css`,
-		uri: normalize(`${pathPrefix}/${assetsDir}/prism.min.css`)
+		uri: normalize(`${_assetsDir}/prism.min.css`)
+	}]
+};
+export let js = {
+	embed: [{
+		source: `${ROOT_DIR}/src/assets/embed.js`,
+		uri: normalize(`${_assetsDir}/embed.js`)
 	}]
 };
 

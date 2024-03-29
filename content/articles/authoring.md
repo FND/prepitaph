@@ -124,7 +124,7 @@ Note the use of `backticks` to permit embedding other components.
 ### Infobox
 
 An infobox constitutes a prominent note, typically used for cautionary remarks
-or to explan significant updates. It may consist of multiple content blocks
+or to explain significant updates. It may consist of multiple content blocks
 which are treated as Markdown by default.
 
 ```infobox
@@ -282,17 +282,16 @@ Available parameters:
 
 Embeds are typically used for demo pages:
 
-```embed uri=articles/encrypted-web-documents/demo.html resize=sample
+```embed uri=articles/encrypted-web-documents/demo.html resize
 ```
 
 ```
-'''embed uri=articles/encrypted-web-documents/demo.html resize=sample
+'''embed uri=articles/encrypted-web-documents/demo.html resize
 '''
 ```
 
 * URIs starting with `./` are treated as assets from the respective page.
-* `resize` or `resize=$id` activates automatic resizing based on the respective
-  content.
+* `resize` activates automatic resizing based on the respective content.
 
 
 ### Disclosure

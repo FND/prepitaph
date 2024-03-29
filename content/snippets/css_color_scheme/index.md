@@ -11,5 +11,5 @@ controls, let alone
 [replaced elements](https://developer.mozilla.org/en-US/docs/Web/CSS/Replaced_element),
 which usually ends badly.
 
-```embed uri=./demo.html resize=demo
+```embed uri=./demo.html resize
 ```

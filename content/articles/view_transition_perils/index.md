@@ -72,7 +72,7 @@ Jake adds:
 In accordance with local regulations, I've created a not-quite-minimal test case
 which simulates a mutable list along with a few simple animations:
 
-```embed uri=./demo.html
+```embed uri=./demo.html resize
 ```
 
 Hopefully the
