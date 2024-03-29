@@ -1,5 +1,5 @@
 title: HTML Boilerplate
-tags: html
+tags: web, html, css
 author: FND
 created: 2023-12-17
 syntax: true
@@ -67,7 +67,15 @@ $ TITLE="hello world" CONTENT="lorem ipsum" envsubst < template.html
 
 :root {
     --h-size: 60ch;
+
+    /* modular scale-ish; cf. https://www.modularscale.com/?1.5 */
     --spacing: 0.5rem;
+    --spacing-sm1: calc(var(--spacing) * 0.667);
+    --spacing-sm2: calc(var(--spacing) * 0.444);
+    --spacing-sm3: calc(var(--spacing) * 0.296);
+    --spacing-lg1: calc(var(--spacing) * 1.5);
+    --spacing-lg2: calc(var(--spacing) * 2.25);
+    --spacing-lg3: calc(var(--spacing) * 3.375);
 }
 
 body {
@@ -78,11 +86,18 @@ body {
     line-height: 1.5;
 }
 
+select,
+textarea,
+input,
+button {
+    font: inherit;
+}
+
 .stack > * {
     margin-block: 0;
 
     & + * {
-        margin-top: var(--spacing);
+        margin-block-start: var(--spacing);
     }
 }
     </style>
