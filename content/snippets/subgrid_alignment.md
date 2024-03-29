@@ -154,7 +154,7 @@ items.)
 ```
 
 ```markdown allowHTML
-<style class="visually-hidden">
+<style class="nonvisual">
 .snippet var {
     font-style: normal;
 }

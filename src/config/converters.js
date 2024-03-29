@@ -101,14 +101,14 @@ export async function intro(content, params, context) {
 }
 
 export async function infobox(content, params, context) {
-	return html`<div class="infobox stack"><b class="visually-hidden">NB: </b>${{
+	return html`<div class="infobox stack"><b class="nonvisual">NB: </b>${{
 		[RAW]: await render(content, params, context)
 	}}</div>`;
 }
 
 export async function aside(content, params, context) {
 	return html`<aside class="${params.compact && "is-compact "}stack"><b${{
-		class: "visually-hidden"
+		class: "nonvisual"
 	}}>Aside: </b>${{
 		[RAW]: await render(content, params, context)
 	}}</aside>`;
@@ -130,7 +130,7 @@ export async function embed(content, { uri, resize }, context) {
 	return html`<iframe${{
 		id,
 		src: page.url(context.config.baseURL).href + path
-	}}></iframe>${id && trustedHTML`<script type="module" class="visually-hidden">
+	}}></iframe>${id && trustedHTML`<script type="module" class="nonvisual">
 let IFRAME = document.getElementById("${id}");
 
 init();

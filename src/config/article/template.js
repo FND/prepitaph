@@ -100,7 +100,7 @@ async function render(article, context,
 
 function injectPermalinks(html) {
 	return html + `
-<script class="visually-hidden">
+<script class="nonvisual">
 document.querySelectorAll(":is(h2, h3, h4, h5, h6)[id]").forEach(node => {
 	let link = document.createElement("a");
 	link.href = "#" + node.id;

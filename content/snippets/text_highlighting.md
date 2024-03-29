@@ -71,7 +71,7 @@ mark:is(.type1, .type2, .type3) {
 ```
 
 ```markdown allowHTML
-<style class="visually-hidden">
+<style class="nonvisual">
 .snippet mark {
     display: inline-block;
     background-color: transparent;

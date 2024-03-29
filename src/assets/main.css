@@ -103,7 +103,7 @@ a[href^="https://"] {
 
 /* utilities */
 
-.visually-hidden:not(:focus, :active) {
+.nonvisual:not(:focus, :active) {
 	position: absolute;
 	width: 1px;
 	height: 1px;
@@ -118,7 +118,7 @@ a[href^="https://"] {
 .stack > :not(summary) { /* XX: special-casing */
 	display: block;
 }
-.stack > :not(.visually-hidden:first-child) + * {
+.stack > :not(.nonvisual:first-child) + * {
 	margin-top: var(--spacing);
 }
 .stack > :is(h1, h2, h3) {
