@@ -14,6 +14,10 @@ web-demo {
 			top: 0;
 			right: 0;
 			border-radius: 0;
+
+			&::before {
+				content: "🔍";
+			}
 		}
 	}
 
@@ -53,7 +57,10 @@ customElements.define("web-demo", class WebDemo extends HTMLElement {
 	connectedCallback() {
 		let btn = document.createElement("button");
 		btn.type = "button";
-		btn.textContent = "🔍";
+		let el = document.createElement("b");
+		el.className = "nonvisual";
+		el.textContent = "view source";
+		btn.appendChild(el);
 		btn.addEventListener("click", this);
 		this.append(btn, this.#elements.dialog);
 		if(this.resize) {
