@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>CSS @scope</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+
+	/* modular scale-ish; cf. https://www.modularscale.com/?1.5 */
+	--spacing: 0.5rem;
+	--spacing-sm2: calc(var(--spacing) * 0.444);
+	--spacing-sm3: calc(var(--spacing) * 0.296);
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+pre {
+	margin-left: var(--spacing);
+	padding-inline: var(--spacing);
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-top: var(--spacing);
+	}
+}
+
+my-card {
+	display: inline-block;
+	border-radius: var(--spacing);
+	padding: var(--spacing);
+	box-shadow: 0 var(--spacing-sm3) var(--spacing) #0008;
+
+	> * {
+		margin-block: 0;
+	}
+
+	header {
+		display: flex;
+		gap: var(--spacing);
+
+		h2 {
+			flex-grow: 1;
+			margin-block: 0;
+		}
+	}
+
+	.controls {
+		display: flex;
+		list-style-type: none;
+		padding: var(--spacing-sm2) 0;
+		justify-content: space-evenly;
+		border-radius: var(--spacing);
+		background-color: #EEE;
+	}
+
+	@scope (&) to (:scope section) {
+		button {
+			display: inline-block;
+			border: none;
+			background-color: transparent;
+			cursor: pointer;
+
+			&:is(:active, ._state-active) {
+				transform: scale(0.9);
+			}
+
+			b {
+				display: block;
+				width: 1.5rem;
+				aspect-ratio: 1;
+				border: 1px solid #AAA;
+				border-radius: 100%;
+				padding: var(--spacing-sm3);
+			}
+		}
+
+		.title {
+			font-variant: small-caps;
+		}
+	}
+}
+
+my-list {
+	display: block;
+
+	ul {
+		list-style-type: none;
+		padding-left: 0;
+	}
+}
+	</style>
+</head>
+
+<body class="stack">
+	<my-card>
+		<header class="title">
+			<h2>My Card</h2>
+			<button type="button"><b>☆</b></button>
+		</header>
+		<menu class="controls">
+			<li><button type="button"><b>✏️</b></button></li>
+			<li><button type="button"><b>✂️</b></button></li>
+			<li><button type="button"><b>🗑️</b></button></li>
+		</menu>
+		<section class="stack">
+			<p>lorem ipsum dolor sit amet</p>
+			<my-list class="stack">
+				<b class="title">Checklist</b>
+				<ul class="stack">
+					<li>
+						<button type="button">☑</button>
+						Foo
+					</li>
+					<li>
+						<button type="button">☑</button>
+						Bar
+					</li>
+					<li>
+						<button type="button">☑</button>
+						Baz
+					</li>
+				</ul>
+			</my-list>
+		</section>
+	</my-card>
+</body>
+
+</html>
