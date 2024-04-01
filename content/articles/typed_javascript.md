@@ -18,7 +18,8 @@ heavy cost -- much of it borne by users no less.
 
 While I've long had reservations about JSDoc, based on ergonomics and personal
 aesthetics, in this particular context its costs are typically much lower and
-more localized. So when typing is warranted, moving type definitions into JSDoc
+more localized. So when typing is warranted,
+[moving type definitions into JSDoc](https://alexharri.com/blog/jsdoc-as-an-alternative-typescript-syntax)
 seems like a reasonable approach. (This isn't an entirely new idea of course:
 Both Closure Compiler and Flow did pretty much the same thing to maintain syntax
 compatibility.)
