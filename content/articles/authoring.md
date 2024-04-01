@@ -320,6 +320,11 @@ var foo = "bar";
 YMMV.
 ```
 
+Available parameters:
+
+* `caption` (required) provides the summary description.
+* `markdown` optionally activates Markdown support for that caption.
+
 
 ### List
 

@@ -133,7 +133,13 @@ export async function embed(content, { uri, resize }, context) {
 }
 
 export async function disclosure(content, params, context) {
-	return html`<details class="stack"><summary>${params.caption}</summary>${{
+	let { caption } = params;
+	if(params.markdown) {
+		caption = {
+			[RAW]: await render(caption, params, context)
+		};
+	}
+	return html`<details class="disclosure stack"><summary>${caption}</summary>${{
 		[RAW]: await render(content, params, context)
 	}}</details>`;
 }

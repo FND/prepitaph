@@ -288,6 +288,10 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 	background-color: #FFFFA555;
 }
 
+.article .disclosure > summary p {
+	display: inline;
+}
+
 .article .footnote {
 	margin-left: var(--spacing-lg3);
 	font-size: small;
