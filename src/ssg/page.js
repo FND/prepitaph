@@ -42,6 +42,10 @@ export class Page {
 		}
 
 		let path = localPath(this);
+		if(path.at(-2) === "index") { // category index -- XXX: special-casing
+			path = path.toSpliced(-2, 1);
+			this.categoryIndex = true;
+		}
 		this.localPath = join(...path);
 		// NB: `index.html` is implicit via trailing slash
 		if(path.at(-1) === "index.html") { // XXX: special-casing

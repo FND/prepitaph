@@ -1,4 +1,5 @@
 import { renderArticle } from "./template.js";
+import { InfoPage } from "../info_page.js";
 import { Page, INVALID } from "../../ssg/page.js";
 import { trustedHTML } from "../../ssg/html.js";
 import { iso2date, clone } from "../../ssg/util.js";
@@ -30,6 +31,11 @@ export class Article extends Page {
 	}
 
 	async render(context, options = {}) {
+		if(this.categoryIndex) {
+			// XXX: switching to a different class is very awkward and brittle
+			return InfoPage.prototype.render.call(this, context);
+		}
+
 		context = this.augmentContext(context);
 		context.footnotes = []; // XXX: hacky
 
