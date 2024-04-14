@@ -91,7 +91,7 @@ async function render(article, context,
 	};
 	return html`
 <${tag}${{
-	class: [...new Set([article.constructor.type, "article", "stack"])].join(" ")
+	class: [...new Set([article.typeIdentifier, "article", "stack"])].join(" ")
 }}>
 	${header}
 	${main}

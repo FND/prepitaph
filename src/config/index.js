@@ -1,3 +1,4 @@
+import { Article } from "./article/index.js";
 import { fileURLToPath } from "node:url";
 import { resolve, normalize, dirname } from "node:path";
 
@@ -59,8 +60,12 @@ export let js = {
 export let categories = {
 	NONE: () => import("./info_page.js").
 		then(m => m.InfoPage),
-	articles: () => import("./article/index.js").
-		then(m => m.Article),
-	snippets: () => import("./snippet.js").
-		then(m => m.Snippet)
+	articles: async () => Article,
+	snippets: async () => class Snippet extends Article {
+		static type = "snippet";
+	},
+	wip: async () => class WIP extends Article {
+		static type = "work in progress";
+		static symbol = "✏️";
+	}
 };

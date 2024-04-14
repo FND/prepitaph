@@ -48,8 +48,17 @@ export class Article extends Page {
 	}
 
 	renderType() {
+		let { type, symbol } = this.constructor;
+		return type !== Article.type && trustedHTML`<small class="content-type"${{
+			"data-type": symbol
+		}}>${type}</small>`;
+	}
+
+	get typeIdentifier() {
 		let { type } = this.constructor;
-		return type !== Article.type &&
-				trustedHTML`<small class="content-type">${type}</small>`;
+		if(/[^a-z0-9 -]/.test(type)) { // just to be safe
+			throw new Error(`invalid type: \`${type}\``);
+		}
+		return type.replaceAll(" ", "-");
 	}
 }
