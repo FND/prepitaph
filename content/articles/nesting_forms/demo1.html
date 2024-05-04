@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Nested Forms (HTML)</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-top: var(--spacing);
+	}
+}
+	</style>
+</head>
+
+<body class="stack">
+	<h1>Nested Forms (HTML)</h1>
+	<form method="dialog">
+		<button>Submit</button>
+		<dialog>
+			<form method="dialog">
+				<button>Close</button>
+			</form>
+		</dialog>
+	</form>
+
+	<script type="module">
+document.body.addEventListener("submit", ev => {
+	let form = ev.target;
+	if(!form.closest("dialog")) {
+		form.querySelector("dialog").showModal();
+		ev.preventDefault();
+	}
+});
+	</script>
+
+	<script type="module">
+let FORM = document.querySelector("form");
+
+let el = document.createElement("pre");
+el.textContent = FORM.outerHTML.
+	replace(/\n\t*\n/g, "\n"). // strip blank lines
+	replace(/^\t(\t*)/gm, "$1"). // dedent
+	replace("</form>", "\n</form>"); // prettify
+document.body.appendChild(el);
+	</script>
+</body>
+
+</html>
