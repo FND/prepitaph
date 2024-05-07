@@ -127,7 +127,7 @@ function serializeAttributes(attribs) {
 Here we use the respective value's type to distinguish content (strings) from
 attributes (objects) -- which also makes for declarative authoring syntax.
 
-Caveat: This implementation doesn't encode attribute names, though I'm not
+Caveat: This implementation doesn't encode attribute names, though I'm not sure
 whether that'd ever be a sensible thing to do.
 
 We also don't support consciously injecting raw HTML. Let's remedy that:
@@ -164,3 +164,88 @@ attributes.
 One could even imagine an asynchronous version which supports promises; that
 would be particularly handy for streaming HTML. A colleague created
 [Staggard](https://deno.land/x/staggard) for that exact purpose.
+
+```disclosure markdown caption="Here's the final implementation ([augmented](page://articles/typed-javascript) with static types, just in case)."
+'''javascript
+let RAW = Symbol("raw HTML");
+
+/**
+ * @param {string} str
+ * @returns {TrustedContent}
+ */
+export let trustedHTML = str => ({
+    [RAW]: str,
+    toString: () => str,
+});
+
+/**
+ * @param {TemplateStringsArray} strings
+ * @param {...(HTMLContent | HTMLContent[])} values
+ * @returns {TrustedContent}
+ */
+export function html(strings, ...values) {
+    let i = 0;
+    let res = [strings[i]];
+    for(let value of values) {
+        i++;
+        if(typeof value === "number") {
+            value = value.toString();
+        }
+        if(typeof value === "string") {
+            res.push(encodeHTML(value));
+        } else if(value === false || value === null || value === undefined) {
+            // no-op
+        } else if(RAW in value) {
+            res.push(value[RAW]);
+        } else if(Array.isArray(value)) { // XXX: crude
+            for(let entry of value) {
+                res.push(html`${entry}`[RAW]);
+            }
+        } else {
+            value = serializeAttributes(/** @type {Attributes} */ (value));
+            res.push(value);
+        }
+        res.push(strings[i]);
+    }
+    return trustedHTML(res.join(""));
+}
+
+/** @param {Attributes} attribs */
+function serializeAttributes(attribs) {
+    let res = Object.entries(attribs).reduce((memo, [name, value]) => {
+        if(typeof value === "number") {
+            value = value.toString();
+        }
+        switch(value) {
+            case false:
+            case null:
+            case undefined:
+                return memo;
+            case true:
+                value = "";
+                break;
+        }
+        return memo.concat(`${name}="${encodeHTML(value, true)}"`);
+    }, /** @type {string[]} */ ([]));
+    return res.length === 0 ? "" : [""].concat(res).join(" ");
+}
+
+/** @param {string} str */
+function encodeHTML(str, isAttribute = false) {
+    str = str.replaceAll("&", "&amp;");
+    if(isAttribute) {
+        return str.replaceAll('"', "&quot;").
+            replaceAll("'", "&#x27;");
+    }
+    return str.replaceAll("<", "&lt;").
+        replaceAll(">", "&gt;");
+}
+
+/**
+ * @typedef {Content | false | TrustedContent | Attributes} HTMLContent
+ * @typedef {Record<string, Content | boolean>} Attributes
+ * @typedef {Record<typeof RAW, string> & { toString: () => string }} TrustedContent
+ * @typedef {string | number | null | undefined} Content
+ */
+'''
+```
