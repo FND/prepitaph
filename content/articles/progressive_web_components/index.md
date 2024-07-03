@@ -1,6 +1,6 @@
 title: Progressive Web Components
 tags: html, javascript
-author: fnd
+author: FND
 created: 2016-12-02
 canonical: https://www.innoq.com/en/blog/progressive-web-components-goto2016/
 syntax: true

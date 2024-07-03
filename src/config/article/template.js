@@ -19,6 +19,7 @@ export async function renderArticle(article, { assets, store, config }, options)
 	assets.register(config.js.embed);
 	return layout({
 		title: article.title,
+		author: article.author,
 		summary,
 		canonicalURL: article.canonicalURL,
 		content: await html.then(injectPermalinks),

@@ -4,6 +4,11 @@ import { resolve, normalize, dirname } from "node:path";
 
 let ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
 
+export let AUTHORS = {
+	FND: "@FND@hachyderm.io",
+	cdent: "@anticdent@hachyderm.io"
+};
+
 export * as blocks from "./converters.js";
 
 export let contentDir = "./content"; // NB: relative to current working directory

@@ -10,6 +10,7 @@ let NAV = {
 
 export default ({
 	title,
+	author,
 	summary = null,
 	canonicalURL = null,
 	content,
@@ -37,6 +38,12 @@ export default ({
 	}
 
 	title = title.isStandalone ? title.text : `${title} | ${config.siteTitle}`;
+	if(author) {
+		var handle = config.AUTHORS[author]; // eslint-disable-line no-var
+		if(handle === undefined) {
+			throw new Error(`unknown author: \`${author}\``);
+		}
+	}
 	// NB: layout will always be EN
 	return html`
 <!DOCTYPE html>
@@ -50,6 +57,8 @@ export default ({
 			trustedHTML`<link rel="canonical"${{ href: canonicalURL }}>`}
 	${summary &&
 			trustedHTML`<meta name="description"${{ content: summary }}>`}
+	${handle &&
+			trustedHTML`<meta property="fediverse:creator"${{ content: handle }}>`}
 	${FEED}
 	${ICON}
 	${{
