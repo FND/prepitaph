@@ -36,14 +36,14 @@ every scenario.
 We start out writing a function to encrypt text content using a password:
 
 ```javascript
-let CRYTPO = window.crypto.subtle;
+let CRYPTO = globalThis.crypto.subtle;
 let ALGO = "AES-GCM";
 let SALT = str2bytes("94211a24-0e7e-4a6a-ae17-6bdb5d25ce4b").buffer;
 
 export async function encrypt(txt, password) {
     let key = await deriveKey(password);
-    let iv = window.crypto.getRandomValues(new Uint8Array(16));
-    let encrypted = await CRYTPO.encrypt({ name: ALGO, iv }, key,
+    let iv = globalThis.crypto.getRandomValues(new Uint8Array(16));
+    let encrypted = await CRYPTO.encrypt({ name: ALGO, iv }, key,
             str2bytes(txt));
     return [iv, new Uint8Array(encrypted)].
         map(block => btoa(block.join(","))).
@@ -51,9 +51,9 @@ export async function encrypt(txt, password) {
 }
 
 async function deriveKey(password) {
-    let secret = await CRYTPO.importKey("raw", str2bytes(password),
+    let secret = await CRYPTO.importKey("raw", str2bytes(password),
             "PBKDF2", false, ["deriveBits", "deriveKey"]);
-    return await CRYTPO.deriveKey({
+    return await CRYPTO.deriveKey({
         name: "PBKDF2",
         salt: SALT,
         iterations: 100000,
@@ -83,8 +83,8 @@ export async function decrypt(txt, password) {
     let key = await deriveKey(password);
     let [iv, encrypted] = txt.split("|").
         map(block => Uint8Array.from(atob(block).split(","), str2int));
-    let decrypted = await CRYTPO.decrypt({ name: ALGO, iv }, key, encrypted);
-    return new window.TextDecoder().decode(new Uint8Array(decrypted));
+    let decrypted = await CRYPTO.decrypt({ name: ALGO, iv }, key, encrypted);
+    return new TextDecoder().decode(new Uint8Array(decrypted));
 }
 
 function str2int(txt) {

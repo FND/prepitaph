@@ -133,7 +133,7 @@ function applyTheme(colors, inline = false) {
 	THEME.replace(`:root { ${css} }`);
 }
 
-function createElement(tag, { parent, children = [], text, ...attribs }) {
+function createElement(tag, { parent, children, text, ...attribs }) {
 	let el = document.createElement(tag);
 	if(text) {
 		el.textContent = text;

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-let CRYTPO = crypto.subtle;
+let CRYPTO = crypto.subtle;
 let ALGO = "AES-GCM";
 let SALT;
 
@@ -50,7 +50,7 @@ function consumeInput() {
 
 async function encrypt(txt, password) {
 	let iv = crypto.getRandomValues(new Uint8Array(16));
-	let encrypted = await CRYTPO.encrypt({ name: ALGO, iv },
+	let encrypted = await CRYPTO.encrypt({ name: ALGO, iv },
 			await deriveKey(password), str2bytes(txt));
 	return [iv, new Uint8Array(encrypted)].
 		map(block => btoa(block.join(","))).
@@ -60,15 +60,15 @@ async function encrypt(txt, password) {
 async function decrypt(txt, password) {
 	let [iv, encrypted] = txt.split("|").
 		map(block => Uint8Array.from(atob(block).split(","), str2int));
-	let decrypted = await CRYTPO.decrypt({ name: ALGO, iv },
+	let decrypted = await CRYPTO.decrypt({ name: ALGO, iv },
 			await deriveKey(password), encrypted);
 	return new TextDecoder().decode(new Uint8Array(decrypted));
 }
 
 async function deriveKey(password) {
-	let secret = await CRYTPO.importKey("raw", str2bytes(password), "PBKDF2",
+	let secret = await CRYPTO.importKey("raw", str2bytes(password), "PBKDF2",
 			false, ["deriveBits", "deriveKey"]);
-	return await CRYTPO.deriveKey({
+	return await CRYPTO.deriveKey({
 		name: "PBKDF2",
 		salt: SALT,
 		iterations: 100000,
