@@ -2,6 +2,9 @@ title: Video Manipulation
 tags: miscellaneous, shell
 author: FND
 created: 2024-04-30
+syntax: true
+
+cf. [Image Manipulation](page://wip/image-manipulation)
 
 
 Reduce File Size
