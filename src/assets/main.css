@@ -130,6 +130,7 @@ a[href^="https://"] {
 	font-size: 0.8rem; /* XXX: magic value */
 
 	&::before{
+		content: "📝 ";
 		content: attr(data-type, "📝") " ";
 	}
 }
