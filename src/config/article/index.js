@@ -1,6 +1,6 @@
 import { renderArticle } from "./template.js";
 import { InfoPage } from "../info_page.js";
-import { Page, INVALID } from "../../ssg/page.js";
+import { Page, assertPageReference, INVALID } from "../../ssg/page.js";
 import { trustedHTML } from "../../ssg/html.js";
 import { iso2date, clone } from "../../ssg/util.js";
 
@@ -18,6 +18,16 @@ export class Article extends Page {
 		canonical: {
 			prop: "canonicalURL",
 			call: value => value || null
+		},
+		redirect: {
+			prop: "redirectURI",
+			call: value => {
+				if(value) {
+					assertPageReference(value);
+					return value;
+				}
+				return null;
+			}
 		},
 		syntax: value => value === "true"
 	};

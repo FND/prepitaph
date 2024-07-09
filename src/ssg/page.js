@@ -1,7 +1,27 @@
 import { clone, CustomError } from "./util.js";
 import { join } from "node:path";
 
+let REF_PREFIX = "page://";
+
 export let INVALID = Symbol("invalid field");
+
+export function assertPageReference(uri) {
+	if(!isPageReference(uri)) {
+		throw new Error(`invalid page reference: \`${uri}\``);
+	}
+}
+
+export function isPageReference(uri) {
+	return uri.startsWith(REF_PREFIX);
+}
+
+export function resolvePageReference(uri, context) {
+	assertPageReference(uri);
+	let [ref, fragID] = uri.slice(REF_PREFIX.length).split("#");
+	let page = context.store.resolve(ref);
+	let suffix = fragID ? `#${fragID}` : "";
+	return page.url(context.config.baseURL).pathname + suffix;
+}
 
 export class Page {
 	static fields = {

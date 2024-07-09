@@ -16,6 +16,9 @@ fields being defined by the respective page category.
 A page's URL slug is determined by `slug: …` metadata or derived from the
 respective file/directory name.
 
+[Canonical URLs](https://en.wikipedia.org/wiki/Canonical_link_element) are
+supported via `canonical: https://…`.
+
 
 Links
 -----
@@ -37,6 +40,13 @@ technical reasons):
 ```
 ![sample image](inline://image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD///+l2Z/dAAAAM0lEQVR4nGP4/5/h/1+G/58ZDrAz3D/McH8yw83NDDeNGe4Ug9C9zwz3gVLMDA/A6P9/AFGGFyjOXZtQAAAAAElFTkSuQmCC)
 ```
+
+
+Redirects
+---------
+
+Existing pages can be migrated to a new URL via `redirect: page://…` metadata.
+When doing so, they should typically tagged with "unlisted" (see below).
 
 
 Syntax Highlighting

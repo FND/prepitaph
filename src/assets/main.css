@@ -135,6 +135,19 @@ a[href^="https://"] {
 	}
 }
 
+/* redirect notice */
+
+.redirect-notice {
+	text-align: center;
+	font-weight: bold;
+}
+
+.redirect-notice small {
+	display: block;
+	margin-top: 0.5em;
+	font-weight: normal;
+}
+
 /* site header */
 
 .site-header {
@@ -269,6 +282,7 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 	}
 }
 
+.redirect-notice, /* XXX: does not belong here */
 .article aside:not(.footnote),
 .article .infobox {
 	border-width: calc(3 * var(--border-size)) 0; /* XXX: magic value */

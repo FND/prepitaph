@@ -1,5 +1,7 @@
+import { resolvePageReference } from "../ssg/page.js";
 import { html, trustedHTML, RAW } from "../ssg/html.js";
 
+let REDIRECT_DELAY = 5;
 // NB: cached; these are assumed to be identical on all pages
 let FEED, ICON;
 let NAV = {
@@ -13,6 +15,7 @@ export default ({
 	author,
 	summary = null,
 	canonicalURL = null,
+	redirectURI = null,
 	content,
 	css = [],
 	assets,
@@ -44,6 +47,19 @@ export default ({
 			throw new Error(`unknown author: \`${author}\``);
 		}
 	}
+
+	let redirect, redirectURL, redirectNotice;
+	if(redirectURI) {
+		redirectURL = resolvePageReference(redirectURI, { store, config });
+		redirect = `${REDIRECT_DELAY}; url=${redirectURL}`;
+		redirectNotice = trustedHTML`<p class="redirect-notice">
+	This page was moved to a <a${{ href: redirectURL }}>new URL</a>.
+	<small>
+		You should be automatically redirected within ${REDIRECT_DELAY} seconds.
+	</small>
+</p>`;
+	}
+
 	// NB: layout will always be EN
 	return html`
 <!DOCTYPE html>
@@ -55,6 +71,8 @@ export default ({
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	${canonicalURL &&
 			trustedHTML`<link rel="canonical"${{ href: canonicalURL }}>`}
+	${redirect &&
+			trustedHTML`<meta http-equiv="refresh"${{ content: redirect }}>`}
 	${summary &&
 			trustedHTML`<meta name="description"${{ content: summary }}>`}
 	${handle &&
@@ -70,6 +88,7 @@ export default ({
 
 <body class="stack">
 	<header class="site-header">${NAV}</header>
+	${redirectNotice}
 	${{ [RAW]: content }}
 </body>
 

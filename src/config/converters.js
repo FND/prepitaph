@@ -1,5 +1,6 @@
 import { siteTitle } from "./index.js"; // XXX: circular
 import { renderMarkdown } from "../ssg/markdown.js";
+import { isPageReference, resolvePageReference } from "../ssg/page.js";
 import { txt2blocks } from "../ssg/ingestion.js";
 import { html, trustedHTML, RAW } from "../ssg/html.js";
 import Prism from "prismjs";
@@ -173,11 +174,8 @@ async function markdown(content, { allowHTML = false }, context) {
 				let name = text.literal;
 				text.literal = footnotes.push(name);
 				return `#fn:${name}`;
-			} else if(uri.startsWith("page://")) {
-				let [ref, fragID] = uri.slice(7).split("#");
-				let page = context.store.resolve(ref);
-				let suffix = fragID ? `#${fragID}` : "";
-				return page.url(context.config.baseURL).pathname + suffix;
+			} else if(isPageReference(uri)) {
+				return resolvePageReference(uri, context);
 			}
 			return uri;
 		}

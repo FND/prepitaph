@@ -22,6 +22,7 @@ export async function renderArticle(article, { assets, store, config }, options)
 		author: article.author,
 		summary,
 		canonicalURL: article.canonicalURL,
+		redirectURI: article.redirectURI,
 		content: await html.then(injectPermalinks),
 		css: assets.register(styles),
 		assets,
