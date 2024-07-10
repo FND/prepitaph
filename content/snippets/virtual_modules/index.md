@@ -29,7 +29,7 @@ function code2uri(txt, type = "text/javascript") {
 
 ([Remember](page://articles/web-fs#ref:memleak) that we should discard blobs
 after use. Nevertheless, they are preferable to
-[`data:` URIs](page://articles/data-uris) in this particular context.)
+[data URIs](page://articles/data-uris) in this particular context.)
 
 I might then instantiate the aforementioned worker from within the same HTML
 document:

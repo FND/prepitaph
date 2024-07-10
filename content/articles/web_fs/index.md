@@ -26,7 +26,7 @@ which no longer work in modern browsers due to legitimate security concerns.
 
 TiddlyWiki then
 [introduced](https://github.com/TiddlyWiki/TiddlyWiki/commit/41831f30412d1d1d2c044c330c832a7eebfb1217#diff-632a7b3237f04683b8bc99235fe5044116bda1ff186068cc4bcbbfbc6ac1e75aR2088)
-[`data:` URIs](page://articles/data-uris) in 2006, though it took
+[data URIs](page://articles/data-uris) in 2006, though it took
 [until 2013](https://github.com/TiddlyWiki/TiddlyWiki/commit/9042417c8a9856927df8e2386cb4bc6464819b14)
 for them to be used in conjunction with HTML5 download links for the
 document itself. `Blob` usage
