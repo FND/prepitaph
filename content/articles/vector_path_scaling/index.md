@@ -222,7 +222,7 @@ issue can be observed here just the same: The slope's angle changes along with
 the container element's height. That's exactly what we _don't_ want to happen
 though!
 
-Temani Afif took the time to
+Temani Afif graciously took the time to
 [suggest](https://front-end.social/@css/112749852872469029) that
 [masking](https://css-tricks.com/clipping-masking-css/) might be more suitable
 than clipping here.[masking](footnote://) And indeed, switching from `clip-path`
@@ -238,13 +238,7 @@ speak...
 ```
 
 So let's go back to our original path definition and plug that in -- _et voilà_:
-This is pretty much[inverting](footnote://) the result we were hoping for in the
-first place!
-
-```footnote inverting
-Inverting the shape for is left as an exercise for the reader; remember we
-really wanted to clip outside rather than inside.
-```
+This is pretty much the result we were hoping for in the first place!
 
 ```markdown allowHTML
 <article id="mask-sample">
@@ -274,6 +268,36 @@ mask-position: top left;
 ```aside compact
 Note that `mask-image` also allows us to easily embed an SVG via
 [data URIs](page://articles/data-uris).
+```
+
+All that's left now is inverting; remember we really wanted to clip outside
+rather than inside. CSS masking can do that by combining multiple layers, so we
+don't even have to change our path definition!
+
+```markdown allowHTML
+<article id="mask-inverted-sample">
+    <p>lorem ipsum dolor sit amet</p>
+    <p>lorem ipsum dolor sit amet</p>
+    <p>lorem ipsum dolor sit amet</p>
+</article>
+<demo-toggle></demo-toggle>
+
+<style class="nonvisual">
+#mask-inverted-sample {
+    mask: no-repeat;
+    mask-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M1,1 l0,1 l40,1 a1,1 0 0,0,18 0 l40,-1 l0,-1 z" /></svg>'),
+            linear-gradient(red, red);
+    mask-size: 100% auto;
+    mask-position: top left;
+    mask-composite: exclude;
+}
+</style>
+```
+
+```css
+mask-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M1,1 l0,1 l40,1 a1,1 0 0,0,18 0 l40,-1 l0,-1 z" /></svg>'),
+        linear-gradient(red, red);
+mask-composite: exclude;
 ```
 
 So yay, we've achieved the desired effect, eventually, with just a few lines of
