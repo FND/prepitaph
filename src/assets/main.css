@@ -131,7 +131,8 @@ a[href^="https://"] {
 
 	&::before{
 		content: "📝 ";
-		content: attr(data-type, "📝") " ";
+		content: "📝 " / "";
+		content: attr(data-type, "📝") " " / "";
 	}
 }
 
