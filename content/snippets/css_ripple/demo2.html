@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Ripple Effect</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+h1 {
+	font-size: 1.2rem;
+	text-align: center;
+}
+
+a,
+button {
+	display: block;
+	margin-inline: auto;
+}
+
+a {
+	width: fit-content;
+	overflow: clip;
+	border-radius: var(--spacing);
+	padding: var(--spacing);
+}
+
+button {
+	font-size: inherit;
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-top: var(--spacing);
+	}
+}
+
+.ripple {
+	--ripple: 0%;
+
+	position: relative;
+}
+.ripple:is(:focus, :active) {
+	--ripple: 100%;
+}
+
+.ripple::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: currentcolor;
+	opacity: 0.5;
+	clip-path: ellipse(var(--ripple) var(--ripple) at center);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.ripple::after {
+		transition: clip-path 500ms ease-out;
+	}
+}
+	</style>
+</head>
+
+<body class="stack">
+	<h1>Ripple Effect</h1>
+	<button type="button" class="ripple">click me</button>
+	<a href="#" class="ripple">click me</a>
+
+	<script type="module">
+document.body.addEventListener("transitionend", ev => {
+	console.log(`[${ev.type}]`, ev.target);
+});
+	</script>
+</body>
+
+</html>
