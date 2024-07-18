@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Color Browser (defective)</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: var(--spacing) auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-top: var(--spacing);
+	}
+}
+
+h1 {
+	font-size: 1.2rem;
+}
+
+color-browser {
+	display: block;
+	max-width: 20rem; /* XXX: magic number */
+
+	ul {
+		--bg-color: #FFF;
+		--shadow-color: #0003;
+		--shadow-size: var(--spacing);
+
+		max-height: 50vh;
+		overflow: auto;
+		padding-inline: 0;
+		list-style-type: none;
+		/* cf. https://lea.verou.me/blog/2012/04/background-attachment-local/ */
+		background: linear-gradient(var(--bg-color) 30%, transparent),
+				linear-gradient(transparent, var(--bg-color) 70%) 0 100%,
+				radial-gradient(farthest-side at 50% 0, var(--shadow-color), transparent),
+				radial-gradient(farthest-side at 50% 100%, var(--shadow-color), transparent) 0 100%;
+		background-size: 100% calc(4 * var(--shadow-size)),
+				100% calc(4 * var(--shadow-size)),
+				100% calc(2 * var(--shadow-size)),
+				100% calc(2 * var(--shadow-size));
+		background-attachment: local, local, scroll, scroll;
+		background-repeat: no-repeat;
+	}
+
+	li {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		column-gap: var(--spacing);
+		align-items: center;
+
+		span {
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		code {
+			white-space: pre;
+
+			&::before {
+				content: "🎨 ";
+			}
+		}
+	}
+
+	form {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: var(--spacing);
+		align-items: end;
+	}
+
+	label {
+		display: block;
+
+		&:not(:has(input[type=checkbox])) span {
+			display: block;
+			font-size: 0.8em;
+		}
+
+		&:has(input[type=checkbox]) span::before {
+			content: " ";
+		}
+	}
+
+	input[type=search] {
+		width: 100%;
+	}
+
+	input[type=color] {
+		width: 1rem;
+		height: 1rem;
+		border: none;
+		padding: 0;
+		background-color: transparent;
+	}
+}
+	</style>
+</head>
+
+<body class="stack">
+	<h1>Color Browser (defective)</h1>
+	<color-browser class="stack"></color-browser>
+
+	<script type="module">
+import { COLORS } from "./colors.js";
+
+customElements.define("color-browser", class ColorBrowser extends HTMLElement {
+	query = null;
+	rgb = false;
+
+	connectedCallback() {
+		this.#render();
+		this.addEventListener("input", this);
+		this.addEventListener("change", this);
+	}
+
+	handleEvent(ev) {
+		let el = ev.target;
+		switch(ev.type) {
+		case "change":
+			if(el.type === "checkbox") {
+				this.rgb = el.checked;
+				this.#render();
+			}
+			break;
+		case "input":
+			if(el.type === "search") {
+				this.query = el.value.toLowerCase();
+				this.#render();
+			}
+			break;
+		}
+	}
+
+	get colors() {
+		let { query } = this;
+		if(!query) {
+			return [...COLORS];
+		}
+
+		return COLORS.filter(color => color.name.toLowerCase().includes(query));
+	}
+
+	#render() {
+		this.replaceChildren();
+		this.append(renderControls(), renderPalette(this.colors));
+	}
+});
+
+function renderControls() {
+	return makeElement("form", {
+		method: "dialog",
+		children: [
+			createField("search", "Search"),
+			createField("checkbox", "RGB")
+		]
+	});
+}
+
+function renderPalette(colors) {
+	let items = [];
+	for(let color of colors) {
+		let item = document.createElement("li");
+		items.push(item);
+
+		let value = color.hex;
+		makeElement("input", {
+			parent: item,
+			type: "color",
+			value
+		});
+		makeElement("span", {
+			parent: item,
+			text: color.name
+		});
+		makeElement("code", {
+			parent: item,
+			text: value
+		});
+	}
+
+	let list = document.createElement("ul");
+	list.append(...items);
+	return list;
+}
+
+function createField(type, caption) {
+	let children = [
+		makeElement("span", { text: caption }),
+		makeElement("input", { type })
+	];
+	return makeElement("label", {
+		children: type === "checkbox" ? children.reverse() : children
+	});
+}
+
+function makeElement(tag, { parent, children, text, ...attribs }) {
+	let el = document.createElement(tag);
+	if(text) {
+		el.textContent = text;
+	}
+	for(let [name, value] of Object.entries(attribs)) {
+		el.setAttribute(name, value);
+	}
+	if(children) {
+		el.append(...children);
+	}
+	parent?.appendChild(el);
+	return el;
+}
+	</script>
+</body>
+
+</html>

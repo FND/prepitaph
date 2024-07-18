@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Color Browser (inert)</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: var(--spacing) auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-top: var(--spacing);
+	}
+}
+
+h1 {
+	font-size: 1.2rem;
+}
+
+color-browser {
+	display: block;
+	max-width: 20rem; /* XXX: magic number */
+
+	ul {
+		--bg-color: #FFF;
+		--shadow-color: #0003;
+		--shadow-size: var(--spacing);
+
+		max-height: 12rem; /* XXX: magic number */
+		overflow: auto;
+		padding-inline: 0;
+		list-style-type: none;
+		/* cf. https://lea.verou.me/blog/2012/04/background-attachment-local/ */
+		background: linear-gradient(var(--bg-color) 30%, transparent),
+				linear-gradient(transparent, var(--bg-color) 70%) 0 100%,
+				radial-gradient(farthest-side at 50% 0, var(--shadow-color), transparent),
+				radial-gradient(farthest-side at 50% 100%, var(--shadow-color), transparent) 0 100%;
+		background-size: 100% calc(4 * var(--shadow-size)),
+				100% calc(4 * var(--shadow-size)),
+				100% calc(2 * var(--shadow-size)),
+				100% calc(2 * var(--shadow-size));
+		background-attachment: local, local, scroll, scroll;
+		background-repeat: no-repeat;
+	}
+
+	li {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		column-gap: var(--spacing);
+		align-items: center;
+
+		span {
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		code {
+			white-space: pre;
+
+			&::before {
+				content: "🎨 ";
+			}
+		}
+	}
+
+	form {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: var(--spacing);
+		align-items: end;
+
+		* {
+			cursor: not-allowed;
+		}
+
+		fieldset {
+			display: contents;
+		}
+	}
+
+	label {
+		display: block;
+
+		&:not(:has(input[type=checkbox])) span {
+			display: block;
+			font-size: 0.8em;
+		}
+
+		&:has(input[type=checkbox]) span::before {
+			content: " ";
+		}
+	}
+
+	input[type=search] {
+		width: 100%;
+	}
+
+	input[type=color] {
+		width: 1rem;
+		height: 1rem;
+		border: none;
+		padding: 0;
+		background-color: transparent;
+	}
+}
+	</style>
+</head>
+
+<body class="stack">
+	<h1>Color Browser (inert)</h1>
+	<color-browser class="stack">
+		<form>
+			<fieldset disabled>
+				<label>
+					<span>Search</span>
+					<input type="search" name="search">
+				</label>
+				<label>
+					<input type="checkbox" name="rgb">
+					<span>RGB</span>
+				</label>
+			</fieldset>
+		</form>
+		<ul>
+			<li>
+				<input type="color" value="#F0F8FF">
+				<span>aliceblue</span>
+				<code>#F0F8FF</code>
+			</li>
+			<li>
+				<input type="color" value="#FAEBD7">
+				<span>antiquewhite</span>
+				<code>#FAEBD7</code>
+			</li>
+			<li>
+				<input type="color" value="#00FFFF">
+				<span>aqua</span>
+				<code>#00FFFF</code>
+			</li>
+			<li>
+				<input type="color" value="#7FFFD4">
+				<span>aquamarine</span>
+				<code>#7FFFD4</code>
+			</li>
+			<li>
+				<input type="color" value="#F0FFFF">
+				<span>azure</span>
+				<code>#F0FFFF</code>
+			</li>
+			<li style="display: list-item; text-align: center;">…</li>
+			<li>
+				<input type="color" value="#F5DEB3">
+				<span>wheat</span>
+				<code>#F5DEB3</code>
+			</li>
+			<li>
+				<input type="color" value="#FFFFFF">
+				<span>white</span>
+				<code>#FFFFFF</code>
+			</li>
+			<li>
+				<input type="color" value="#F5F5F5">
+				<span>whitesmoke</span>
+				<code>#F5F5F5</code>
+			</li>
+			<li>
+				<input type="color" value="#FFFF00">
+				<span>yellow</span>
+				<code>#FFFF00</code>
+			</li>
+			<li>
+				<input type="color" value="#9ACD32">
+				<span>yellowgreen</span>
+				<code>#9ACD32</code>
+			</li>
+		</ul>
+	</color-browser>
+</body>
+
+</html>
