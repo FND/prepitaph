@@ -306,7 +306,9 @@ Embeds are typically used for demo pages:
 
 ### Disclosure
 
-Disclosures hide content which can then be revealed via user interaction:
+Disclosures hide content which can then be revealed via user interaction.
+
+NB: Often we want these to be wrapped in an [aside](#aside).
 
 ```disclosure caption="Here's some additional context."
 ES5-style code might looks like this:
