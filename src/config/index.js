@@ -5,8 +5,23 @@ import { resolve, normalize, dirname } from "node:path";
 let ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
 
 export let AUTHORS = {
-	FND: "@FND@hachyderm.io",
-	cdent: "@anticdent@hachyderm.io"
+	FND: {
+		handle: "@FND@hachyderm.io",
+		url: "https://hachyderm.io/@FND"
+	},
+	cdent: {
+		handle: "@anticdent@hachyderm.io",
+		url: "https://hachyderm.io/@anticdent"
+	},
+	get(name) {
+		try {
+			var res = this[name]; // eslint-disable-line no-var
+		} catch(err) {}
+		if(res === undefined) {
+			throw new Error(`unknown author: \`${name}\``);
+		}
+		return res;
+	}
 };
 
 export * as blocks from "./converters.js";

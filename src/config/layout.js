@@ -41,12 +41,7 @@ export default ({
 	}
 
 	title = title.isStandalone ? title.text : `${title} | ${config.siteTitle}`;
-	if(author) {
-		var handle = config.AUTHORS[author]; // eslint-disable-line no-var
-		if(handle === undefined) {
-			throw new Error(`unknown author: \`${author}\``);
-		}
-	}
+	let handle = author && config.AUTHORS.get(author).handle;
 
 	let redirect, redirectURL, redirectNotice;
 	if(redirectURI) {

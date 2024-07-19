@@ -271,6 +271,11 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 	color: var(--color-acc);
 }
 
+.article > footer .feedback {
+	margin-bottom: 0;
+	text-align: left;
+}
+
 .article .permalink {
 	font-size: 0.8rem; /* XXX: magic value */
 	color: var(--color-acc);

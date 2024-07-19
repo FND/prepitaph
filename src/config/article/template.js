@@ -74,17 +74,17 @@ async function render(article, context,
 	}
 
 	if(main !== false) {
+		let { store, config } = context;
+		let { baseURL } = config;
 		if(!TOPICS_LINK) {
 			TOPICS_LINK = trustedHTML`<a${{
-				href: context.store.retrieve(null, "topics").
-					url(context.config.baseURL).pathname
+				href: store.retrieve(null, "topics").url(baseURL).pathname
 			}}>topics</a>`;
 		}
 
 		let content = await article.content;
-		let tags = article.tags.join(", ");
 		main = {
-			[RAW]: content + html`<footer>${TOPICS_LINK}: ${tags}</footer>`
+			[RAW]: content + renderFooter(article, store, config, baseURL)
 		};
 	}
 
@@ -98,6 +98,20 @@ async function render(article, context,
 	${header}
 	${main}
 </${tag}>
+	`.trim();
+}
+
+function renderFooter(article, store, config, baseURL) { // TODO: memoize
+	let authorURL = config.AUTHORS.get(article.author).url;
+	let contactURL = store.retrieve(null, "colophon").url(baseURL).pathname;
+	return html`
+<footer>
+	${TOPICS_LINK}: ${article.tags.join(", ")}
+	<p class="feedback">
+		For feedback, feel free to <a${{ href: contactURL }}>send an e-mail</a>
+		or contact the author <a${{ href: authorURL }}>via social media</a>.
+	</p>
+</footer>
 	`.trim();
 }
 
