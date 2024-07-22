@@ -350,10 +350,10 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 }
 .article pre mark {
 	text-shadow: none;
-	background-color: #FF0;
+	background-color: #FF0; /* XXX: move definition elsewhere? */
 }
 .article pre mark mark { /* XXX: hacky? */
-	background-color: #82FFAD;
+	background-color: #82FFAD; /* XXX: move definition elsewhere? */
 }
 /* override Prism defaults */
 .article pre .token.class-name,
@@ -425,4 +425,20 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 .article.article.article hr { /* XXX: smell; extra specificity overrides `.stack` */
 	width: 80%;
 	margin-block: var(--spacing-lg3);
+}
+
+.article [id^="ref:"]:target {
+	position: relative;
+}
+.article [id^="ref:"]:target::before {
+	--_size: var(--spacing-lg1);
+
+	content: "";
+	position: absolute;
+	inset: calc(-0.5 * var(--_size)) 0 0;
+	height: var(--_size);
+	border-radius: var(--_size) var(--_size) 0 0;
+	/* XXX: move color definition elsewhere? */
+	background: linear-gradient(180deg, goldenrod, transparent);
+	opacity: 0.5;
 }
