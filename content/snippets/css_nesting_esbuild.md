@@ -19,7 +19,7 @@ article {
 ```
 
 ```shell
-$ esbuild ./sample.css --supported:nesting=false
+$ esbuild --supported:nesting=false ./sample.css
 article h2 {
     color: cadetblue;
 }
@@ -44,8 +44,8 @@ customElements.define("sample-component", class extends HTMLElement {
 ```
 
 ```shell
-$ esbuild ./component.js --bundle --format=esm --supported:nesting=false \
-        --outdir=./dist
+$ esbuild --bundle --format=esm --supported:nesting=false \
+        --outdir=./dist ./component.js
 ```
 
 This will generate two independent files, `dist/component.js` and
