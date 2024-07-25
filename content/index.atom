@@ -1,5 +1,5 @@
 title: NONE
 format: atom
 
-```feed categories=articles,snippets
+```feed categories=articles,snippets,journal
 ```

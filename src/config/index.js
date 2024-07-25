@@ -84,6 +84,10 @@ export let categories = {
 	snippets: async () => class Snippet extends Article {
 		static type = "snippet";
 	},
+	journal: async () => class Journal extends Article {
+		static type = "journal";
+		static symbol = "📓";
+	},
 	wip: async () => class WIP extends Article {
 		static type = "work in progress";
 		static symbol = "✏️";
