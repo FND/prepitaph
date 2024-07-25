@@ -129,6 +129,11 @@ a[href^="https://"] {
 	margin-left: var(--spacing);
 	font-size: 0.8rem; /* XXX: magic value */
 
+	&:is(a) { /* XXX: compromises a11y in favor of design */
+		text-decoration: none;
+		color: var(--color-fg);
+	}
+
 	&::before{
 		content: "📝 ";
 		content: "📝 " / "";

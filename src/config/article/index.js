@@ -63,11 +63,13 @@ export class Article extends Page {
 		}, options);
 	}
 
-	renderType() {
+	renderType(href = null) {
 		let { type, symbol } = this.constructor;
-		return type !== Article.type && trustedHTML`<small class="content-type"${{
+		let tag = href ? "a" : "small";
+		return type !== Article.type && trustedHTML`<${tag} class="content-type"${{
+			href,
 			"data-type": symbol
-		}}>${type}</small>`;
+		}}>${type}</${tag}>`;
 	}
 
 	get typeIdentifier() {

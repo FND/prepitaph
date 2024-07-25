@@ -33,10 +33,12 @@ export async function renderArticle(article, { assets, store, config }, options)
 
 async function render(article, context,
 		{ isDocument, heading, metadata, intro, main }) {
+	let { store, config } = context;
+	let { baseURL } = config;
 	if(heading !== false) {
 		let tag = isDocument === false ? "h2" : "h1";
 		heading = trustedHTML`<${tag}><a${{
-			href: article.url(context.config.baseURL).pathname
+			href: article.url(baseURL).pathname
 		}}>${article.title}</a></${tag}>`;
 	}
 
@@ -48,8 +50,10 @@ async function render(article, context,
 			month: "long",
 			day: "numeric"
 		});
+		let url = store.retrieve(article.category, "index"). // TODO: memoize?
+			url(baseURL).pathname;
 		metadata = trustedHTML`
-			${article.renderType()}
+			${article.renderType(url)}
 			<p class="metadata">
 				by <b>${article.author}</b>
 				<time${{ datetime }}>${date}</time>
@@ -74,7 +78,6 @@ async function render(article, context,
 	}
 
 	if(main !== false) {
-		let { store, config } = context;
 		let { baseURL } = config;
 		if(!TOPICS_LINK) {
 			TOPICS_LINK = trustedHTML`<a${{
