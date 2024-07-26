@@ -25,7 +25,7 @@ In typical adactio style, this reflective piece weaves together a variety of
 sources across time, synthesizing didactic advice.
 
 This also led me to watch
-[API Design is UI Design](https://www.youtube.com/watch?v=g92XUzc1OHY) ( 📺 25
+[API Design is UI Design](https://www.youtube.com/watch?v=g92XUzc1OHY) ( 📼 25
 min.) -- much of which should be self-evident, but clearly isn't; it's always
 worth reminding ourselves of
 [Just what is it that you want to do?](https://adactio.com/journal/7774).
@@ -56,7 +56,7 @@ great for explaining why
 [honesty](https://resilientwebdesign.com/chapter2/#material%20honesty) matters.
 
 Relatedly, [Web Design Engineering](https://www.youtube.com/watch?v=su6WA0kUUJE)
-( 📺 50 min.) left a lasting impression -- even though, or perhaps precisely
+( 📼 50 min.) left a lasting impression -- even though, or perhaps precisely
 because, I myself was already a convert: It took some time for the wider
 implications to sink in and I continue pondering how we as developers might
 support other constituencies.
@@ -85,3 +85,8 @@ Directly related to the case study above:
 > should be working closer to the web platform with a lot less complex
 > abstractions. We need to relearn what the web is capable of and go back to
 > that.
+
+In the same vein, there's an interesting
+[exchange](https://toot.cafe/@slightlyoff/112761578592242458) on robust
+front-end architectures, with real-world anecdotes of reputable organizations
+being bogged down by accidental complexity.
