@@ -2,6 +2,7 @@ title: Test Automation with Deno
 tags: javascript
 author: FND
 created: 2024-07-19
+updated: 2024-07-26
 syntax: true
 
 As previously mentioned, I've
@@ -10,12 +11,18 @@ appreciate Deno's development tooling. This sometimes includes using its test
 runner, mostly because it's both simple and readily available while adhering to
 common conventions.
 
-Nevertheless, there are a few details and conventions worth recording here.
+Nevertheless, there are a few idiosyncratic details and conventions worth
+pointing out -- if only to reduce friction and lower the barrier to pursuing
+[test-driven development from the get-go](https://kellysutton.com/2017/04/18/design-pressure.html).
+In fact, for our purposes here, I'll recklessly expand the definition of
+"testing" to include static verification: formatting and linting for stylistic
+consistency as well as optional type checking -- thus establishing some basic
+infrastructure for any JavaScript project, no matter its size.
 
 ```aside
-There are a few bonus features, like WinterCG compatibility and native
-TypeScript support, which make Deno a nifty runtime environment for tests
-without risking replaceability.
+There are a few bonus features, like [WinterCG](https://wintercg.org)
+compatibility and native TypeScript support, which make Deno a nifty runtime
+environment for tests without risking replaceability.
 
 [Test isolation](https://deno.com/blog/v1.10#improvements-to-deno-test) not only
 helps with performance, but also tends to make tests more robust by avoiding
