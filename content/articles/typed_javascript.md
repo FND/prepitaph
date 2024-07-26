@@ -140,9 +140,11 @@ As I understand it, using `.ts` modules instead of `.d.ts` declaration files is
 recommended because it avoids scoping issues.
 ```
 
+```ref friction
 A somewhat unexpected advantage of this approach could be _increased_ friction:
 Clearly separating types from runtime code might leave us less inclined to
 produce complexity only for static typing's sake.
+```
 
 ```infobox
 After living with such a setup for a couple of months, this offhand prediction

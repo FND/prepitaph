@@ -448,6 +448,6 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 	height: var(--_size);
 	border-radius: var(--_size) var(--_size) 0 0;
 	/* XXX: move color definition elsewhere? */
-	background: linear-gradient(180deg, goldenrod, transparent);
+	background: linear-gradient(0deg, transparent 20%, #ED0D 50%, transparent);
 	opacity: 0.5;
 }
