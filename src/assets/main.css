@@ -344,6 +344,10 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 	font-size: 1.7rem; /* XXX: magic value */
 }
 
+.article h2 {
+	font-size: 1.6rem; /* XXX: magic value */
+}
+
 .article pre {
 	margin-left: calc(-1 * var(--spacing-outdent-left));
 	margin-right: calc(-1 * var(--spacing-outdent-right));
