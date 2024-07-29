@@ -446,8 +446,13 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 	position: absolute;
 	inset: calc(-0.5 * var(--_size)) 0 0;
 	height: var(--_size);
-	border-radius: var(--_size) var(--_size) 0 0;
+	border-radius: var(--_size);
 	/* XXX: move color definition elsewhere? */
-	background: linear-gradient(0deg, transparent 20%, #ED0D 50%, transparent);
+	background: linear-gradient(0deg, transparent, cadetblue, transparent);
 	opacity: 0.5;
+	/* XXX: magic numbers */
+	mask-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M40,-52 l0,60 l-10,0 l20,20 l20,-20 l-10,0 l0,-60 z" /></svg>'),
+			linear-gradient(red, red);
+	mask-composite: exclude;
+	mask-size: 3rem auto;
 }
