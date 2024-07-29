@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Event Listeners for Descendants and Ancestors</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--spacing: 0.5rem;
+	--color-fg: #000;
+	--color-bg: #FFF;
+	--color-frame: #AAA;
+}
+
+body {
+	margin: 0;
+	padding: 0 var(--spacing) var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+	text-align: center;
+	color: var(--color-fg);
+	background-color: var(--color-bg);
+}
+
+main {
+	overflow: clip;
+	padding: var(--spacing);
+	cursor: pointer;
+}
+
+h1 {
+	font-size: 1.2rem;
+}
+
+details {
+	text-align: left;
+}
+
+summary {
+	font-size: small;
+}
+
+label,
+label b {
+	display: block;
+}
+
+output {
+	display: block;
+	white-space: pre;
+	font-family: monospace;
+	line-height: 1.2;
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-top: var(--spacing);
+	}
+}
+
+dummy-dialog {
+	display: block;
+	width: fit-content;
+	margin-inline: auto;
+	border: 1px solid var(--color-frame);
+	border-radius: var(--spacing);
+	padding: var(--spacing);
+	text-align: left;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition: scale 200ms ease-in-out;
+	}
+
+	&.is-alt {
+		color-scheme: dark;
+		color: var(--color-bg);
+		background-color: var(--color-fg);
+	}
+}
+	</style>
+</head>
+
+<body class="stack">
+	<h1>Event Listeners for Descendants and Ancestors</h1>
+	<p>Move your cursor over the form to zoom.</p>
+	<p>Enter text to increase transparency.</p>
+	<dummy-dialog></dummy-dialog>
+	<p>Click anywhere else to toggle dark mode.</p>
+
+	<script type="module">
+let LOG = document.createElement("output");
+document.body.appendChild(spawnControls(LOG));
+
+customElements.define("dummy-dialog", class extends HTMLElement {
+	connectedCallback() {
+		log(`[connected] <${this.localName}>`);
+		this.innerHTML = `
+<form method="dialog" class="stack">
+	<label>
+		<b>Comment</b>
+		<input type="text">
+	</label>
+</form>
+		`.trim();
+
+		this.addEventListener("pointerenter", this);
+		this.addEventListener("pointerleave", this);
+		this.addEventListener("input", this);
+
+		this._container = document.body;
+		this._container.addEventListener("click", this);
+		this._container.style.cursor = "pointer";
+	}
+
+	disconnectedCallback() {
+		log(`[disconnected] <${this.localName}>`);
+		this._container.removeEventListener("click", this);
+		this._container.style.cursor = "";
+	}
+
+	handleEvent(ev) {
+		log(`[${ev.type}] <${ev.target.localName}>`);
+		switch(ev.type) {
+		case "pointerenter":
+			this.style.scale = "1.2";
+			break;
+		case "pointerleave":
+			this.style.scale = "";
+			break;
+		case "input":
+			this.style.opacity = Math.max(0.2, 1 - ev.target.value.length / 10);
+			break;
+		case "click":
+			if(!ev.target.closest(this.localName)) { // outside
+				this.classList.toggle("is-alt");
+			}
+			break;
+		}
+	}
+});
+
+function spawnControls(log) {
+	let el = document.createElement("details");
+	el.className = "stack";
+	el.innerHTML = `
+<summary>Console</summary>
+<form method="dialog" class="controls">
+	<button name="delete">Remove</button>
+	<button name="move">Relocate</button>
+	<button name="reset">Reset</button>
+</form>
+	`.trim();
+	el.appendChild(log);
+	el.addEventListener("submit", ev => {
+		let target = document.querySelector("dummy-dialog");
+		switch(ev.submitter.name) {
+		case "delete":
+			target.remove();
+			for (let btn of el.querySelectorAll("button[name=delete], button[name=move]")) {
+				btn.disabled = true;
+			}
+			break;
+		case "move":
+			document.body.appendChild(target);
+			break;
+		case "reset":
+			document.location.reload();
+			break;
+		}
+		ev.stopPropagation();
+	});
+	el.addEventListener("click", ev => {
+		ev.stopPropagation();
+	});
+	return el;
+}
+
+function log(msg) {
+	let timestamp = new Date().toISOString().slice(0, 19).replace("T", " ");
+	msg = [timestamp, msg].join(" ");
+	console.log(msg);
+	LOG.prepend(document.createTextNode(msg + "\n"));
+}
+	</script>
+</body>
+
+</html>

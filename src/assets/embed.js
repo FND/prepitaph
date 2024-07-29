@@ -101,10 +101,18 @@ customElements.define("web-demo", class WebDemo extends HTMLElement {
 
 	autoResize() {
 		let { iframe } = this;
-		new ResizeObserver(([entry]) => {
+		let root = iframe.contentDocument.documentElement;
+		let obs = new ResizeObserver(([entry]) => {
+			if(iframe.contentDocument.documentElement !== root) { // post-navigation
+				obs.disconnect();
+				this.autoResize();
+				return;
+			}
+
 			const size = entry.borderBoxSize[0].blockSize;
 			iframe.style.height = Math.ceil(size + 4) + "px"; // accounts for border
-		}).observe(iframe.contentDocument.documentElement);
+		});
+		obs.observe(root);
 	}
 
 	get iframe() {
