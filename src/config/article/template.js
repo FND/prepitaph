@@ -94,9 +94,11 @@ async function render(article, context,
 	let tag = {
 		[RAW]: isDocument === false ? "article" : "main"
 	};
+	let { typeIdentifier } = article;
 	return html`
 <${tag}${{
-	class: [...new Set([article.typeIdentifier, "article", "stack"])].join(" ")
+	class: [...new Set([typeIdentifier, "article", "stack"])].join(" "),
+	style: `--vt-name: ${typeIdentifier}-${article.slug}`
 }}>
 	${header}
 	${main}

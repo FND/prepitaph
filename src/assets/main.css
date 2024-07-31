@@ -1,3 +1,7 @@
+@view-transition {
+	navigation: auto;
+}
+
 *,
 *::before,
 *::after {
@@ -229,11 +233,10 @@ a[href^="https://"] {
 /* article */
 
 .article > header {
-	& {
-		display: grid;
-		row-gap: var(--spacing); /* ≙ `.stack` */
-		grid-template-columns: auto 1fr;
-	}
+	display: grid;
+	row-gap: var(--spacing); /* ≙ `.stack` */
+	grid-template-columns: auto 1fr;
+	view-transition-name: var(--vt-name);
 
 	> * {
 		margin-block: 0; /* ≙ `.stack` */
