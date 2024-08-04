@@ -13,7 +13,7 @@ let NAV = {
 export default ({
 	title,
 	author,
-	summary = null,
+	teaser = null,
 	canonicalURL = null,
 	redirectURI = null,
 	content,
@@ -68,8 +68,8 @@ export default ({
 			trustedHTML`<link rel="canonical"${{ href: canonicalURL }}>`}
 	${redirect &&
 			trustedHTML`<meta http-equiv="refresh"${{ content: redirect }}>`}
-	${summary &&
-			trustedHTML`<meta name="description"${{ content: summary }}>`}
+	${teaser &&
+			trustedHTML`<meta name="description"${{ content: teaser }}>`}
 	${handle &&
 			trustedHTML`<meta property="fediverse:creator"${{ content: handle }}>`}
 	${FEED}

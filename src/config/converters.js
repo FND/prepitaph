@@ -63,7 +63,7 @@ export async function list(content, { categories }, context) {
 			isDocument: false,
 			heading: true,
 			metadata: true,
-			intro: true,
+			teaser: true,
 			main: false
 		});
 		res.push(html);
@@ -98,7 +98,9 @@ export async function figure(content, {
 	return id === null ? res : html`<a${{ href: `#${id}` }}>${{ [RAW]: res }}</a>`;
 }
 
-export async function intro(content, params, context) {
+export let intro = teaser;
+
+export async function teaser(content, params, context) {
 	return render(content, params, context);
 }
 

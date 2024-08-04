@@ -10,17 +10,16 @@ export async function renderArticle(article, { assets, store, config }, options)
 		return html;
 	}
 
-	let summary = await article.intro;
-	if(summary) { // NB: parsing HTML the Cthulhu way seems acceptable here
-		summary = summary.replace(/<[A-Za-z/][^>]*>/g, "").replace(/\s+/g, " ").trim();
-	}
 	let { css } = config;
 	let styles = article.syntax ? css.default.concat(css.syntax) : css.default;
 	assets.register(config.js.embed);
 	return layout({
 		title: article.title,
 		author: article.author,
-		summary,
+		teaser: await (article.intro ?? article.teaser)?.
+			then(teaser => teaser?.
+				// NB: parsing HTML the Cthulhu way seems acceptable here
+				replace(/<[A-Za-z/][^>]*>/g, "").replace(/\s+/g, " ").trim()),
 		canonicalURL: article.canonicalURL,
 		redirectURI: article.redirectURI,
 		content: await html.then(injectPermalinks),
@@ -32,7 +31,7 @@ export async function renderArticle(article, { assets, store, config }, options)
 }
 
 async function render(article, context,
-		{ isDocument, heading, metadata, intro, main }) {
+		{ isDocument, heading, metadata, teaser, main }) {
 	let { store, config } = context;
 	let { baseURL } = config;
 	if(heading !== false) {
@@ -61,19 +60,20 @@ async function render(article, context,
 		`;
 	}
 
-	intro = intro !== false && article.intro;
-	if(intro) {
-		intro = trustedHTML`<div class="teaser stack">${{
-			[RAW]: await intro
-		}}</div>`;
+	if(main !== false && article.teaser) { // avoid duplication -- XXX: special-casing
+		teaser = false;
 	}
+	teaser = teaser !== false && (article.intro ?? article.teaser);
+	teaser &&= trustedHTML`<div class="teaser stack">${{
+		[RAW]: await teaser
+	}}</div>`;
 
-	if(heading !== false || metadata !== false || intro !== false) {
+	if(heading !== false || metadata !== false || teaser !== false) {
 		// eslint-disable-next-line no-var
 		var header = trustedHTML`<header>
 			${heading}
 			${metadata}
-			${intro}
+			${teaser}
 		</header>`;
 	}
 

@@ -17,8 +17,10 @@ created: 2019-12-16
 > slack messages, or emoji acks like 👍. It's narrative. Interpretation and
 > summation of what's happened, happening, going to happen.
 
-> **If you want to be remote, learn to be literate. If you want your team to
-> support remote workers, make time for literature.**
+```teaser
+> If you want to be remote, learn to be literate. If you want your team to
+> support remote workers, make time for literature.
+```
 
 > Stories help to create and verify the shared language and understanding that
 > are the prerequisites for shared goals and shared actions.

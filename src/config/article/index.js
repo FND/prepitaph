@@ -35,9 +35,18 @@ export class Article extends Page {
 	constructor(name, metadata, blocks, source, assets) {
 		if(blocks[0]?.type === "intro") { // extract intro, if any
 			var intro = blocks.shift(); // eslint-disable-line no-var
+		} else { // ... otherwise check for teaser (mutually exclusive)
+			for(let block of blocks) {
+				if(block.type === "teaser") {
+					var teaser = block; // eslint-disable-line no-var
+					break;
+				}
+			}
 		}
+
 		super(name, metadata, blocks, source, assets);
 		this.intro = intro || null;
+		this.teaser = teaser || null;
 	}
 
 	async render(context, options = {}) {
@@ -50,9 +59,14 @@ export class Article extends Page {
 		context.footnotes = []; // XXX: hacky
 
 		let { transformer } = context;
-		let intro = options.intro !== false && this.intro;
+		let { intro, teaser } = this;
 		let page = clone(this, {
-			intro: intro && transformer.render([intro], context),
+			get intro() {
+				return intro && transformer.render([intro], context);
+			},
+			get teaser() {
+				return teaser && transformer.render([teaser], context);
+			},
 			content: options.main !== false && transformer.render(this.blocks, context)
 		});
 

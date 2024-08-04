@@ -32,14 +32,14 @@ async function renderEntry(page, context, baseAttr) {
 		isDocument: false,
 		heading: false,
 		metadata: true,
-		intro: true,
+		teaser: true,
 		main: false
 	});
 	let content = page.render(context, {
 		isDocument: false,
 		heading: false,
 		metadata: true,
-		intro: true,
+		teaser: true,
 		main: true
 	});
 	summary = (await summary).replaceAll("\n", " "); // discard line breaks

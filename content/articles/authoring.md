@@ -113,10 +113,11 @@ This is typically used to inject arbitrary HTML:
 ```
 
 
-### Intro
+### Preview Teaser
 
-The intro block is used as preview within article listings. It may consist of
-multiple content blocks which are treated as Markdown by default.
+When the very first content block is marked as `intro`, it is used as preview
+teaser within article listings. This block itself may consist of multiple
+content blocks which are treated as Markdown by default.
 
 ```
 '''intro backticks=~~~
@@ -129,6 +130,17 @@ Updated to reflect new insights.
 ```
 
 Note the use of `backticks` to permit embedding other components.
+
+In rare cases, we might use `teaser` instead to mark an arbitrary content block
+to be used as preview:
+
+```
+Today I learned […].
+
+'''teaser
+Nothing beats simplicity.
+'''
+```
 
 
 ### Infobox
