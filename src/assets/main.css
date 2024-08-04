@@ -132,6 +132,7 @@ a[href^="https://"] {
 .content-type {
 	margin-left: var(--spacing);
 	font-size: 0.8rem; /* XXX: magic value */
+	text-wrap: nowrap;
 
 	&:is(a) { /* XXX: compromises a11y in favor of design */
 		text-decoration: none;
@@ -250,7 +251,6 @@ a[href^="https://"] {
 		grid-column: 2 / -1;
 		grid-row: 2;
 		margin-left: var(--spacing-lg2);
-		white-space: nowrap;
 	}
 }
 article.article header { /* collection instead of entity -- XXX: brittle */
