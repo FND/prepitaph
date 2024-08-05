@@ -17,7 +17,7 @@ pointing out -- if only to reduce friction and lower the barrier to pursuing
 In fact, for our purposes here, I'll recklessly expand the definition of
 "testing" to include static verification: formatting and linting for stylistic
 consistency as well as optional type checking -- thus establishing some basic
-infrastructure for any JavaScript project, no matter its size.
+infrastructure for any JavaScript project, regardless of size or ambition.
 
 ```aside
 There are a few bonus features, like [WinterCG](https://wintercg.org)
