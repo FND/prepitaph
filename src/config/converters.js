@@ -22,6 +22,7 @@ export let javascript = await code("javascript");
 export let typescript = await code("typescript");
 export let shell = await code("shell");
 export let python = await code("python");
+export let go = await code("go");
 
 export async function feed(content, { categories, title = siteTitle }, context) {
 	let { renderAtom } = await import("./feed.js");
