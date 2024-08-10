@@ -1,3 +1,7 @@
+export function normalizeFilename(name) {
+	return name.replaceAll("_", "-"); // NB: design decision
+}
+
 export function normalizeURI(uri) {
 	return uri.endsWith("/") ? uri.slice(0, uri.length - 1) : uri;
 }

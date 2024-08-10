@@ -3,7 +3,7 @@ import { TextTransformer } from "./transform.js";
 import { AssetRegistry } from "./assets.js";
 import { ContentStore } from "./store.js";
 import { createFile, realpath } from "./fs.js";
-import { normalizeURI, clone, CustomError } from "./util.js";
+import { normalizeFilename, normalizeURI, clone, CustomError } from "./util.js";
 import * as globalConfig from "../config/index.js";
 import { copyFile, mkdir, constants } from "node:fs/promises";
 import { resolve, basename, dirname } from "node:path";
@@ -22,11 +22,8 @@ try {
 async function main() {
 	let host = normalizeURI(globalConfig.host);
 	let pathPrefix = normalizeURI(globalConfig.pathPrefix);
-	let config = clone(globalConfig, {
-		baseURL: new URL(pathPrefix + "/", host).href,
-		host,
-		pathPrefix
-	});
+	let baseURL = new URL(pathPrefix + "/", host).href;
+	let config = clone(globalConfig, { baseURL, host, pathPrefix });
 
 	let contentDir = await realpath(config.contentDir);
 	let outputDir = resolve(config.outputDir);
@@ -41,12 +38,14 @@ async function main() {
 
 	// NB: separate rendering loop allows for validating interlinked content
 	console.error(`rendering pages into \`${outputDir}\``);
-	let transformer = new TextTransformer(config.blocks);
-	let assets = new AssetRegistry();
-	let context = { store, assets, transformer, config };
-	let { baseURL } = config;
+	let context = {
+		store,
+		assets: new AssetRegistry(),
+		transformer: new TextTransformer(config.blocks),
+		config
+	};
 	let cache = new Set();
-	let output = [];
+	let pages = [];
 	for(let page of store) {
 		console.error(`... ${page.url(baseURL).href}`);
 		let { assets, localPath } = page;
@@ -61,19 +60,19 @@ async function main() {
 					return copy(filepath, targetDir, "page asset");
 				})));
 		}
-		output.push(op);
+		pages.push(op);
 	}
-	await Promise.all(output);
+	await Promise.all(pages);
 
 	// copy global assets discovered during rendering
 	await mkdir(assetsDir, { recursive: true });
-	await Promise.all([...assets].map(filepath => {
+	await Promise.all([...context.assets].map(filepath => {
 		return copy(filepath, assetsDir, "global asset");
 	}));
 }
 
 async function copy(filepath, targetDir, designation) {
-	let filename = basename(filepath).replaceAll("_", "-"); // NB: design decision
+	let filename = normalizeFilename(basename(filepath));
 	let target = resolve(targetDir, filename);
 	console.error(`copying ${designation} \`${filepath}\`\n    to \`${target}\``);
 	return copyFile(filepath, target, CREATE_ONLY);

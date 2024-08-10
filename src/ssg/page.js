@@ -1,4 +1,4 @@
-import { clone, CustomError } from "./util.js";
+import { normalizeFilename, clone, CustomError } from "./util.js";
 import { join } from "node:path";
 
 let REF_PREFIX = "page://";
@@ -88,7 +88,7 @@ export class Page {
 	}
 
 	get slug() {
-		return this._slug || this.name.replaceAll("_", "-"); // NB: design decision
+		return this._slug || normalizeFilename(this.name);
 	}
 }
 
