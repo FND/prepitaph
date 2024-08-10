@@ -127,7 +127,8 @@ can pass that to `deno check` via `--config ./tsconfig.json`.
         "allowJs": true,
         "checkJs": true,
         "noEmit": true,
-        "strict": true
+        "strict": true,
+        "isolatedModules": true
     }
 }
 ~~~

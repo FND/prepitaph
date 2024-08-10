@@ -41,14 +41,17 @@ unto itself), if only for editors' benefit:
         "allowJs": true,
         "checkJs": true,
         "noEmit": true,
-        "strict": true
+        "strict": true,
+        "isolatedModules": true
     }
 }
 ```
 
 The first two options make the compiler ingest JavaScript files, `noEmit`
 relegates it to be a mere type checker -- thus runtime code remains unaffected.
-Strictness is a matter of taste, but a good default for new projects.
+Strictness is a matter of taste, but a good default for new projects. Similarly,
+[isolated modules](https://www.typescriptlang.org/tsconfig/#isolatedModules)
+seems like good hygiene in this context.
 
 With that in place, we might [invoke](page://articles/banishing-npm) the
 `typescript` package's compiler via `tsc --project ./tsconfig.json`. Of course
