@@ -53,10 +53,10 @@ export async function encrypt(txt, password) {
 async function deriveKey(password) {
     let secret = await CRYPTO.importKey("raw", str2bytes(password),
             "PBKDF2", false, ["deriveBits", "deriveKey"]);
-    return await CRYPTO.deriveKey({
+    return CRYPTO.deriveKey({
         name: "PBKDF2",
         salt: SALT,
-        iterations: 100000,
+        iterations: 2 ** 20,
         hash: "SHA-256"
     }, secret, { name: ALGO, length: 256 }, true, ["encrypt", "decrypt"]);
 }

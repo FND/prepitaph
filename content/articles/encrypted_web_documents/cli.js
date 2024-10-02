@@ -54,7 +54,7 @@ async function deriveKey(password) {
 	return await CRYPTO.deriveKey({
 		name: "PBKDF2",
 		salt: str2bytes(SALT).buffer,
-		iterations: 100000,
+		iterations: 2 ** 20,
 		hash: "SHA-256"
 	}, secret, { name: ALGO, length: 256 }, true, ["encrypt", "decrypt"]);
 }
@@ -244,7 +244,7 @@ async function deriveKey(password) {
 	return await CRYPTO.deriveKey({
 		name: "PBKDF2",
 		salt: SALT,
-		iterations: 100000,
+		iterations: 2 ** 20,
 		hash: "SHA-256"
 	}, secret, { name: ALGO, length: 256 }, true, ["encrypt", "decrypt"]);
 }
