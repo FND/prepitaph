@@ -17,7 +17,7 @@ pointing out -- if only to reduce friction and lower the barrier to pursuing
 In fact, for our purposes here, I'll recklessly expand the definition of
 "testing" to include static verification: formatting and linting for stylistic
 consistency as well as optional type checking -- thus establishing some basic
-infrastructure for any JavaScript project, no matter its size.
+infrastructure for any JavaScript project, regardless of size or ambition.
 
 ```aside
 There are a few bonus features, like [WinterCG](https://wintercg.org)
@@ -59,7 +59,7 @@ Tasks
 {
     "tasks": {
         "vet": "deno lint && deno fmt --check",
-        "verify": "deno check --import-map ./deno.json ./src/index.js"
+        "verify": "deno check --import-map ./deno.json ./src"
     },
     // …
 }
@@ -68,51 +68,6 @@ Tasks
 
 These two designations aren't perfect, but were chosen to avoid overloading
 terms already reserved for Deno standard commands.
-
-Note that `deno check` requires an entry point; unfortunately, we can't just
-point it at our `src` directory.
-
-```aside
-'''disclosure caption="shell script for module discovery" backticks=^^^
-For projects without an obvious entry point covering all code, I resort to the
-following shell script. This is necessary because `deno check` doesn't currently
-support globbing.
-
-^^^shell
-#!/usr/bin/env bash
-
-# poor man's globbing substitute
-
-set -eu
-
-root_dir=`dirname "$0"`
-root_dir=`realpath "$root_dir/.."`
-
-entry_point="./index.ts"
-
-quit() {
-    rm -rf "$entry_point"
-}
-trap quit EXIT
-
-abort() {
-    message="$@"
-
-    echo "$message" >&2
-    exit 1
-}
-
-cd "$root_dir"
-if [ -f "$entry_point" ]; then
-    abort "ERROR: \`$entry_point\` already exists"
-fi
-
-find ./src -name "*.ts" | \
-        while read fn; do echo "import \"$fn\";" >> "$entry_point"; done
-deno task verify -- "$entry_point"
-^^^
-'''
-```
 
 If we require custom TypeScript configuration, e.g. to
 [avoid TypeScript syntax](https://prepitaph.org/articles/typed-javascript/), we
