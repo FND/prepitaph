@@ -180,7 +180,7 @@ export let trustedHTML = str => ({
 
 /**
  * @param {TemplateStringsArray} strings
- * @param {...(HTMLContent | HTMLContent[])} values
+ * @param {...(HTMLContent | Iterable<HTMLContent>)} values
  * @returns {TrustedContent}
  */
 export function html(strings, ...values) {
@@ -197,7 +197,7 @@ export function html(strings, ...values) {
             // no-op
         } else if(RAW in value) {
             res.push(value[RAW]);
-        } else if(Array.isArray(value)) { // XXX: crude
+        } else if(value[Symbol.iterator]) {
             for(let entry of value) {
                 res.push(html`${entry}`[RAW]);
             }
@@ -207,7 +207,7 @@ export function html(strings, ...values) {
         }
         res.push(strings[i]);
     }
-    return trustedHTML(res.join(""));
+    return trustedHTML(res.join("").trim());
 }
 
 /** @param {Attributes} attribs */
