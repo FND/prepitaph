@@ -80,6 +80,10 @@ kbd {
 	font-size: 90%; /* XXX: magic number */
 }
 
+:not(pre) > code {
+	font-style: italic; /* cf. https://kizu.dev/styling-inline-code/ */
+}
+
 figure {
 	margin: 0;
 }
