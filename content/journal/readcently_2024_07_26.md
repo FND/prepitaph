@@ -34,10 +34,12 @@ Every web practitioner -- whether developer, designer or otherwise -- should
 read this concise book explaining the web's fundamental principles, both
 philosophically and practically.
 
+```ref core-objectives
 The [lecture](https://www.youtube.com/watch?v=t0dUvs3jQnw) ( 📼 55 min.) on the
 same topic is also worth watching, particularly the process for identifying
 [Just what is it that you want to do?](https://adactio.com/journal/7774)
 ([from 30 min.](https://www.youtube.com/watch?v=t0dUvs3jQnw&t=1800s)).
+```
 
 It seems obligatory to also point to the
 [principle of least power](https://adactio.com/journal/14327) in this context.
