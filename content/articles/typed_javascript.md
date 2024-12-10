@@ -86,7 +86,7 @@ export function analyze(item, verbose) {
     } : res;
 }
 
-/** @typedef {import("./util.types.ts").Result} Result */
+/** @import { Result } from "./util.types.ts" */
 ```
 
 That's still vanilla JavaScript, but augmented with
