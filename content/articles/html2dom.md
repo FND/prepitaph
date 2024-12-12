@@ -30,7 +30,7 @@ let message = tmp.firstChild;
 ```
 
 Even disregarding
-[security concerns](https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML#security_considerations)[sanitization](footnote://),
+[security concerns](https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML#security_considerations)[security](footnote://)[sanitization](footnote://),
 this might not be what we want though: It implies that our HTML string only
 contains
 [flow content](https://html.spec.whatwg.org/multipage/dom.html#flow-content), so
@@ -38,6 +38,14 @@ contains
 (think `<head>` or `<title>`) might lead to unexpected results. This particular
 implementation also assumes that our HTML string contains exactly one root node,
 which might not always be the case.
+
+```footnote security
+While `<script>` elements will _not_ be executed here (for somewhat
+[arcane reasons](https://www.w3.org/TR/2008/WD-html5-20080610/dom.html#dynamic0)
+related to `document.write`), there are other ways to inject markup which
+results in JavaScript being evaluated, such as
+[event-handler attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#event_handler_attributes).
+```
 
 ```footnote sanitization
 Future browsers might support the
@@ -56,14 +64,10 @@ let doc = parser.parseFromString("<p>hello world</p>", "text/html");
 let message = doc.body.firstChild;
 ```
 
-While `<script>` elements will _not_ be executed here (for somewhat
-[arcane reasons](https://www.w3.org/TR/2008/WD-html5-20080610/dom.html#dynamic0)
-related to `document.write`), the aforementioned security concerns still apply:
-There are other ways to inject markup which results in JavaScript being
-evaluated.
+However, the aforementioned security concerns still apply.
 
 Now, sometimes we _do_ want to execute `<script>` elements within our HTML
-string (e.g. if we're perpretating crimes of transclusion). For that we can
+string (e.g. if we're perpetrating crimes of transclusion). For that we can
 employ the somewhat obscure
 [`createContextualFragment`](https://developer.mozilla.org/en-US/docs/Web/API/range/createContextualFragment)
 API:
