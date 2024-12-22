@@ -1,5 +1,5 @@
 title: Test Automation with Deno
-tags: javascript
+tags: javascript, testing
 author: FND
 created: 2024-07-19
 updated: 2024-07-26

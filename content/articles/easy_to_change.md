@@ -1,5 +1,5 @@
 title: Easy to Test, Easy to Change
-tags: software engineering
+tags: software engineering, testing
 author: cdent
 created: 2024-02-27
 
