@@ -2,7 +2,6 @@ title: Web-Application Despair
 tags: web
 author: FND
 created: 2022-12-13
-syntax: true
 
 I don't know how to write web applications anymore. At least not at scale, in
 heterogeneous teams.
