@@ -12,3 +12,4 @@ Getting Started
 * `npm test` checks code for stylistic consistency
 * `npm run build` generates the website in `./dist` (`npm run rebuild` first
   erases any previously generated files)
+* see `./test/visual` for visual regression testing

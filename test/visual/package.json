@@ -1,0 +1,11 @@
+{
+	"scripts": {
+		"test": "playwright test",
+		"report": "playwright show-report",
+		"update": "playwright test --update-snapshots",
+		"reset": "rm -r ./playwright-report ./test-results ./viz.test.js-snapshots || true"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.49.1"
+	}
+}

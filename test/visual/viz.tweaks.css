@@ -1,0 +1,4 @@
+/* suppress randomness */
+iframe[src$="/articles/signals-reactivity/demo.html"] {
+	visibility: hidden;
+}
