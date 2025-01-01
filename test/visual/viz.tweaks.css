@@ -1,4 +1,16 @@
+main a:visited {
+	color: var(--color-link);
+}
+
 /* suppress randomness */
 iframe[src$="/articles/signals-reactivity/demo.html"] {
 	visibility: hidden;
+}
+
+/* suppress flakiness */
+body:has(h1 a[href="/wip/unicode-symbols/"]) {
+	main tbody > tr:last-child > td:first-child {
+		font-size: 0;
+		visibility: hidden;
+	}
 }

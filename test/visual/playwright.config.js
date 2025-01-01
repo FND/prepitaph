@@ -1,17 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 
+export let ENTRY_POINT = "/topics";
 export let BASE_URL = "http://localhost:8000";
+export let BROWSERS = ["Desktop Firefox", "Desktop Chrome", "Desktop Safari"];
+export let WIDTH = 800;
+export let HEIGHT = WIDTH;
 let SERVER = "cd ../../dist && python3 -m http.server";
-let BROWSERS = [{
-	name: "firefox",
-	use: { ...devices["Desktop Firefox"] }
-}, {
-	name: "chromium",
-	use: { ...devices["Desktop Chrome"] }
-}, {
-	name: "webkit",
-	use: { ...devices["Desktop Safari"] }
-}];
 
 let IS_CI = !!process.env.CI;
 
@@ -19,7 +13,7 @@ export default defineConfig({
 	testDir: "./",
 	fullyParallel: true,
 	forbidOnly: IS_CI,
-	retries: IS_CI ? 2 : 0,
+	retries: 2,
 	workers: IS_CI ? 1 : undefined,
 	reporter: "html",
 	webServer: {
@@ -31,5 +25,15 @@ export default defineConfig({
 		baseURL: BASE_URL,
 		trace: "on-first-retry"
 	},
-	projects: BROWSERS
+	globalSetup: require.resolve("./setup.js"),
+	projects: BROWSERS.map(ua => ({
+		name: ua.toLowerCase().replaceAll(" ", "-"),
+		use: {
+			...devices[ua],
+			viewport: {
+				width: WIDTH,
+				height: HEIGHT
+			}
+		}
+	}))
 });

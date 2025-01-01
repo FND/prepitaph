@@ -1,29 +1,46 @@
-import { BASE_URL } from "./playwright.config.js";
+import { WIDTH, HEIGHT } from "./playwright.config.js";
+import { readSiteMap } from "./sitemap.js";
 import { test, expect } from "@playwright/test";
 import { join } from "node:path";
 
-let ENTRY_POINT = "/topics";
 let OPTIONS = {
 	stylePath: join(__dirname, "./viz.tweaks.css")
 };
 
-test("all pages", async ({ page }) => {
-	await page.goto(ENTRY_POINT);
-	const pages = await page.evaluate(extractLinks, BASE_URL);
+let sitemap = [];
+try {
+	sitemap = readSiteMap();
+} catch(err) {
+	test("site map", ({ page }) => {
+		throw new Error("missing site map");
+	});
+}
 
+for(let url of sitemap) {
+	test(`page at ${url}`, async ({ page }) => {
+		await checkSnapshot(url, page);
+	});
+}
+
+async function checkSnapshot(url, page) {
+	// determine page height with default viewport
+	await page.setViewportSize({
+		width: WIDTH,
+		height: HEIGHT
+	});
+	await page.goto(url);
+	await page.waitForLoadState("networkidle");
+	let height = await page.evaluate(getFullHeight);
+
+	// resize viewport for before snapshotting
+	await page.setViewportSize({
+		width: WIDTH,
+		height: Math.ceil(height)
+	});
+	await page.waitForLoadState("networkidle");
 	await expect(page).toHaveScreenshot(OPTIONS);
-	for(let url of pages) {
-		await page.goto(url);
-		await expect(page).toHaveScreenshot(OPTIONS);
-	}
-});
+}
 
-function extractLinks(baseURL) {
-	let res = new Set();
-	for(let { href } of document.links) {
-		if(href.startsWith(baseURL)) {
-			res.add(href);
-		}
-	}
-	return Array.from(res);
+function getFullHeight() {
+	return document.documentElement.getBoundingClientRect().height;
 }
