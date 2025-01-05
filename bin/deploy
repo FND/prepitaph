@@ -3,13 +3,13 @@
 set -eu
 
 realpath() {
-	filepath="${1:?}"
+	local filepath="${1:?}"
 
 	node -r fs -p "fs.realpathSync(process.argv[1])" "$filepath"
 }
 
 abort() {
-	message="$@"
+	local message="$@"
 
 	echo "$message" >&2
 	exit 1
@@ -17,23 +17,42 @@ abort() {
 
 root_dir=`dirname "$0"`
 root_dir=`realpath "$root_dir/.."`
+artifacts_dir="$root_dir/artifacts"
 local_dir="$root_dir/dist"
 target="prepitaph.org:~/prepitaph/"
 
+verify-diff() {
+	local description="${1:?}"
+
+	git diff --exit-code --quiet && \
+			git diff --cached --exit-code --quiet || \
+			abort "ERROR: detected unstaged changes in $description"
+}
+
+verify-untracked() {
+	local description="${1:?}"
+	local pattern=${2:-"."}
+
+	git ls-files --others --exclude-standard | grep --quiet "$pattern" && \
+			abort "ERROR: detected untracked $description" || \
+			true # NB: relies on `abort` to exit
+}
+
+cd "$artifacts_dir"
+verify-diff "artifacts"
+verify-untracked "artifacts"
+
 cd "$root_dir"
 
-git diff --exit-code --quiet && \
-		git diff --cached --exit-code --quiet || \
-		abort "ERROR: detected unstaged changes"
-git ls-files --others --exclude-standard | grep --quiet content && \
-		abort "ERROR: detected untracked content"
+verify-diff "content"
+verify-untracked "content" "^content/"
 git ls-files ./content | grep - &&
 		abort "ERROR: detected invalid hyphen in file name"
 
 npm run rebuild
 
 cd "$local_dir"
-cp -R "$root_dir/artifacts" "$local_dir/~fnd"
+cp -R "$artifacts_dir" "$local_dir/~fnd"
 rm -rf "$local_dir/~fnd/.git"
 rsync -a --delete -c -P -z -e ssh ./ "$target"
 
