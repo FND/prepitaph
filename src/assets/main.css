@@ -394,6 +394,7 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 		border-top-right-radius:var(--spacing); /* corresponds to `<pre>` */
 		border-bottom-left-radius:var(--spacing-sm1);
 		padding: var(--spacing-sm1) var(--spacing);
+		text-shadow: var(--color-bg) 1px 1px 0.1rem;
 		background-color: color-mix(in srgb, var(--color-border), transparent 50%);
 	}
 }
