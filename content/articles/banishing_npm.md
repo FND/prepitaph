@@ -85,7 +85,8 @@ Corresponding getting-started instructions:
 
 As noted above, `package.json` and `deno.json` are working in tandem:
 
-```json
+```figure filename=package.json
+'''json
 {
     "scripts": {
         "build": "esbuild ./src/index.js --bundle --format=esm --outfile=dist/bundle.js"
@@ -95,9 +96,11 @@ As noted above, `package.json` and `deno.json` are working in tandem:
         "esbuild": "^0.17.18"
     }
 }
+'''
 ```
 
-```json
+```figure filename=deno.json
+'''json
 {
     "tasks": {
         "check": "deno lint && deno fmt --check",
@@ -119,6 +122,7 @@ As noted above, `package.json` and `deno.json` are working in tandem:
         "include": ["./test"]
     }
 }
+'''
 ```
 
 Admittedly, having both of those config files is a little awkward and
