@@ -1,14 +1,14 @@
 import { readDir } from "./fs.js";
 import { CustomError } from "./util.js";
 import txtParse from "lampenfieber";
-import colonParse from "metacolon";
+import { colonParse } from "metacolon";
 import { parse } from "node:path";
 
 export async function* ingestContent(rootDir, categories) {
 	for await (let {
 		name, filepath, assets, metadata, blocks
 	} of parseContent(rootDir)) {
-		let { category } = metadata;
+		let category = metadata.get("category");
 		let loadClass = categories[category === null ? "NONE" : category];
 		if(!loadClass) {
 			throw new CustomError("INVALID_CONTENT",
@@ -33,17 +33,22 @@ export function txt2blocks(content) {
 async function* parseContent(rootDir) {
 	for await (let { name, filepath, assets, category } of discoverContent(rootDir)) {
 		// NB: avoiding `await` because we want non-blocking iteration here
-		yield colonParse(filepath).
-			then(({ headers, body }) => ({
-				name,
-				filepath,
-				assets,
-				metadata: { // XXX: `Map`ify? should be fixed within metacolon
-					...disallow("category", headers, filepath),
-					category
-				},
-				blocks: txt2blocks(body)
-			}));
+		yield colonParse(filepath, { trim: true }).
+			then(({ headers, body }) => {
+				if(headers.has("category")) {
+					throw new CustomError("INVALID_CONTENT",
+							`invalid \`category\` metadata in \`${filepath}\``);
+				}
+
+				headers.set("category", category);
+				return {
+					name,
+					filepath,
+					assets,
+					metadata: headers,
+					blocks: txt2blocks(body)
+				};
+			});
 	}
 }
 
@@ -96,14 +101,6 @@ async function ingestContentDirectory(dirPath) {
 		}
 	}
 	return { index, assets };
-}
-
-function disallow(field, headers, filepath) {
-	if(Object.hasOwn(headers, field)) {
-		throw new CustomError("INVALID_CONTENT",
-				`invalid \`category\` metadata in \`${filepath}\``);
-	}
-	return headers;
 }
 
 function normalizeBlock(segment) {

@@ -9,7 +9,7 @@
 	"dependencies": {
 		"commonmark": "^0.31.0",
 		"lampenfieber": "^1.1.0",
-		"metacolon": "^1.1.1",
+		"metacolon": "^2.0.0",
 		"prismjs": "^1.29.0"
 	},
 	"devDependencies": {

@@ -45,9 +45,8 @@ export class Page {
 						`invalid metadata \`${field}\` in \`${source}\`: reserved field`);
 			}
 
-			let value = Object.hasOwn(convert, "call") ?
-				convert.call(metadata[field]) :
-				convert(metadata[field]);
+			let value = metadata.get(field);
+			value = Object.hasOwn(convert, "call") ? convert.call(value) : convert(value);
 			if(value === INVALID) {
 				throw new CustomError("INVALID_CONTENT",
 						`invalid \`${field}\` value in \`${source}\``);
