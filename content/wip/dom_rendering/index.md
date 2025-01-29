@@ -299,7 +299,7 @@ could alleviate such concerns.
 We're now faced with a choice: Do we
 
 ```markdown allowHTML
-<style class="visually-hidden">
+<style class="nonvisual">
 @counter-style choices {
     system: extends lower-alpha;
     suffix: ") ";
