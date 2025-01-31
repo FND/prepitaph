@@ -1,13 +1,13 @@
-import { ENTRY_POINT, BASE_URL, BROWSERS } from "./playwright.config.js";
+import { BASE_URL, BROWSERS, ENTRY_POINT } from "./playwright.config.js";
 import { createSiteMap, readSiteMap } from "./sitemap.js";
 import playwright from "@playwright/test";
 
-export default async function globalSetup(config) {
+export default async function globalSetup(_config) {
 	// only create site map if it doesn't already exist
 	try {
 		readSiteMap();
-		return;
-	} catch(err) {}
+		return; // deno-lint-ignore no-empty
+	} catch (_err) {}
 
 	// launch browser and initiate crawler
 	let browser = playwright.devices[BROWSERS[0]].defaultBrowserType;

@@ -1,18 +1,17 @@
 import layout from "./layout.js";
-import { Page, INVALID } from "../ssg/page.js";
+import { INVALID, Page } from "../ssg/page.js";
 import { html, RAW } from "../ssg/html.js";
 
 export class InfoPage extends Page {
 	static fields = {
 		...super.fields,
-		title: value => value === "NONE" ? null : // XXX: special-casing
-			(value || INVALID)
+		title: (value) => value === "NONE" ? null : (value || INVALID), // XXX: special-casing
 	};
 
 	async render(context) {
 		context = this.augmentContext(context);
 		let { assets, config } = context;
-		if(this.format === "atom") { // XXX: special-casing
+		if (this.format === "atom") { // XXX: special-casing
 			context.selfURL = this.url(config.baseURL).href;
 			return context.transformer.render(this.blocks, context);
 		}
@@ -21,8 +20,9 @@ export class InfoPage extends Page {
 		return layout({
 			title: title || {
 				isStandalone: true,
-				text: config.siteTitle
+				text: config.siteTitle,
 			},
+			// deno-fmt-ignore
 			content: html`<main class="stack">${title && {
 				[RAW]: html`<h1>${title}</h1>`
 			}}${{
@@ -31,7 +31,7 @@ export class InfoPage extends Page {
 			css: assets.register(config.css.default),
 			assets,
 			store: context.store,
-			config
+			config,
 		});
 	}
 }

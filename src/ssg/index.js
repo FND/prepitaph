@@ -3,17 +3,17 @@ import { TextTransformer } from "./transform.js";
 import { AssetRegistry } from "./assets.js";
 import { ContentStore } from "./store.js";
 import { createFile, realpath } from "./fs.js";
-import { normalizeFilename, normalizeURI, clone, CustomError } from "./util.js";
+import { clone, CustomError, normalizeFilename, normalizeURI } from "./util.js";
 import * as globalConfig from "../config/index.js";
-import { copyFile, mkdir, constants } from "node:fs/promises";
-import { resolve, basename, dirname } from "node:path";
+import { constants, copyFile, mkdir } from "node:fs/promises";
+import { basename, dirname, resolve } from "node:path";
 
 let CREATE_ONLY = constants.COPYFILE_EXCL;
 
 try {
 	await main();
-} catch(err) {
-	if(err instanceof CustomError) {
+} catch (err) {
+	if (err instanceof CustomError) {
 		abort(`[${err.code}] ${err.message}`);
 	}
 	throw err;
@@ -42,19 +42,20 @@ async function main() {
 		store,
 		assets: new AssetRegistry(),
 		transformer: new TextTransformer(config.blocks),
-		config
+		config,
 	};
 	let cache = new Set();
 	let pages = [];
-	for(let page of store) {
+	for (let page of store) {
 		console.error(`... ${page.url(baseURL).href}`);
 		let { assets, localPath } = page;
 		let filepath = resolve(outputDir, localPath);
 		// NB: avoiding `await` because we want non-blocking iteration here
-		let op = page.render(context).
-			then(html => createFile(filepath, html, cache));
-		if(assets) { // copy page-specific assets
+		let op = page.render(context)
+			.then((html) => createFile(filepath, html, cache));
+		if (assets) { // copy page-specific assets
 			let targetDir = resolve(outputDir, dirname(localPath));
+			// deno-fmt-ignore
 			op = op. // wait for directory to be created
 				then(() => Promise.all(assets.map(filepath => {
 					return copy(filepath, targetDir, "page asset");
@@ -66,11 +67,12 @@ async function main() {
 
 	// copy global assets discovered during rendering
 	await mkdir(assetsDir, { recursive: true });
-	await Promise.all([...context.assets].map(filepath => {
+	await Promise.all([...context.assets].map((filepath) => {
 		return copy(filepath, assetsDir, "global asset");
 	}));
 }
 
+// deno-lint-ignore require-await
 async function copy(filepath, targetDir, designation) {
 	let filename = normalizeFilename(basename(filepath));
 	let target = resolve(targetDir, filename);
@@ -80,5 +82,6 @@ async function copy(filepath, targetDir, designation) {
 
 function abort(msg) {
 	console.error("\nERROR!", msg);
+	// deno-lint-ignore no-process-globals
 	process.exit(1);
 }

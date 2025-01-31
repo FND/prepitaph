@@ -1,22 +1,22 @@
-import { WIDTH, HEIGHT } from "./playwright.config.js";
+import { HEIGHT, WIDTH } from "./playwright.config.js";
 import { readSiteMap } from "./sitemap.js";
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { join } from "node:path";
 
 let OPTIONS = {
-	stylePath: join(__dirname, "./viz.tweaks.css")
+	stylePath: join(__dirname, "./viz.tweaks.css"),
 };
 
 let sitemap = [];
 try {
 	sitemap = readSiteMap();
-} catch(err) {
-	test("site map", ({ page }) => {
+} catch (_err) {
+	test("site map", () => {
 		throw new Error("missing site map");
 	});
 }
 
-for(let url of sitemap) {
+for (let url of sitemap) {
 	test(`page at ${url}`, async ({ page }) => {
 		await checkSnapshot(url, page);
 	});
@@ -26,7 +26,7 @@ async function checkSnapshot(url, page) {
 	// determine page height with default viewport
 	await page.setViewportSize({
 		width: WIDTH,
-		height: HEIGHT
+		height: HEIGHT,
 	});
 	await page.goto(url);
 	await page.waitForLoadState("networkidle");
@@ -35,7 +35,7 @@ async function checkSnapshot(url, page) {
 	// resize viewport for before snapshotting
 	await page.setViewportSize({
 		width: WIDTH,
-		height: Math.ceil(height)
+		height: Math.ceil(height),
 	});
 	await page.waitForLoadState("networkidle");
 	await expect(page).toHaveScreenshot(OPTIONS);

@@ -1,5 +1,3 @@
-/* eslint-env browser */
-
 let ANIMATION_DURATION = 500;
 let CSS = new CSSStyleSheet();
 CSS.replace(`
@@ -38,7 +36,7 @@ source-view {
 `);
 document.adoptedStyleSheets.push(CSS);
 
-customElements.define("source-view", class SourceView extends HTMLElement {
+class SourceView extends HTMLElement {
 	connectedCallback() {
 		let el = document.createElement("b");
 		el.className = "nonvisual";
@@ -64,4 +62,6 @@ customElements.define("source-view", class SourceView extends HTMLElement {
 	get source() {
 		return this.querySelector("pre");
 	}
-});
+}
+
+customElements.define("source-view", SourceView);

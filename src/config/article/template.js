@@ -1,12 +1,12 @@
 import layout from "../layout.js";
-import { html, trustedHTML, RAW } from "../../ssg/html.js";
+import { html, RAW, trustedHTML } from "../../ssg/html.js";
 
 let TOPICS_LINK; // NB: cached; assumed to be identical for all articles
 
 export async function renderArticle(article, { assets, store, config }, options) {
 	let isDocument = options.isDocument = options.isDocument !== false; // normalize
 	let html = render(article, { store, config }, options);
-	if(isDocument === false) {
+	if (isDocument === false) {
 		return html;
 	}
 
@@ -17,41 +17,43 @@ export async function renderArticle(article, { assets, store, config }, options)
 	return layout({
 		title: article.title,
 		author: article.author,
-		teaser: await (article.intro ?? article.teaser)?.
-			then(teaser => teaser?.
+		teaser: await (article.intro ?? article.teaser)
+			?.then((teaser) => {
 				// NB: parsing HTML the Cthulhu way seems acceptable here
-				replace(/<[A-Za-z/][^>]*>/g, "").replace(/\s+/g, " ").trim()),
+				return teaser
+					?.replace(/<[A-Za-z/][^>]*>/g, "")
+					.replace(/\s+/g, " ").trim();
+			}),
 		canonicalURL: article.canonicalURL,
 		redirectURI: article.redirectURI,
 		content: await html.then(injectPermalinks),
 		css: assets.register(styles),
 		assets,
 		store,
-		config
+		config,
 	});
 }
 
-async function render(article, context,
-		{ isDocument, heading, metadata, teaser, main }) {
+async function render(article, context, { isDocument, heading, metadata, teaser, main }) {
 	let { store, config } = context;
 	let { baseURL } = config;
-	if(heading !== false) {
+	if (heading !== false) {
 		let tag = isDocument === false ? "h2" : "h1";
 		heading = trustedHTML`<${tag}><a${{
-			href: article.url(baseURL).pathname
+			href: article.url(baseURL).pathname,
 		}}>${article.title}</a></${tag}>`;
 	}
 
-	if(metadata !== false) {
+	if (metadata !== false) {
 		let ts = article.updated || article.created; // NB: design decision
 		let datetime = ts.toISOString().slice(0, 10);
 		let date = ts.toLocaleDateString("en-US", {
 			year: "numeric",
 			month: "long",
-			day: "numeric"
+			day: "numeric",
 		});
-		let url = store.retrieve(article.category, "index"). // TODO: memoize?
-			url(baseURL).pathname;
+		// TODO: memoize?
+		let url = store.retrieve(article.category, "index").url(baseURL).pathname;
 		metadata = trustedHTML`
 			${article.renderType(url)}
 			<p class="metadata">
@@ -61,16 +63,16 @@ async function render(article, context,
 		`;
 	}
 
-	if(main !== false && article.teaser) { // avoid duplication -- XXX: special-casing
+	if (main !== false && article.teaser) { // avoid duplication -- XXX: special-casing
 		teaser = false;
 	}
 	teaser = teaser !== false && (article.intro ?? article.teaser);
 	teaser &&= trustedHTML`<div class="teaser stack">${{
-		[RAW]: await teaser
+		[RAW]: await teaser,
 	}}</div>`;
 
-	if(heading !== false || metadata !== false || teaser !== false) {
-		// eslint-disable-next-line no-var
+	if (heading !== false || metadata !== false || teaser !== false) {
+		// deno-lint-ignore no-var no-inner-declarations
 		var header = trustedHTML`<header>
 			${heading}
 			${metadata}
@@ -78,28 +80,29 @@ async function render(article, context,
 		</header>`;
 	}
 
-	if(main !== false) {
+	if (main !== false) {
 		let { baseURL } = config;
-		if(!TOPICS_LINK) {
+		if (!TOPICS_LINK) {
 			TOPICS_LINK = trustedHTML`<a${{
-				href: store.retrieve(null, "topics").url(baseURL).pathname
+				href: store.retrieve(null, "topics").url(baseURL).pathname,
 			}}>topics</a>`;
 		}
 
 		let content = await article.content;
 		main = {
-			[RAW]: content + renderFooter(article, store, config, baseURL)
+			[RAW]: content + renderFooter(article, store, config, baseURL),
 		};
 	}
 
 	let tag = {
-		[RAW]: isDocument === false ? "article" : "main"
+		[RAW]: isDocument === false ? "article" : "main",
 	};
 	let { typeIdentifier } = article;
+	// deno-fmt-ignore
 	return html`
 <${tag}${{
 	class: [...new Set([typeIdentifier, "article", "stack"])].join(" "),
-	style: `--vt-name: ${typeIdentifier}-${article.slug}`
+	style: `--vt-name: ${typeIdentifier}-${article.slug}`,
 }}>
 	${header}
 	${main}

@@ -1,6 +1,3 @@
-/* eslint-env browser */
-/* global Prism */
-
 let CSS = new CSSStyleSheet();
 CSS.replace(`
 web-demo {
@@ -40,18 +37,19 @@ web-demo {
 document.adoptedStyleSheets.push(CSS);
 
 let ASSETS_URI = "/assets";
+// deno-lint-ignore no-window
 window.Prism ||= {};
 Prism.manual = true;
 let HIGHLIGHTER = () => {
-	HIGHLIGHTER = import(`${ASSETS_URI}/prism-core.min.js`).
-		then(() => import(`${ASSETS_URI}/prism-autoloader.min.js`)).
-		then(() => {
+	HIGHLIGHTER = import(`${ASSETS_URI}/prism-core.min.js`)
+		.then(() => import(`${ASSETS_URI}/prism-autoloader.min.js`))
+		.then(() => {
 			Prism.plugins.autoloader.languages_path = `${ASSETS_URI}/`;
 		});
 	return HIGHLIGHTER;
 };
 
-customElements.define("web-demo", class WebDemo extends HTMLElement {
+class WebDemo extends HTMLElement {
 	#elements = makeDialog();
 
 	connectedCallback() {
@@ -66,16 +64,16 @@ customElements.define("web-demo", class WebDemo extends HTMLElement {
 		this.append(btn, this.#elements.dialog);
 
 		let resize = this._resize = this.resize; // NB: memoization
-		if(resize) {
+		if (resize) {
 			this.initResize();
 		}
 	}
 
-	async handleEvent(ev) {
+	async handleEvent(_ev) {
 		// NB: re-downloading HTML to retain original formatting
 		let url = this.iframe.src;
-		let res = fetch(url).
-			then(res => res.text());
+		let res = fetch(url)
+			.then((res) => res.text());
 
 		let { dialog, code } = this.#elements;
 		dialog.showModal();
@@ -87,15 +85,15 @@ customElements.define("web-demo", class WebDemo extends HTMLElement {
 
 	initResize(defer) {
 		let { iframe } = this;
-		if(defer || !iframe) {
+		if (defer || !iframe) {
 			setTimeout(() => this.initResize(), 50);
 			return;
 		}
 
 		let doc = iframe.contentDocument;
-		if(doc?.location.href === "about:blank") {
+		if (doc?.location.href === "about:blank") {
 			this.initResize(true);
-		} else if(doc?.documentElement) {
+		} else if (doc?.documentElement) {
 			this.autoResize();
 		} else {
 			iframe.addEventListener("load", () => this.initResize(), { once: true });
@@ -106,13 +104,13 @@ customElements.define("web-demo", class WebDemo extends HTMLElement {
 		let { iframe } = this;
 		let root = iframe.contentDocument.documentElement;
 		let obs = new ResizeObserver(([entry]) => {
-			if(iframe.contentDocument.documentElement !== root) { // post-navigation
+			if (iframe.contentDocument.documentElement !== root) { // post-navigation
 				obs.disconnect();
 				this.autoResize();
 				return;
 			}
 
-			if(this._resize === "once") {
+			if (this._resize === "once") {
 				setTimeout(() => { // XXX: crude
 					obs.disconnect();
 				}, 250);
@@ -132,7 +130,9 @@ customElements.define("web-demo", class WebDemo extends HTMLElement {
 		let value = this.getAttribute("resize") ?? false;
 		return value === "" ? true : value;
 	}
-});
+}
+
+customElements.define("web-demo", WebDemo);
 
 function makeDialog() {
 	let el = document.createElement("dialog");
@@ -144,6 +144,6 @@ function makeDialog() {
 	`.trim();
 	return {
 		dialog: el,
-		code: el.querySelector("pre code")
+		code: el.querySelector("pre code"),
 	};
 }

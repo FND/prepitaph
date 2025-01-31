@@ -1,8 +1,8 @@
 import { renderArticle } from "./template.js";
 import { InfoPage } from "../info_page.js";
-import { Page, assertPageReference, INVALID } from "../../ssg/page.js";
+import { assertPageReference, INVALID, Page } from "../../ssg/page.js";
 import { trustedHTML } from "../../ssg/html.js";
-import { iso2date, clone } from "../../ssg/util.js";
+import { clone, iso2date } from "../../ssg/util.js";
 
 export class Article extends Page {
 	static type = "article";
@@ -10,35 +10,37 @@ export class Article extends Page {
 	// TODO: stricter validation required to reduce risk of subtle breakage
 	static fields = {
 		...super.fields,
-		title: value => value || INVALID,
-		tags: value => value ? value.split(/, +/) : INVALID,
-		author: value => value || INVALID,
-		created: value => value ? iso2date(value) : INVALID,
-		updated: value => value ? iso2date(value) : null,
+		title: (value) => value || INVALID,
+		tags: (value) => value ? value.split(/, +/) : INVALID,
+		author: (value) => value || INVALID,
+		created: (value) => value ? iso2date(value) : INVALID,
+		updated: (value) => value ? iso2date(value) : null,
 		canonical: {
 			prop: "canonicalURL",
-			call: value => value || null
+			call: (value) => value || null,
 		},
 		redirect: {
 			prop: "redirectURI",
-			call: value => {
-				if(value) {
+			call: (value) => {
+				if (value) {
 					assertPageReference(value);
 					return value;
 				}
 				return null;
-			}
+			},
 		},
-		syntax: value => value === "true"
+		syntax: (value) => value === "true",
 	};
 
 	constructor(name, metadata, blocks, source, assets) {
-		if(blocks[0]?.type === "intro") { // extract intro, if any
-			var intro = blocks.shift(); // eslint-disable-line no-var
+		if (blocks[0]?.type === "intro") { // extract intro, if any
+			// deno-lint-ignore no-var no-inner-declarations
+			var intro = blocks.shift();
 		} else { // ... otherwise check for teaser (mutually exclusive)
-			for(let block of blocks) {
-				if(block.type === "teaser") {
-					var teaser = block; // eslint-disable-line no-var
+			for (let block of blocks) {
+				if (block.type === "teaser") {
+					// deno-lint-ignore no-var no-inner-declarations
+					var teaser = block;
 					break;
 				}
 			}
@@ -49,8 +51,9 @@ export class Article extends Page {
 		this.teaser = teaser || null;
 	}
 
+	// deno-lint-ignore require-await
 	async render(context, options = {}) {
-		if(this.categoryIndex) {
+		if (this.categoryIndex) {
 			// XXX: switching to a different class is very awkward and brittle
 			return InfoPage.prototype.render.call(this, context);
 		}
@@ -67,13 +70,13 @@ export class Article extends Page {
 			get teaser() {
 				return teaser && transformer.render([teaser], context);
 			},
-			content: options.main !== false && transformer.render(this.blocks, context)
+			content: options.main !== false && transformer.render(this.blocks, context),
 		});
 
 		return renderArticle(page, {
 			assets: context.assets,
 			store: context.store,
-			config: context.config
+			config: context.config,
 		}, options);
 	}
 
@@ -82,13 +85,13 @@ export class Article extends Page {
 		let tag = href ? "a" : "small";
 		return type !== Article.type && trustedHTML`<${tag} class="content-type"${{
 			href,
-			"data-type": symbol
+			"data-type": symbol,
 		}}>${type}</${tag}>`;
 	}
 
 	get typeIdentifier() {
 		let { type } = this.constructor;
-		if(/[^a-z0-9 -]/.test(type)) { // just to be safe
+		if (/[^a-z0-9 -]/.test(type)) { // just to be safe
 			throw new Error(`invalid type: \`${type}\``);
 		}
 		return type.replaceAll(" ", "-");

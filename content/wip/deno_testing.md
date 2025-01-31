@@ -58,7 +58,7 @@ Tasks
 '''json
 {
     "tasks": {
-        "vet": "deno lint && deno fmt --check",
+        "vet": "deno fmt --check && deno lint",
         "verify": "deno check --import-map ./deno.json ./src"
     },
     // …

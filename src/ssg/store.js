@@ -8,17 +8,18 @@ export class ContentStore {
 
 	resolve(specifier) {
 		let parts = specifier.split("/");
-		switch(parts.length) {
-		case 1:
-			parts = [null, parts[0]]; // eslint-disable-next-line no-fallthrough
-		case 2: {
-			let [category, id] = parts;
-			let [slug, format] = id.split(".");
-			return this.retrieve(category, slug, format || undefined);
-		}
-		default:
-			throw new CustomError("INVALID_REFERENCE",
-					`invalid page specifier \`${specifier}\``);
+		switch (parts.length) {
+			// deno-lint-ignore no-fallthrough
+			case 1:
+				parts = [null, parts[0]];
+			case 2: {
+				let [category, id] = parts;
+				let [slug, format] = id.split(".");
+				return this.retrieve(category, slug, format || undefined);
+			}
+			default: // deno-fmt-ignore
+				throw new CustomError("INVALID_REFERENCE",
+						`invalid page specifier \`${specifier}\``);
 		}
 	}
 
@@ -28,7 +29,7 @@ export class ContentStore {
 		this._bySpecifier.set(`${category || ""}/${page.slug}.${page.format}`, page);
 
 		let entries = index.get(category);
-		if(entries) {
+		if (entries) {
 			entries.push(page);
 		} else {
 			index.set(category, [page]);
@@ -36,9 +37,9 @@ export class ContentStore {
 	}
 
 	retrieve(category, slug, format = "html") {
-		if(slug === undefined) {
+		if (slug === undefined) {
 			let entries = this._byCategory.get(category);
-			if(!entries) {
+			if (!entries) { // deno-fmt-ignore
 				throw new CustomError("INVALID_CATEGORY",
 						`no such category:\`${category}\``);
 			}
@@ -47,14 +48,14 @@ export class ContentStore {
 
 		let specifier = `${category || ""}/${slug}.${format}`;
 		let page = this._bySpecifier.get(specifier);
-		if(!page) {
+		if (!page) {
 			throw new CustomError("INVALID_SPECIFIER", `no such page: \`${specifier}\``);
 		}
 		return page;
 	}
 
-	* [Symbol.iterator]() {
-		for(let pages of this._byCategory.values()) {
+	*[Symbol.iterator]() {
+		for (let pages of this._byCategory.values()) {
 			yield* pages;
 		}
 	}

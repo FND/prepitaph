@@ -7,6 +7,7 @@ export let WIDTH = 800;
 export let HEIGHT = WIDTH;
 let SERVER = "cd ../../dist && python3 -m http.server";
 
+// deno-lint-ignore no-process-globals
 let IS_CI = !!process.env.CI;
 
 export default defineConfig({
@@ -19,21 +20,21 @@ export default defineConfig({
 	webServer: {
 		command: SERVER,
 		url: BASE_URL,
-		reuseExistingServer: !IS_CI
+		reuseExistingServer: !IS_CI,
 	},
 	use: {
 		baseURL: BASE_URL,
-		trace: "on-first-retry"
+		trace: "on-first-retry",
 	},
 	globalSetup: require.resolve("./setup.js"),
-	projects: BROWSERS.map(ua => ({
+	projects: BROWSERS.map((ua) => ({
 		name: ua.toLowerCase().replaceAll(" ", "-"),
 		use: {
 			...devices[ua],
 			viewport: {
 				width: WIDTH,
-				height: HEIGHT
-			}
-		}
-	}))
+				height: HEIGHT,
+			},
+		},
+	})),
 });

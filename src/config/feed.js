@@ -1,4 +1,4 @@
-import { html, trustedHTML, RAW } from "../ssg/html.js";
+import { html, RAW, trustedHTML } from "../ssg/html.js";
 
 export async function renderAtom(pages, title, context) {
 	let first = pages[0];
@@ -16,9 +16,9 @@ export async function renderAtom(pages, title, context) {
 	<link${{ href: context.selfURL }} rel="self"/>
 	<updated>${(first.updated || first.created).toISOString()}</updated>
 	${{
-		[RAW]: await Promise.all(pages.
-			map(page => renderEntry(page, context, baseAttr))).
-			then(entries => entries.join("\n"))
+		[RAW]: await Promise.all(pages
+			.map((page) => renderEntry(page, context, baseAttr)))
+			.then((entries) => entries.join("\n")),
 	}}
 </feed>
 	`.trim();
@@ -33,14 +33,14 @@ async function renderEntry(page, context, baseAttr) {
 		heading: false,
 		metadata: true,
 		teaser: true,
-		main: false
+		main: false,
 	});
 	let content = page.render(context, {
 		isDocument: false,
 		heading: false,
 		metadata: true,
 		teaser: true,
-		main: true
+		main: true,
 	});
 	summary = (await summary).replaceAll("\n", " "); // discard line breaks
 	return html`

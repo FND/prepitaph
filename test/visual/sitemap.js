@@ -13,10 +13,10 @@ export async function createSiteMap(url, baseURL, page) {
 }
 
 export function readSiteMap() {
-	try { // eslint-disable-next-line no-var
+	try { // deno-lint-ignore no-var no-inner-declarations
 		var data = readFileSync(SITEMAP, UTF8);
-	} catch(err) {
-		if(err.code === "ENOENT") {
+	} catch (err) {
+		if (err.code === "ENOENT") {
 			throw new Error("missing site map");
 		}
 		throw err;
@@ -27,8 +27,8 @@ export function readSiteMap() {
 function extractLocalLinks(baseURL) {
 	let res = new Set();
 	let offset = baseURL.length;
-	for(let { href } of document.links) {
-		if(href.startsWith(baseURL)) {
+	for (let { href } of document.links) {
+		if (href.startsWith(baseURL)) {
 			res.add(href.slice(offset));
 		}
 	}

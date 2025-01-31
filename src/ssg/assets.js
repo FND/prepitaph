@@ -5,7 +5,7 @@ export class AssetRegistry {
 
 	register(assets) {
 		let memo = this._assets;
-		if(!Array.isArray(assets)) {
+		if (!Array.isArray(assets)) {
 			memo.add(assets.source);
 			return assets.uri;
 		}
@@ -16,7 +16,7 @@ export class AssetRegistry {
 		});
 	}
 
-	* [Symbol.iterator]() {
+	*[Symbol.iterator]() {
 		yield* this._assets;
 	}
 }

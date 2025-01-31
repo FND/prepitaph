@@ -103,7 +103,7 @@ As noted above, `package.json` and `deno.json` are working in tandem:
 '''json
 {
     "tasks": {
-        "check": "deno lint && deno fmt --check",
+        "check": "deno fmt --check && deno lint",
         "dev": "deno task build --watch=forever"
     },
     "fmt": {
