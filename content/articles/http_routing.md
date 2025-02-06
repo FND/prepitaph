@@ -11,6 +11,12 @@ That's useful both in a browser context (e.g. for service workers) and on the
 server side with [WinterCG](https://wintercg.org)-compatible runtimes.
 ```
 
+```aside
+If routing performance is a concern, especially with complex routes, you might
+consider a
+[different approach](https://adventures.nodeland.dev/archive/you-should-not-use-urlpattern-to-route-http/).
+```
+
 [`URLPattern`](https://developer.mozilla.org/en-US/docs/Web/API/URLPattern) can
 appear daunting at first, but for our purposes here, we can ignore most of its
 nuances: Typically all we want are path parameters à la `/items/:slug`, if any.
