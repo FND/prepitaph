@@ -64,7 +64,29 @@ though I haven't researched this particular scenario.
 As with any caching technique, we need to carefully consider whether the
 respective values might change in the future. In this case, we assume that
 `data` is immutable.
-
-Note that for some scenarios, we might additionally need to distinguish between
-instance and prototype properties.
 ```
+
+Note that for some scenarios, we might need to distinguish between instance and
+prototype properties. That also opens up an intriguing opportunity:
+
+```javascript
+class Record {
+    set data() {
+        this._data = data;
+        delete this.hash; // resets memoization
+    }
+
+    get hash() {
+        let value = this._data * Math.random();
+        Object.defineProperty(this, "hash", {
+            value,
+            configurable: true, // enables reset
+        });
+        return value;
+    }
+}
+```
+
+Here we're caching our value in an instance property, which takes precedence
+over the prototype's getter. We can later `delete` that instance property so
+that `hash` is recalculated via the prototype when accessed again.
