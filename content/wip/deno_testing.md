@@ -70,8 +70,8 @@ These two designations aren't perfect, but were chosen to avoid overloading
 terms already reserved for Deno standard commands.
 
 If we require custom TypeScript configuration, e.g. to
-[avoid TypeScript syntax](https://prepitaph.org/articles/typed-javascript/), we
-can pass that to `deno check` via `--config ./tsconfig.json`.
+[avoid TypeScript syntax](page://articles/typed-javascript), we can pass that
+to `deno check` via `--config ./tsconfig.json`.
 
 ```aside
 '''disclosure caption="typical TypeScript configuration" backticks=^^^
