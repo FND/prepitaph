@@ -13,7 +13,11 @@ export {
 	markdown,
 	_html as html
 };
-export let NONE = (content, params, context) => html`<pre>${content}</pre>`;
+export let NONE = (content, params, context) => {
+	return html`<source-view><pre>${content}</pre></source-view><script type="module"${{
+		src: "/assets/source.js" // TODO: fingerprinting
+	}} async></script>`;
+};
 export let ini = await code("ini");
 export let xml = await code("xml");
 export let json = await code("json");
@@ -134,8 +138,9 @@ export async function embed(content, { uri, resize }, context) {
 
 	return html`<web-demo${{ resize }}><iframe${{
 		src: page.url(context.config.baseURL).href + path
-	}}></iframe></web-demo>
-	<script type="module" src="/assets/embed.js" async></script>`;
+	}}></iframe></web-demo><script type="module"${{
+		src: "/assets/embed.js" // TODO: fingerprinting
+	}} async></script>`;
 }
 
 export async function disclosure(content, params, context) {
@@ -196,11 +201,13 @@ async function code(lang, grammar = lang) {
 		return code(lang, grammar);
 	}
 	return (content, params, context) => {
-		return html`<pre><code${{ class: `language-${lang}` }}>${{
+		return html`<source-view><pre><code${{ class: `language-${lang}` }}>${{
 			[RAW]: highlight(content, _grammar, lang).
 				replaceAll("«", "<mark>").
 				replaceAll("»", "</mark>")
-		}}</code></pre>`;
+		}}</code></pre></source-view><script type="module"${{
+			src: "/assets/source.js" // TODO: fingerprinting
+		}} async></script>`;
 	};
 }
 

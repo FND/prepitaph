@@ -53,6 +53,10 @@ export let css = {
 	}]
 };
 export let js = {
+	source: [{
+		source: `${ROOT_DIR}/src/assets/source.js`,
+		uri: normalize(`${_assetsDir}/source.js`)
+	}],
 	embed: [{
 		source: `${ROOT_DIR}/src/assets/embed.js`,
 		uri: normalize(`${_assetsDir}/embed.js`)

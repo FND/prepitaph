@@ -55,14 +55,16 @@ customElements.define("web-demo", class WebDemo extends HTMLElement {
 	#elements = makeDialog();
 
 	connectedCallback() {
-		let btn = document.createElement("button");
-		btn.type = "button";
 		let el = document.createElement("b");
 		el.className = "nonvisual";
 		el.textContent = "view source";
+
+		let btn = document.createElement("button");
+		btn.type = "button";
 		btn.appendChild(el);
 		btn.addEventListener("click", this);
 		this.append(btn, this.#elements.dialog);
+
 		if(this.resize) {
 			this.initResize();
 		}

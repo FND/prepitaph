@@ -356,9 +356,11 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 	font-size: 1.6rem; /* XXX: magic value */
 }
 
-.article pre {
+.article source-view {
 	margin-left: calc(-1 * var(--spacing-outdent-left));
 	margin-right: calc(-1 * var(--spacing-outdent-right));
+}
+.article pre {
 	border: var(--border-size) solid var(--color-border);
 	border-left-width: var(--border-outdent-left);
 	border-radius: var(--spacing);
@@ -386,7 +388,12 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 .article figure:has(figcaption.is-filename) {
 	position: relative;
 
-	& pre:first-child + figcaption.is-filename {
+	& source-view > button[type=button] { /* XXX: breaks encapsulation */
+		top: auto;
+		bottom: 0;
+	}
+
+	& source-view ~ figcaption.is-filename {
 		position: absolute;
 		top: 0;
 		right: calc(-1 * var(--spacing-outdent-right)); /* corresponds to `<pre>` */
