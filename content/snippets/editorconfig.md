@@ -8,7 +8,8 @@ As a big believer in both consistency and individual autonomy[ide](footnote://),
 I consider [EditorConfig](https://editorconfig.org) an important part of
 projects' standard setup:
 
-```ini
+```figure filename=.editorconfig
+'''ini
 # https://editorconfig.org
 
 root = true
@@ -29,6 +30,7 @@ indent_style = space
 trim_trailing_whitespace = false
 max_line_length = 72
 indent_style = space
+'''
 ```
 
 NB:
