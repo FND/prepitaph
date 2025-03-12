@@ -86,11 +86,12 @@ body {
     line-height: 1.5;
 }
 
-select,
-textarea,
 input,
+textarea,
+select,
 button {
-    font: inherit;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 .stack > * {
