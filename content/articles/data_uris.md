@@ -38,7 +38,8 @@ Note that the SVG string needs to be
 Binary data can be inserted via Base64 encoding -- for which I'd created a
 little Python script:
 
-```python
+```figure filename=b64encode
+'''python
 #!/usr/bin/env python3
 
 """
@@ -61,6 +62,7 @@ def main(_, mime_type, filepath):
 if __name__ == "__main__":
     status = not main(*sys.argv)
     sys.exit(status)
+'''
 ```
 
 [Chris Coyier's article](https://css-tricks.com/data-uris/) on the subject
