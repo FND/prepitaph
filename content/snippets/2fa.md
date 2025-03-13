@@ -8,8 +8,8 @@ Prerequisite is [PyOTP](https://pyauth.github.io/pyotp/), which we set up within
 a [virtual environment](https://docs.python.org/3/library/venv.html):
 
 ```shell
-$ python3 -m venv venv
-$ . venv/bin/activate
+$ python3 -m venv ./venv
+$ . ./venv/bin/activate
 $ pip install pyotp
 $ deactivate
 ```
