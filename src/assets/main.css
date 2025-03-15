@@ -359,6 +359,16 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 .article source-view {
 	margin-left: calc(-1 * var(--spacing-outdent-left));
 	margin-right: calc(-1 * var(--spacing-outdent-right));
+
+	> button[type=button] { /* XXX: breaks encapsulation */
+		border-width: 2px;
+		border-style: outset;
+		border-radius: 0 var(--spacing);
+		border-color: var(--color-border);
+		padding: var(--spacing-sm2) var(--spacing-sm1);
+		line-height: 1;
+		background-color: #EEE; /* XXX: magic value */
+	}
 }
 .article pre {
 	border: var(--border-size) solid var(--color-border);
@@ -388,12 +398,17 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 .article figure:has(figcaption.is-filename) {
 	position: relative;
 
-	& source-view > button[type=button] { /* XXX: breaks encapsulation */
-		top: auto;
-		bottom: 0;
+	source-view > pre {
+		padding-block-start: var(--spacing-lg3);
 	}
 
-	& source-view ~ figcaption.is-filename {
+	source-view > button[type=button] { /* XXX: breaks encapsulation */
+		left: 0;
+		right: auto;
+		border-radius: var(--spacing) 0;
+	}
+
+	source-view ~ figcaption.is-filename {
 		position: absolute;
 		top: 0;
 		right: calc(-1 * var(--spacing-outdent-right)); /* corresponds to `<pre>` */
