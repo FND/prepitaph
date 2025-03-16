@@ -131,13 +131,15 @@ functionality, that quickly becomes annoying and a bit of a maintenance burden.
 
 Deno's support for
 [import maps](https://docs.deno.com/runtime/manual/basics/import_maps/) makes
-this pretty simple though:
+this reasonably simple though:
 
 ```figure filename=deno.json
 '''json
 {
     "imports": {
-        "$deno/": "https://deno.land/std@0.224.0/"
+        "@std/testing/bdd": "jsr:@std/testing@^1.0.9/bdd",
+        "@std/path": "jsr:@std/path@^1.0.8",
+        "@std/assert": "jsr:@std/assert@^1.0.11"
     },
     // …
 }
@@ -145,11 +147,11 @@ this pretty simple though:
 ```
 
 ```javascript
-import { describe, it } from "$deno/testing/bdd.ts";
+import { describe, it } from "@std/testing/bdd";
 import {
     assertEquals as assertDeep,
     assertStrictEquals as assertSame,
-} from "$deno/assert/mod.ts";
+} from "@std/assert";
 
 describe("calculator", () => {
     it("supports numbers", () => {
@@ -165,7 +167,7 @@ The asserts' (re)naming convention there is an attempt to emphasize
 YMMV.
 ```
 
-`deno test` will pick this up automatically, substituting `$deno/` within
+`deno test` will pick this up automatically, substituting `@std/…` within
 `import` statements accordingly. However, `deno check` currently requires
 explicitly adding `--import-map ./deno.json` and emits spurious warnings about
 supposedly invalid top-level keys within that file. 🤷
