@@ -313,7 +313,9 @@ Embeds are typically used for demo pages:
 ```
 
 * URIs starting with `./` are treated as assets from the respective page.
-* `resize` activates automatic resizing based on the respective content.
+* `resize` activates automatic resizing based on the respective content. In rare
+  cases, we might want `resize=once`, which disables auto-resizing after the
+  initial adjustment.
 
 
 ### Disclosure

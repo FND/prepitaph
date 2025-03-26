@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Input-Field Styling</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+	--spacing-sm1: calc(var(--spacing) * 0.667);
+	--spacing-sm2: calc(var(--spacing) * 0.444);
+	--spacing-sm3: calc(var(--spacing) * 0.296);
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+body > *,
+label > * {
+	margin-block: 0;
+}
+body > * + * {
+	margin-top: var(--spacing);
+}
+
+form {
+	display: flex;
+	gap: var(--spacing);
+	align-items: end;
+	flex-wrap: wrap;
+}
+
+label,
+label b {
+	display: block;
+}
+
+input {
+	border-width: 2px;
+	border-image: linear-gradient(to bottom, transparent 75%, #AAA 50%);
+	border-image-slice: 1;
+	padding: var(--spacing-sm3) var(--spacing);
+}
+
+.nonvisual:not(:focus, :active) {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	white-space: nowrap;
+	clip-path: inset(50%);
+}
+	</style>
+</head>
+
+<body>
+	<h1 class="nonvisual">Input-Field Styling</h1>
+	<form method="dialog">
+		<label>
+			<b>Description</b>
+			<input type="text">
+		</label>
+		<label>
+			<b>Deadline</b>
+			<input type="date">
+		</label>
+		<button>Save</button>
+	</form>
+</body>
+
+</html>

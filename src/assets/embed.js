@@ -65,7 +65,8 @@ customElements.define("web-demo", class WebDemo extends HTMLElement {
 		btn.addEventListener("click", this);
 		this.append(btn, this.#elements.dialog);
 
-		if(this.resize) {
+		let resize = this._resize = this.resize; // NB: memoization
+		if(resize) {
 			this.initResize();
 		}
 	}
@@ -111,6 +112,12 @@ customElements.define("web-demo", class WebDemo extends HTMLElement {
 				return;
 			}
 
+			if(this._resize === "once") {
+				setTimeout(() => { // XXX: crude
+					obs.disconnect();
+				}, 250);
+			}
+
 			const size = entry.borderBoxSize[0].blockSize;
 			iframe.style.height = Math.ceil(size + 4) + "px"; // accounts for border
 		});
@@ -122,7 +129,8 @@ customElements.define("web-demo", class WebDemo extends HTMLElement {
 	}
 
 	get resize() {
-		return this.hasAttribute("resize");
+		let value = this.getAttribute("resize") ?? false;
+		return value === "" ? true : value;
 	}
 });
 

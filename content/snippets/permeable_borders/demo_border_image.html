@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Permeable Borders</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--spacing: 0.5rem;
+}
+
+html {
+	color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+	html {
+		color-scheme: dark;
+	}
+}
+
+body {
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-top: var(--spacing);
+	}
+}
+
+.sample {
+	--_color: cadetblue;
+
+	width: fit-content;
+	margin-inline: auto;
+	border: calc(0.5 * var(--spacing)) solid var(--_color);
+	border-image: linear-gradient(45deg,
+			var(--_color),
+			transparent 25%,
+			transparent 75%,
+			var(--_color));
+	border-image-slice: 1;
+	padding: var(--spacing);
+}
+	</style>
+</head>
+
+<body>
+	<article class="sample stack">
+		<h1>Permeable Borders</h1>
+		<p>lorem ipsum dolor sit amet</p>
+	</article>
+</body>
+
+</html>

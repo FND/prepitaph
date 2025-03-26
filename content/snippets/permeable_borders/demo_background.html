@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Permeable Borders</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--spacing: 0.5rem;
+	--color-fg: #000;
+	--color-bg: #FFF;
+}
+
+html {
+	color-scheme: light;
+	color: var(--color-fg);
+	background-color: var(--color-bg);
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-fg: #FFF;
+		--color-bg: #333;
+	}
+
+	html {
+		color-scheme: dark;
+	}
+}
+
+body {
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-top: var(--spacing);
+	}
+}
+
+.sample {
+	--_size: calc(0.5 * var(--spacing));
+	--_color: cadetblue;
+
+	position: relative;
+	width: fit-content;
+	margin-inline: auto;
+	padding: calc(var(--spacing) + var(--_size));
+	background-image: linear-gradient(45deg,
+			var(--_color),
+			transparent 25%,
+			transparent 75%,
+			var(--_color));
+}
+
+.sample::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	margin: var(--_size);
+	background-color: var(--color-bg);
+}
+
+.sample > * {
+	position: relative;
+	z-index: 1;
+}
+	</style>
+</head>
+
+<body>
+	<article class="sample stack">
+		<h1>Permeable Borders</h1>
+		<p>lorem ipsum dolor sit amet</p>
+	</article>
+</body>
+
+</html>

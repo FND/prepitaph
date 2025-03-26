@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Permeable Borders</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 35rem;
+	--spacing: 0.5rem;
+	--border-angle: 45deg;
+	--cover-opacity: 100;
+	--color-fg: #000;
+	--color-bg: #FFF;
+	--color-border: cadetblue;
+	--color-cover: var(--color-bg);
+}
+
+html {
+	color-scheme: light;
+	color: var(--color-fg);
+	background-color: var(--color-bg);
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-fg: #FFF;
+		--color-bg: #333;
+	}
+
+	html {
+		color-scheme: dark;
+	}
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+label,
+label b {
+	display: block;
+}
+
+.stack > * {
+	margin-block: 0;
+
+	& + * {
+		margin-top: var(--spacing);
+	}
+}
+
+.sample {
+	--_size: calc(0.5 * var(--spacing));
+	--_transparency: calc(100% - 1% * var(--cover-opacity, 100));
+
+	position: relative;
+	width: fit-content;
+	height: calc(var(--size-factor) * 1vh);
+	overflow: clip;
+	margin-inline: auto;
+	padding: calc(var(--spacing) + var(--_size));
+	background-image: linear-gradient(var(--border-angle),
+			var(--color-border),
+			transparent 25%,
+			transparent 75%,
+			var(--color-border));
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		margin: var(--_size);
+		background-color: color-mix(in srgb,
+				var(--color-cover),
+				transparent var(--_transparency));
+	}
+
+	> * {
+		position: relative;
+		z-index: 1;
+	}
+}
+
+.controls::before {
+	content: "CSS nesting is unsupported; styling might be incomplete";
+	display: block;
+}
+.controls {
+	&::before {
+		content: "";
+	}
+
+	label {
+		position: relative;
+		width: fit-content;
+		margin-inline: auto;
+
+		* {
+			width: 100%;
+		}
+
+		&:has(input[type=range]) {
+			b {
+				margin-right: 2rem;
+			}
+
+			&[style*=--]::after {
+				position: absolute;
+				top: 0;
+				right: 0;
+				content: counter(current-value);
+				counter-reset: current-value var(--current-value);
+			}
+		}
+
+		+ button {
+			display: block;
+			margin-top: 0; /* neutralizes `.stack` */
+			margin-inline: auto;
+		}
+	}
+
+	@media (min-width: 65rem) { /* NB: corresponds to `--h-size` + 2 × label width */
+		position: absolute;
+		top: var(--spacing);
+		right: var(--spacing);
+
+		label {
+			position: relative;
+			width: auto;
+			max-width: 15rem;
+
+			+ button {
+				margin-right: 0;
+			}
+		}
+	}
+}
+	</style>
+</head>
+
+<body>
+	<article class="sample stack">
+		<h1>Permeable Borders</h1>
+		<p>lorem ipsum dolor sit amet</p>
+	</article>
+
+	<script type="module">
+let HTML = `
+<form method="dialog" class="controls stack">
+	<label>
+		<b>Size</b>
+		<input type="range" name="size">
+	</label>
+	<button name="size" aria-label="Reset size">Reset</button>
+	<label>
+		<b>Angle</b>
+		<input type="range" name="angle" min="0" max="360">
+	</label>
+	<label>
+		<b>Border Color</b>
+		<input type="color" name="border-color">
+	</label>
+	<button name="border-color" aria-label="Reset border color">Reset</button>
+	<label>
+		<b>Cover Color</b>
+		<input type="color" name="cover-color" value="#FFFFFF">
+	</label>
+	<button name="cover-color" aria-label="Reset cover color" value="transparent">Reset</button>
+	<label>
+		<b>Cover Opacity</b>
+		<input type="range" name="cover-opacity">
+	</label>
+</form>
+`.trim();
+
+let FIELDS = {
+	angle: ["--border-angle", "deg", true],
+	size: ["--size-factor"],
+	"border-color": ["--color-border", null, true],
+	"cover-color": ["--color-cover"],
+	"cover-opacity": ["--cover-opacity", null, true]
+};
+
+let doc = new DOMParser().parseFromString(HTML, "text/html");
+let form = doc.body.firstChild;
+document.body.appendChild(form);
+
+form.addEventListener("click", onChange);
+form.addEventListener("input", onChange);
+
+init();
+
+function onChange(ev) {
+	let el = ev.target;
+	let { name } = el;
+	let [prop, unit] = name ? FIELDS[name] : [];
+	if(!prop) {
+		return
+	}
+
+	let { body } = document;
+	let { style } = body;
+	if(el.localName === "button") {
+		let field = body.querySelector(`input[name=${name}]`);
+		field.value = field.getAttribute("value") ?? "";
+		field.closest("label").style.removeProperty("--current-value");
+		style.removeProperty(prop);
+		init(name);
+		return;
+	}
+
+	let { value } = el;
+	el.closest("label").style.setProperty("--current-value", value);
+	style.setProperty(prop, unit ? value + unit : value);
+}
+
+function init(fieldName) {
+	let fields = Object.entries(FIELDS).reduce((memo, [name, [,, initialize]]) => {
+		return initialize ? memo.concat(name) : memo;
+	}, []);
+	let style = getComputedStyle(form);
+	let ctx = document.createElement("canvas").getContext("2d");
+	for(let name of fields) {
+		if(fieldName && name !== fieldName) {
+			continue;
+		}
+
+		let prop = FIELDS[name][0];
+		let field = form.querySelector(`input[name="${name}"]`);
+		if(field.type === "range") {
+			field.value = style.getPropertyValue(prop).replace(/\D/g, "");
+			field.dispatchEvent(new Event("input", { bubbles: true }));
+		} else {
+			ctx.fillStyle = style.getPropertyValue(prop);
+			field.value = ctx.fillStyle;
+		}
+	}
+}
+	</script>
+</body>
+
+</html>
