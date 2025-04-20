@@ -254,6 +254,7 @@ a[href^="https://"] {
 	> .content-type {
 		grid-column: 2 / -1;
 		grid-row: 2;
+		width: fit-content;
 		margin-left: var(--spacing-lg2);
 	}
 }
