@@ -20,7 +20,8 @@ entry, adding another link
 ```
 
 
-## [Decision time](https://adactio.com/journal/20564)
+[Decision time](https://adactio.com/journal/20564)
+--------------------------------------------------
 
 Good design requires thoughtfulness on many dimensions.
 
@@ -28,7 +29,8 @@ Good design requires thoughtfulness on many dimensions.
 > long-term pain
 
 
-## [Resilient Web Design](https://resilientwebdesign.com)
+[Resilient Web Design](https://resilientwebdesign.com)
+------------------------------------------------------
 
 Every web practitioner -- whether developer, designer or otherwise -- should
 read this concise book explaining the web's fundamental principles, both
@@ -45,7 +47,8 @@ It seems obligatory to also point to the
 [principle of least power](https://adactio.com/journal/14327) in this context.
 
 
-## [The Market For Lemons](https://infrequently.org/2023/02/the-market-for-lemons/)
+[The Market For Lemons](https://infrequently.org/2023/02/the-market-for-lemons/)
+--------------------------------------------------------------------------------
 
 A thorough analysis of "the front end's lost decade", explaining how a pervasive
 lack of engineering discipline made the web worse for both users and
@@ -70,7 +73,8 @@ I'm afraid we can't mention those bylaws without
 > the user's problem, I'll choose to make it my problem every time
 
 
-## [Design Pressure](https://kellysutton.com/2017/04/18/design-pressure.html)
+[Design Pressure](https://kellysutton.com/2017/04/18/design-pressure.html)
+--------------------------------------------------------------------------
 
 > Design Pressure is the guidance or "pressure" that test-driven development
 > places on your software design.

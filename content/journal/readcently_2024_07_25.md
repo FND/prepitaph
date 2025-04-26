@@ -17,7 +17,8 @@ subject to the whims of the moment.
 ```
 
 
-## [Teaching and learning](https://adactio.com/journal/21267)
+[Teaching and learning](https://adactio.com/journal/21267)
+----------------------------------------------------------
 
 > Consider interactivity over showing over telling.
 
@@ -31,7 +32,8 @@ worth reminding ourselves of
 [Just what is it that you want to do?](https://adactio.com/journal/7774).
 
 
-## [Cool URLs Mean Something](https://thehistoryoftheweb.com/cool-urls-mean-something/)
+[Cool URLs Mean Something](https://thehistoryoftheweb.com/cool-urls-mean-something/)
+------------------------------------------------------------------------------------
 
 ([via](https://toot.cafe/@bkardell/112841585648520771))
 
@@ -48,7 +50,8 @@ forever commitment to cross-reference all content in perpetuity.
 ```
 
 
-## [The Case For Design Engineers](https://blog.jim-nielsen.com/2024/the-case-for-design-engineers-pt-ii/)
+[The Case For Design Engineers](https://blog.jim-nielsen.com/2024/the-case-for-design-engineers-pt-ii/)
+-------------------------------------------------------------------------------------------------------
 
 Since first reading this, I've repeatedly referred to the example within; it's
 great for explaining why
@@ -62,7 +65,8 @@ implications to sink in and I continue pondering how we as developers might
 support other constituencies.
 
 
-## [Serving a billion web requests with boring code](https://notes.billmill.org/blog/2024/06/Serving_a_billion_web_requests_with_boring_code.html)
+[Serving a billion web requests with boring code](https://notes.billmill.org/blog/2024/06/Serving_a_billion_web_requests_with_boring_code.html)
+-----------------------------------------------------------------------------------------------------------------------------------------------
 
 ([via](https://social.polotek.net/@polotek/112759037986658108))
 
@@ -71,7 +75,8 @@ above), I really liked the nuanced, self-critical examination of this case
 study. That's exactly the kind of treatment this industry needs more of.
 
 
-## [The Frontend Treadmill](https://polotek.net/posts/the-frontend-treadmill/)
+[The Frontend Treadmill](https://polotek.net/posts/the-frontend-treadmill/)
+---------------------------------------------------------------------------
 
 Directly related to the case study above:
 
