@@ -196,14 +196,13 @@ export function html(strings, ...values) {
         } else if(value === false || value === null || value === undefined) {
             // no-op
         } else if(RAW in value) {
-            res.push(value[RAW]);
-        } else if(value[Symbol.iterator]) {
-            for(let entry of value) {
+            res.push(/** @type {TrustedContent} */ (value)[RAW]);
+        } else if(/** @type {Iterable<HTMLContent>} */ (value)[Symbol.iterator]) {
+            for(let entry of /** @type {Iterable<HTMLContent>} */ (value)) {
                 res.push(html`${entry}`[RAW]);
             }
         } else {
-            value = serializeAttributes(/** @type {Attributes} */ (value));
-            res.push(value);
+            res.push(serializeAttributes(/** @type {Attributes} */ (value)));
         }
         res.push(strings[i]);
     }
@@ -242,10 +241,10 @@ function encodeHTML(str, isAttribute = false) {
 }
 
 /**
- * @typedef {Content | false | TrustedContent | Attributes} HTMLContent
- * @typedef {Record<string, Content | boolean>} Attributes
+ * @typedef {ScalarContent | false | TrustedContent | Attributes} HTMLContent
+ * @typedef {Record<string, ScalarContent | boolean>} Attributes
  * @typedef {Record<typeof RAW, string> & { toString: () => string }} TrustedContent
- * @typedef {string | number | null | undefined} Content
+ * @typedef {string | number | null | undefined} ScalarContent
  */
 '''
 ```
