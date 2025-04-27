@@ -92,6 +92,9 @@ figcaption.is-filename {
 	font-size: small;
 }
 
+a:not(:hover, :focus) {
+	text-decoration-color: color-mix(in srgb, currentColor, transparent 50%);
+}
 a:link {
 	color: var(--color-link);
 }
