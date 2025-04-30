@@ -13,7 +13,7 @@ under a different title, improved thanks the editorial expertise of
 historical purposes.
 ```
 
-```intro
+```teaser
 It's well-established that the web has issues: From
 [user-hostile UI patterns](https://how-i-experience-web-today.com/) and twisted
 search results to sluggish performance and battery-draining bloat. Much of that

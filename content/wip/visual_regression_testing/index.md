@@ -1,10 +1,19 @@
 title: Visual Regression Testing
-tags: web, testing, unlisted
+tags: web, testing
 author: FND
 created: 2025-01-01
 syntax: true
+canonical: https://css-tricks.com/automated-visual-regression-testing-with-playwright/
 
-```intro
+```infobox
+This article ended up being
+[published via CSS-Tricks](https://css-tricks.com/automated-visual-regression-testing-with-playwright/)
+under a different title, improved thanks the editorial expertise of
+[Geoff Graham](https://geoffgraham.me). This draft version is archived here for
+historical purposes.
+```
+
+```teaser
 Comparing visual artifacts can be a powerful, if fickle, approach to automated
 testing. Playwright makes this seem simple, but the details might take a little
 finessing.
