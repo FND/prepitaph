@@ -31,7 +31,7 @@ generate() {
 }
 
 cd "$root"
-. venv/bin/activate
+. ./venv/bin/activate
 
 if [ "$1" = "-c" ]; then
     generate | pbcopy
