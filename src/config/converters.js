@@ -14,6 +14,7 @@ export {
 	markdown as "default", // awkward, but necessary
 };
 export let NONE = (content, _params, _context) => {
+	// deno-fmt-ignore
 	return html`<source-view><pre>${content}</pre></source-view><script type="module"${{
 		src: "/assets/source.js", // TODO: fingerprinting
 	}} async></script>`;
@@ -51,6 +52,7 @@ export async function topics(_content, { categories }, context) {
 		}
 	}
 	let { baseURL } = context.config;
+	// deno-fmt-ignore
 	return html`<dl class="topics">${{
 		[RAW]: tags.sort().map((tag) => {
 			return html`<dt>${tag}</dt><dd><ul><li>${{
@@ -104,6 +106,7 @@ export async function figure(content, {
 			class: filename && "is-filename",
 		}}>${caption}</figcaption>`
 	}</figure>`;
+	// deno-fmt-ignore
 	return id === null ? res : html`<a${{ href: `#${id}` }}>${{ [RAW]: res }}</a>`;
 }
 
@@ -115,12 +118,14 @@ export async function teaser(content, params, context) {
 }
 
 export async function infobox(content, params, context) {
+	// deno-fmt-ignore
 	return html`<div class="infobox stack"><b class="nonvisual">NB: </b>${{
 		[RAW]: await render(content, params, context),
 	}}</div>`;
 }
 
 export async function aside(content, params, context) {
+	// deno-fmt-ignore
 	return html`<aside class="${params.compact && "is-compact "}stack"><b${{
 		class: "nonvisual",
 	}}>Aside: </b>${{
@@ -141,6 +146,7 @@ export async function embed(_content, { uri, resize }, context) {
 		path = _path.join("/");
 	}
 
+	// deno-fmt-ignore
 	return html`<web-demo${{ resize }}><iframe${{
 		src: page.url(context.config.baseURL).href + path,
 	}}></iframe></web-demo><script type="module"${{
@@ -155,6 +161,7 @@ export async function disclosure(content, params, context) {
 			[RAW]: await render(caption, params, context),
 		};
 	}
+	// deno-fmt-ignore
 	return html`<details class="disclosure stack"><summary>${caption}</summary>${{
 		[RAW]: await render(content, params, context),
 	}}</details>`;
@@ -163,6 +170,7 @@ export async function disclosure(content, params, context) {
 export async function footnote(content, params, context) {
 	let name = Object.keys(params)[0];
 	let i = context.footnotes.indexOf(name) + 1;
+	// deno-fmt-ignore
 	return html`<aside${{ id: `fn:${name}` }} class="footnote stack"><sup${{
 		"aria-label": `footnote #${i}`,
 	}}>${i}</sup>${{
@@ -172,6 +180,7 @@ export async function footnote(content, params, context) {
 
 export async function ref(content, params, context) {
 	let name = Object.keys(params)[0];
+	// deno-fmt-ignore
 	return html`<a${{ id: `ref:${name}` }}></a>${{
 		[RAW]: await render(content, params, context),
 	}}`;
@@ -206,6 +215,7 @@ async function code(lang, grammar = lang) {
 		return code(lang, grammar);
 	}
 	return (content, _params, _context) => {
+		// deno-fmt-ignore
 		return html`<source-view><pre><code${{ class: `language-${lang}` }}>${{
 			[RAW]: highlight(content, _grammar, lang)
 				.replaceAll("«", "<mark>")

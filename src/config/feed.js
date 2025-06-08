@@ -7,6 +7,7 @@ export async function renderAtom(pages, title, context) {
 	let id = baseURL; // XXX: somewhat incorrect, but retained for backwards compatibility
 	let baseAttr = trustedHTML`${{ "xml:base": baseURL }}`;
 	// XXX: is HTML encoding correct/sufficient here?
+	// deno-fmt-ignore
 	return html`
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
@@ -43,6 +44,7 @@ async function renderEntry(page, context, baseAttr) {
 		main: true,
 	});
 	summary = (await summary).replaceAll("\n", " "); // discard line breaks
+	// deno-fmt-ignore
 	return html`
 <entry>
 	<id>${url}</id>

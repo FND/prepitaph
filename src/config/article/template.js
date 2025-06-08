@@ -113,6 +113,7 @@ async function render(article, context, { isDocument, heading, metadata, teaser,
 function renderFooter(article, store, config, baseURL) { // TODO: memoize
 	let authorURL = config.AUTHORS.get(article.author).url;
 	let contactURL = store.retrieve(null, "colophon").url(baseURL).pathname;
+	// deno-fmt-ignore
 	return html`
 <footer>
 	${TOPICS_LINK}: ${article.tags.join(", ")}

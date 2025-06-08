@@ -30,7 +30,7 @@ export let contentDir = "./content"; // NB: relative to current working director
 export let outputDir = "./dist"; // NB: relative to current working directory
 export let assetsDir = "./assets"; // NB: relative to `outputDir`
 export let host = "https://prepitaph.org";
-// deno-lint-ignore no-process-globals
+// deno-lint-ignore no-process-global
 export let pathPrefix = process.env.PATH_PREFIX || "";
 
 let _assetsDir = `${pathPrefix}/${assetsDir}`;

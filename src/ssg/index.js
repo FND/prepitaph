@@ -82,6 +82,6 @@ async function copy(filepath, targetDir, designation) {
 
 function abort(msg) {
 	console.error("\nERROR!", msg);
-	// deno-lint-ignore no-process-globals
+	// deno-lint-ignore no-process-global
 	process.exit(1);
 }

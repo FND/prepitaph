@@ -7,7 +7,7 @@ export let WIDTH = 800;
 export let HEIGHT = WIDTH;
 let SERVER = "cd ../../dist && python3 -m http.server";
 
-// deno-lint-ignore no-process-globals
+// deno-lint-ignore no-process-global
 let IS_CI = !!process.env.CI;
 
 export default defineConfig({

@@ -33,6 +33,7 @@ export default ({
 		NAV = trustedHTML`<nav>${{
 			[RAW]: Object.entries(NAV).map(([slug, caption], i) => {
 				let uri = store.retrieve(null, slug).url(baseURL).pathname;
+				// deno-fmt-ignore
 				return html`<a${{ href: uri }}>${
 					i === 0 ? trustedHTML`<b>${caption}</b>` : caption
 				}</a>`;
