@@ -258,13 +258,13 @@ A figure can be used to caption images, quotations or
 '''
 ```
 
-```figure img="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='100%' height='100%' fill='teal' /></svg>" caption
-A placeholder image.
+```figure caption="A _placeholder_ image" img="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='100%' height='100%' fill='teal' /></svg>"
+A teal rectangle
 ```
 
 ```
-'''figure img="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='100%' height='100%' fill='teal' /></svg>" caption
-A placeholder image.
+'''figure caption="A _placeholder_ image" img="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg'><rect x='0' y='0' width='100%' height='100%' fill='teal' /></svg>"
+A teal rectangle
 '''
 ```
 
@@ -289,11 +289,11 @@ export function log(prefix, ...msg) {
 Available parameters:
 
 * `compact` can be used to reduce prominence.
-* `caption` results in the respective block's content being used as caption.
+* `caption` optionally provides explanatory text for the respective element.
 * `filename` works just like `caption`, but results in custom styling for code
   blocks.
 * `img` generates an image element using the parameter value as URI, with the
-  respective block's content being used as fallback content.
+  respective block's content being used as textual description.
 * `lazy` activates lazy loading for image elements (i.e. only valid in
   combination with `img`).
 * `id` allows injecting a custom ID for deep linking.

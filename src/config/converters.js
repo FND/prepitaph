@@ -91,6 +91,11 @@ export async function figure(content, {
 	lazy = false,
 	backticks = "'''",
 }, context) {
+	if (caption && filename === null) {
+		caption = {
+			[RAW]: await render(caption, { backticks }, context),
+		};
+	}
 	let cls = compact && "is-compact ";
 	// deno-fmt-ignore
 	let res = html`<figure${{ id }} class="${cls}stack">${

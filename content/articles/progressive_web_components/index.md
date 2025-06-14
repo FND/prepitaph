@@ -29,7 +29,7 @@ the platform.
 
 Having said that, you shouldn't actually be using them.
 
-```figure img=./s15.jpg id=s15 caption lazy
+```figure img=./s15.jpg id=s15 lazy
 SPAs : web development :: Trump : democracy
 ```
 
@@ -136,14 +136,14 @@ You can even use child elements for more complex parameters.
 All this isn't unlike a function signature. It's the native way to control data
 flow.
 
-```figure img=./s22b.jpg id=s22b caption lazy
+```figure img=./s22b.jpg id=s22b lazy
 play / pause events
 ```
 
 On top of that, you also get event notifications. In fact, the DOM's pub/sub
 mechanism is comparatively powerful, thanks to element scoping and event bubbling.
 
-```figure img=./s22c.jpg id=s22c caption lazy
+```figure img=./s22c.jpg id=s22c lazy
 play / pause methods
 ```
 
@@ -160,7 +160,7 @@ within your page.
 As an author, you just drop that bit of HTML in there without having to worry
 about any internals.
 
-```figure img=./s24.jpg id=s24 caption lazy
+```figure img=./s24.jpg id=s24 lazy
 The browser is the framework #UseThePlatform
 ```
 
@@ -291,7 +291,7 @@ get at that content -- which is what users really care about.
 
 And we get this for free, by building upon a reliable foundation.
 
-```figure img=./s33b.jpg id=s33b caption lazy
+```figure img=./s33b.jpg id=s33b lazy
 unobtrusive JavaScript
 ```
 
@@ -450,7 +450,7 @@ a subclass.
 In fact, the manual initialization up there, that seems a little silly too. Why
 not just let the browser handle that?
 
-```figure img=./s40.jpg id=s40 caption lazy
+```figure img=./s40.jpg id=s40 lazy
 Custom Elements
 ```
 
@@ -615,7 +615,7 @@ shapes, based on priority. Indeed, that's exactly what `<video>` does: You're
 not exposed to the various `<div>`s it uses for its UI internally, that's all
 encapsulated.
 
-```figure img=./s47.jpg id=s47 caption lazy
+```figure img=./s47.jpg id=s47 lazy
 Shadow DOM
 ```
 
@@ -631,7 +631,7 @@ architecture diagram
 
 This was our architecture with jQuery-style widgets.
 
-```figure img=./s49.jpg id=s49 caption lazy
+```figure img=./s49.jpg id=s49 lazy
 Boring Is Good
 ```
 
@@ -654,7 +654,7 @@ reusable components
 You can also build up a set of reusable widgets which remain applicable across
 projects -- both within your organization and across the web.
 
-```figure img=./s51.jpg id=s51 caption lazy
+```figure img=./s51.jpg id=s51 lazy
 Style Guides & Component Libraries
 ```
 

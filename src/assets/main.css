@@ -87,9 +87,15 @@ kbd {
 figure {
 	margin: 0;
 }
+figcaption {
+	text-align: center;
+}
 figcaption.is-filename {
 	font-family: monospace;
 	font-size: small;
+}
+figcaption p:only-child {
+	margin-block: 0;
 }
 
 a:not(:hover, :focus) {
