@@ -118,6 +118,10 @@ a[href^="https://"] {
 	padding-right: calc(var(--_size) + var(--_size) / 2);
 }
 
+iframe {
+	display: block;
+}
+
 /* utilities */
 
 .nonvisual:not(:focus, :active) {
