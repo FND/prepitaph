@@ -50,7 +50,7 @@ export function log(prefix, ...msg) {
 '''
 ```
 
-We might then use [esbuild](https://esbuild.github.io/), for example, to combine
+We might then use [esbuild](https://esbuild.github.io), for example, to combine
 those source modules into a single bundle:
 
 ```shell

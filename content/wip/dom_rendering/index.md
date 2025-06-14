@@ -15,7 +15,7 @@ historical purposes.
 
 ```teaser
 It's well-established that the web has issues: From
-[user-hostile UI patterns](https://how-i-experience-web-today.com/) and twisted
+[user-hostile UI patterns](https://how-i-experience-web-today.com) and twisted
 search results to sluggish performance and battery-draining bloat. Much of that
 is caused by
 [questionable technology choices](page://articles/attractive-nuisance), not

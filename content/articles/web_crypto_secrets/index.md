@@ -24,7 +24,7 @@ user-generated passphrases instead of auto-generated keys.
 Nowadays we can rely on
 [Web Crypto](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)
 being well supported, so let's work with that. (Previously one might have used
-something like [SJCL](https://bitwiseshiftleft.github.io/) to similar effect.)
+something like [SJCL](https://bitwiseshiftleft.github.io) to similar effect.)
 
 ```infobox
 Please note that I'm far from being a cryptography expert. Though I had this
