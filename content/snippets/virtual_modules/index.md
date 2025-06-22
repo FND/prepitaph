@@ -62,6 +62,15 @@ function script2worker(selector) {
 }
 ```
 
+```aside compact
+David Bushell notes that
+[serializing a function](https://dbushell.com/notes/2025-06-10T06:55Z/) might be
+helpful here (though that would have to be a stand-alone function which doesn't
+rely on its surrounding scope). Zach Leatherman's post on
+[importing a string](https://www.zachleat.com/web/dynamic-import) provides
+additional context.
+```
+
 ```markdown allowHTML
 For example, if you misguidedly employ
 [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket), you
