@@ -45,8 +45,8 @@ comments into separate resources (as in URLs) in order to
 Those resources might even be provided by two independent applications, to
 account for different requirements (think authentication, moderation etc.) or
 varying request load. With responsibilities divided that way, you could rope in
-friend to manage comments for your clique's web ring while you focus exclusively
-on serving static files generated from Markdown.
+a friend to manage comments for your clique's web ring while you focus
+exclusively on serving static files generated from Markdown.
 
 ![an article page integrating comments at the bottom, with a corresponding submission form](./blog.png)
 
