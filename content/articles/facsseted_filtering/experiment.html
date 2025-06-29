@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Counting with CSS</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 0 auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+footer {
+	margin-block-start: var(--spacing);
+	font-size: 0.9rem;
+}
+
+h1 {
+	margin-block: 0;
+}
+
+output {
+	display: block;
+	margin-block-start: var(--spacing);
+}
+
+ul {
+	--item-count: counter(item-count);
+	--margin: 1rem;
+
+	counter-reset: item-count;
+	margin: 0;
+	padding-inline-start: var(--margin);
+}
+ul::after {
+	content: "CSS detected " counter(item-count) " special items";
+	display: block;
+	margin-block-start: var(--spacing);
+	margin-inline-start: calc(-1 * var(--margin));
+}
+
+li.special {
+	counter-increment: item-count;
+}
+li.special::after {
+	content: " ⭐️";
+}
+	</style>
+</head>
+
+<body>
+	<h1>Counting with CSS</h1>
+	<ul>
+		<li>lorem</li>
+		<li>ipsum</li>
+		<li>dolor</li>
+		<li>sit</li>
+		<li>amet</li>
+	</ul>
+
+	<footer>A script randomly marks items as special every couple of seconds.</footer>
+
+	<script type="module">
+let list = document.querySelector("ul");
+let items = list.querySelectorAll("li");
+let status = document.createElement("output");
+list.insertAdjacentElement("afterend", status);
+
+shuffle();
+setInterval(shuffle, 2000);
+
+function shuffle() {
+	for (let el of items) {
+		if (Math.random() < 0.5) {
+			el.classList.add("special");
+		} else {
+			el.classList.remove("special");
+		}
+	}
+
+	let count = getComputedStyle(items[0]).getPropertyValue("--item-count");
+	status.textContent = `JavaScript detected «${count}» items.`;
+}
+	</script>
+</body>
+
+</html>
