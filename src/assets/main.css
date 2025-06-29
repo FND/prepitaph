@@ -385,6 +385,7 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 	}
 }
 .article pre {
+	margin-block: 0;
 	border: var(--border-size) solid var(--color-border);
 	border-left-width: var(--border-outdent-left);
 	border-radius: var(--spacing);

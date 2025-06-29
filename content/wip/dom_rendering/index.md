@@ -268,6 +268,9 @@ class ColorBrowser extends HTMLElement {
 }
 ```
 
+```ref handle-event
+```
+
 ```aside compact
 `handleEvent` means we don't have to
 [worry about function binding](https://gomakethings.com/the-handleevent-method-is-the-absolute-best-way-to-handle-events-in-web-components/),

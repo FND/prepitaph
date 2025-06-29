@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Content Overview</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60rem;
+
+	/* modular scale-ish; cf. https://www.modularscale.com/?1.5 */
+	--spacing: 0.5rem;
+	--spacing-sm1: calc(var(--spacing) * 0.667);
+	--spacing-sm2: calc(var(--spacing) * 0.444);
+	--spacing-sm3: calc(var(--spacing) * 0.296);
+	--spacing-lg1: calc(var(--spacing) * 1.5);
+	--spacing-lg2: calc(var(--spacing) * 2.25);
+	--spacing-lg3: calc(var(--spacing) * 3.375);
+
+	--color-accent: aliceblue;
+	--color-bg: #FFF;
+	--color-bg-subtle: #EEE;
+	--color-bg-accent: #AAA;
+	--color-shadow: #0008;
+	--color-shadow-subtle: #0004;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+	margin: 0;
+}
+
+details {
+	width: fit-content;
+
+	&[open] {
+		border-radius: var(--spacing-sm1);
+		background-image: linear-gradient(0deg,
+				var(--color-bg-subtle),
+				transparent var(--spacing-lg3),
+				transparent),
+			linear-gradient(82deg, /* XXX: magic number */
+					var(--color-bg-subtle),
+					transparent var(--spacing-lg3),
+					transparent);
+	}
+
+	> :last-child {
+		padding: 0 var(--spacing) var(--spacing);
+	}
+}
+
+fieldset {
+	border-radius: var(--spacing);
+	padding: var(--spacing) var(--spacing-lg1);
+}
+
+legend {
+	font-variant: small-caps;
+}
+
+label,
+summary,
+button {
+	cursor: pointer;
+}
+
+label {
+	display: flex;
+	gap: var(--spacing-sm2);
+	align-items: center;
+	line-height: 1.6; /* XXX: magic number */
+
+	b {
+		font-weight: normal;
+	}
+
+	img.user {
+		--size: 1.5em;
+
+		box-shadow: none;
+	}
+}
+
+.nonvisual {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+card-board {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing);
+}
+
+img.user {
+	--shadow: var(--color-shadow-subtle);
+	--size: 2rem;
+
+	display: block;
+	width: var(--size);
+	height: var(--size);
+	border-radius: 100%;
+	box-shadow: 0 var(--spacing-sm3) var(--spacing) var(--shadow);
+}
+
+.categories,
+.sharers {
+	padding-inline: 0;
+	list-style-type: none;
+}
+
+.categories {
+	display: flex;
+	width: 100%;
+	min-height: 100vh;
+	gap: var(--spacing);
+
+	> * {
+		flex: 1 1 0;
+		padding: var(--spacing-sm3) var(--spacing) var(--spacing);
+		background-color: var(--color-bg-subtle);
+	}
+}
+
+.filters form {
+	display: flex;
+	position: relative;
+	gap: var(--spacing);
+
+	button {
+		margin-block-start: 1em;
+	}
+
+	output {
+		position: absolute;
+		top: -1lh;
+		right: var(--spacing);
+		font-size: 0.9rem;
+	}
+}
+
+.post {
+	--_spacing: var(--spacing);
+
+	max-width: 20rem;
+	overflow: auto;
+	margin-block-end: var(--spacing);
+	border: 1px solid var(--color-bg-accent);
+	border-radius: var(--_spacing);
+	padding: var(--_spacing);
+	background-color: var(--color-bg);
+
+	header {
+		--_unspacing: calc(-1 * var(--_spacing));
+
+		display: grid;
+		grid-template-columns: 1fr auto;
+		column-gap: var(--spacing);
+		margin: var(--_unspacing) var(--_unspacing) 0;
+		padding: var(--_spacing);
+		background-image: linear-gradient(180deg, var(--color-accent) 80%, transparent);
+
+		h2 {
+			text-wrap: pretty;
+		}
+
+		img.user {
+			--shadow: var(--color-shadow);
+
+			margin-bottom: var(--spacing-lg1);
+		}
+	}
+
+	a {
+		color: currentColor;
+
+		&:not(:hover, :focus) {
+			text-decoration-color: color-mix(in srgb, currentColor, transparent 80%);
+		}
+	}
+
+	p {
+		font-size: 0.9rem;
+	}
+
+	.sharers {
+		display: flex;
+		float: right;
+		flex-direction: column;
+		margin-inline-start: var(--spacing-lg1);
+		gap: var(--spacing);
+	}
+}
+	</style>
+</head>
+
+<body>
+	<h1 class="nonvisual">Content Overview</h1>
+	<card-board role="main" card-selector=".post">
+		<details class="filters" open>
+			<summary>Filters</summary>
+			<form method="dialog">
+				<fieldset disabled>
+					<legend>Author</legend>
+					<label>
+						<input type="radio" name="author" value="cdent">
+						<b>cdent</b>
+					</label>
+					<label>
+						<input type="radio" name="author" value="fnd">
+						<b>FND</b>
+					</label>
+				</fieldset>
+				<fieldset disabled>
+					<legend>Shared by</legend>
+					<label>
+						<input type="radio" name="sharer" value="news">
+						<b>Hypothetical Aggregator</b>
+					</label>
+					<label>
+						<input type="radio" name="sharer" value="alien">
+						<b>Unknown Entity</b>
+					</label>
+					<label>
+						<input type="radio" name="sharer" value="bot">
+						<b>Imaginary Bot</b>
+					</label>
+					<label>
+						<input type="radio" name="sharer" value="">
+						<b>nobody</b>
+					</label>
+				</fieldset>
+				<button type="reset">Reset</button>
+			</form>
+		</details>
+		<ul class="categories">
+			<li data-category="articles" style="view-transition-name: category-articles">
+				<h2>Articles</h2>
+			</li>
+			<li data-category="snippets" style="view-transition-name: category-snippets">
+				<h2>Snippets</h2>
+			</li>
+			<li data-category="wip" style="view-transition-name: category-wip">
+				<h2>Work in Progress</h2>
+			</li>
+		</ul>
+	</card-board>
+
+	<script type="module" src="./content.js"></script>
+	<script type="module">
+let CSS = {
+	author: new CSSStyleSheet(),
+	sharer: new CSSStyleSheet(),
+};
+document.adoptedStyleSheets.push(...Object.values(CSS));
+
+let VIEW_TRANSITIONS = document.startViewTransition &&
+	window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
+
+customElements.define("card-board", class extends HTMLElement {
+	constructor() {
+		super();
+		this.addEventListener("change", this);
+		this.addEventListener("reset", this);
+	}
+
+	connectedCallback() {
+		// insert status element, in part to improve accessibility
+		let { controls } = this;
+		let form = controls[0].closest("form");
+		let el = document.createElement("output");
+		this._status = form.appendChild(el);
+
+		for (let el of controls) {
+			el.disabled = false;
+			// initialize state
+			for (let field of el.querySelectorAll(":checked")) {
+				field.dispatchEvent(new Event("change", { bubbles: true }));
+			}
+		}
+	}
+
+	handleEvent(ev) {
+		if (ev.type === "reset") {
+			for (let stylesheet of Object.values(CSS)) {
+				this._update(stylesheet, ""); // TODO: support for bulk updates
+			}
+			return;
+		}
+
+		let el = ev.target;
+		let { name } = el;
+		if (!Object.hasOwn(CSS, name)) {
+			return;
+		}
+
+		let { value } = el;
+		let selector = `${this.localName} ${this.cardSelector}`;
+		selector += value === ""
+			? `:has(.user[data-${name}])`
+			: `:not(:has(.user[data-${name}="${value}"]))`;
+		this._update(CSS[name], `${selector} { display: none; }`);
+	}
+
+	async _update(stylesheet, css) {
+		if (VIEW_TRANSITIONS) {
+			let vt = document.startViewTransition(() => stylesheet.replace(css));
+			await vt.finished;
+		} else {
+			stylesheet.replaceSync(css); // NB: sync avoids flickering
+		}
+
+		let visible = 0;
+		for (let el of this.querySelectorAll(this.cardSelector)) {
+			// heuristic adapted from jQuery - XXX: might cause layout thrashing
+			if (el.offsetWidth || el.offsetHeight || el.getClientRects().length) {
+				visible++;
+			}
+		}
+		this._status.textContent = visible === 1 ? "1 result" : `${visible} results`;
+	}
+
+	get controls() {
+		return this.querySelectorAll("fieldset");
+	}
+
+	get cardSelector() { // TODO: memoize
+		return this.getAttribute("card-selector");
+	}
+});
+	</script>
+</body>
+
+</html>
