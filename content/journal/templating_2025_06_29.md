@@ -1,7 +1,7 @@
 title: HTML Templating Lessons
 tags: html, javascript
 author: FND
-created: 2026-06-29
+created: 2025-06-29
 syntax: true
 
 ```intro
@@ -17,8 +17,10 @@ real-world experience, gradually led me to the following realizations:
 
 * There are [three types of markup](page://wip/dom-rendering#markup-categories):
   static boilerplate, variable parts defined once upon instantiation and
-  dynamically-updated portions. The latter is irrelevant for server-side
-  templating.
+  dynamically-updated portions.
+* The latter is irrelevant for server-side templating in a request-response
+  context. Thus all we need there is what amounts to macro expansion: Some sort
+  of function-style definition with parameters that ultimately results in HTML.
 * Any dedicated templating language often turns out to be less than ideal,
   possibly even problematic -- especially with regard to
   [composable abstractions](page://articles/markup-abstractions). Thus it's

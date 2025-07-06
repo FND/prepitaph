@@ -48,7 +48,8 @@ disadvantage that I rarely see being addressed by fellow proponents of
 progressive enhancement. In my experience, this seemingly mundane aspect
 frequently lures people into architecturally unsound decisions.
 
-After years of trying to grapple with this -- sometimes going to
-[absurd lengths](https://complate.org) -- I can only resort to advising folks
-that templating should be a deciding factor in their technology choices from the
-start.
+After
+[years of trying to grapple with this](page://journal/templating-2025-06-29) --
+sometimes going to [absurd lengths](https://complate.org) -- I can only resort
+to advising folks that templating should be a deciding factor in their
+technology choices from the start.
