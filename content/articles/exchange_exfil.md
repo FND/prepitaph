@@ -126,18 +126,28 @@ RUN yay -S --needed --noconfirm cyrus-sasl-xoauth2
 '''
 ```
 
-With this I could spin up a one-off container using
-`docker run --rm -it $(docker build -q .)` and launch the mbsync process within:
+With this I could spin up a one-off container, mounting the current working
+directory as shared volume for data exchange:
 
+```shell
+$ docker run --rm -v "$PWD:/tmp/mail" "-it $(docker build -q .)
 ```
+
+... and launch the mbsync process within:
+
+```shell
 $ cat > ./token # paste previously acquired access token
 $ mbsync --verbose -c ./.mbsyncrc work
 ```
 
 After a while, this process had completed mirroring messages to
-`/home/fnd/Mail`. Because I'd failed to set up a shared volume, I created a
-tarball (`tar czf ./mail.tar.gz ./Mail`) and transferred it to the host system
-via SSH.
+`/home/fnd/Mail`.
+
+If I had actually set up the shared volume as described above, I could
+have just moved that directory to `/tmp/mail` in order to transfer all e-mails
+to the host environment. Because I had forgotten that part, I created a tarball
+(`tar czf ./mail.tar.gz ./Mail`) and transferred that to the host system via
+SSH.
 
 
 Converting Outlook's Proprietary Archive
@@ -152,7 +162,7 @@ our sysadmins had backups (only slightly out of date), so they sent me a few
 easy to convert[debian](footnote://) to
 [mbox](https://en.wikipedia.org/wiki/Mbox):
 
-```
+```shell
 $ apt-get install pst-utils
 $ mkdir ./mail
 $ readpst -r ./archives.pst -o ./mail
