@@ -130,7 +130,7 @@ With this I could spin up a one-off container, mounting the current working
 directory as shared volume for data exchange:
 
 ```shell
-$ docker run --rm -v "$PWD:/tmp/mail" "-it $(docker build -q .)
+$ docker run --rm -v "$PWD:/tmp/mail" -it $(docker build -q .)
 ```
 
 ... and launch the mbsync process within:
