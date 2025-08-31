@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Hover Text Effect</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--spacing: 0.5rem;
+}
+
+body {
+	margin: 0;
+	padding: 0 0 var(--spacing);
+	font-family: sans-serif;
+	line-height: 1.5;
+	color-scheme: dark;
+	color: #FFF;
+	background-color: #333;
+}
+
+ul {
+	display: flex;
+	margin: 0;
+	padding: 0;
+	gap: 1em;
+	justify-content: space-evenly;
+	font-size: 1.5rem;
+	font-weight: bold;
+	list-style-type: none;
+
+	.text-flood {
+		--text-flood-color: white;
+		--text-flood-color-alt: deeppink;
+
+		padding: var(--spacing);
+	}
+}
+
+/* adapted from <https://css-tricks.com/4-ways-to-animate-the-color-of-a-text-link-on-hover/> */
+.text-flood {
+	color: transparent;
+	background-image: linear-gradient(to right,
+			var(--text-flood-color-alt) 50%,
+			var(--text-flood-color) 50%);
+	background-size: 200% 100%;
+	background-position: 100%;
+	background-clip: text;
+	@media (prefers-reduced-motion: no-preference) {
+		transition: background-position 200ms linear;
+	}
+
+	&:focus,
+	&:hover,
+	&:active {
+		background-position: 0 100%;
+	}
+}
+
+/* for demo purposes only */
+label {
+	display: block;
+	padding: var(--spacing);
+
+	&:has(input[name=activation]:checked) ~ :has(.text-flood) .text-flood {
+		background-position: 0 100%;
+	}
+}
+	</style>
+</head>
+
+<body>
+	<label>
+		<input type="checkbox" name="activation">
+		Simulate activation
+	</label>
+	<ul>
+		<li><a href="#" class="text-flood">News</a></li>
+		<li><a href="#" class="text-flood">Technology</a></li>
+		<li><a href="#" class="text-flood">Community</a></li>
+		<li><a href="#" class="text-flood">About</a></li>
+	</ul>
+</body>
+
+</html>
