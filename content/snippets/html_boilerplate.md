@@ -86,6 +86,13 @@ body {
     line-height: 1.5;
 }
 
+a {
+    text-underline-offset: 0.15lh;
+}
+a:not(:hover, :focus) {
+    text-decoration-color: color-mix(in srgb, currentColor, transparent 50%);
+}
+
 input,
 textarea,
 select,
