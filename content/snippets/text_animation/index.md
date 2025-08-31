@@ -41,9 +41,13 @@ If you wanna get <s>psychedelic</s> fancy, you might even use multiple colors:
 ```
 
 ```infobox
+'''markdown allowHTML
 Safari appears to include text underlines when clipping the background while
 other browsers don't. There's also a confounding layout shift during the
-radial animation which I have no idea how to address.
+radial animation which <s>I have no idea how to address</s>
+[Roma Komarov identified](https://front-end.social/@kizu/115123437194986778)
+as an already-fixed bug, along with a `@property`-based workaround.
+'''
 ```
 
 The linear technique works by making text transparent and painting a hard-stop

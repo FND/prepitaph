@@ -68,6 +68,13 @@ ul {
 	initial-value: 0%;
 }
 
+/* workaround for Safari: https://front-end.social/@kizu/115123437194986778 */
+@property --spacing {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0;
+}
+
 /* for demo purposes only */
 label {
 	display: block;

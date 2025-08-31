@@ -79,6 +79,13 @@ ul {
 	initial-value: 0%;
 }
 
+/* workaround for Safari: https://front-end.social/@kizu/115123437194986778 */
+@property --spacing {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0;
+}
+
 li:nth-child(even) .text-flood {
 	--_step: 1 / 5;
 
