@@ -11,7 +11,6 @@ projects' standard setup:
 ```figure filename=.editorconfig
 '''ini
 # https://editorconfig.org
-
 root = true
 
 [*]

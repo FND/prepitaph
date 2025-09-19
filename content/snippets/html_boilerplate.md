@@ -101,6 +101,15 @@ button {
     font-size: inherit;
 }
 
+.nonvisual:not(:focus, :active) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    clip-path: inset(50%);
+}
+
 .stack > * {
     margin-block: 0;
 
