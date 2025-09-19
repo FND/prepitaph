@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Animated Hamburger-Menu Icon</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+
+	> * {
+		margin-block: var(--spacing) 0;
+	}
+}
+
+hr {
+	height: 1lh;
+	visibility: hidden;
+}
+
+label {
+	display: flex;
+	width: fit-content;
+	gap: var(--spacing);
+	align-items: center;
+	cursor: pointer;
+
+	b {
+		font-weight: normal;
+	}
+}
+
+.menu-icon {
+	width: 1lh;
+	height: 1lh;
+}
+
+.menu-icon line {
+	stroke: currentColor;
+	stroke-width: 3px;
+	stroke-linecap: round;
+	@media (prefers-reduced-motion: no-preference) {
+		transition: none 300ms ease; /* XXX: magic number */
+		transition-property: transform-origin, translate, rotate, opacity;
+	}
+
+	&:first-of-type {
+		transform-origin: 2px 8px;
+	}
+
+	&:last-of-type {
+		transform-origin: 2px 26px;
+	}
+
+	&:nth-of-type(2) {
+		animation-duration: 150ms; /* XXX: magic number */
+	}
+}
+input:checked + .menu-icon line {
+	&:first-of-type,
+	&:last-of-type {
+		transform-origin: 7px 23px;
+		translate: 0 -1.5px;
+		rotate: -45deg;
+	}
+
+	&:first-of-type {
+		transform-origin: 4px 13px;
+		rotate: 45deg;
+	}
+
+	&:nth-of-type(2) {
+		opacity: 0;
+	}
+}
+	</style>
+</head>
+
+<body>
+	<label>
+		<input type="checkbox">
+		<svg viewBox="0 0 35 35" aria-hidden="true" class="menu-icon">
+			<line x1="1.5" y1="7.5" x2="33.5" y2="7.5" />
+			<line x1="1.5" y1="17.5" x2="33.5" y2="17.5" />
+			<line x1="1.5" y1="27.5" x2="33.5" y2="27.5" />
+		</svg>
+		<b>Toggle</b>
+	</label>
+	<hr>
+	<label style="scale: 2; transform-origin: 0 center">
+		<input type="checkbox">
+		<svg viewBox="0 0 35 35" aria-hidden="true" class="menu-icon">
+			<line x1="1.5" y1="7.5" x2="33.5" y2="7.5" />
+			<line x1="1.5" y1="17.5" x2="33.5" y2="17.5" />
+			<line x1="1.5" y1="27.5" x2="33.5" y2="27.5" />
+		</svg>
+		<b>Toggle</b>
+	</label>
+	<hr>
+	<label style="scale: 3; transform-origin: 0 0">
+		<input type="checkbox">
+		<svg viewBox="0 0 35 35" aria-hidden="true" class="menu-icon">
+			<line x1="1.5" y1="7.5" x2="33.5" y2="7.5" />
+			<line x1="1.5" y1="17.5" x2="33.5" y2="17.5" />
+			<line x1="1.5" y1="27.5" x2="33.5" y2="27.5" />
+		</svg>
+		<b>Toggle</b>
+	</label>
+</body>
+
+</html>

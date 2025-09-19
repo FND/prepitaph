@@ -21,6 +21,7 @@ export let NONE = (content, _params, _context) => {
 };
 export let ini = await code("ini");
 export let xml = await code("xml");
+export let svg = xml;
 export let json = await code("json");
 export let css = await code("css");
 export let javascript = await code("javascript");
