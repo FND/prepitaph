@@ -58,6 +58,7 @@ state):
     }
 
     &:nth-of-type(2) {
+        scale: 0% 100%;
         opacity: 0;
     }
 }
@@ -71,7 +72,7 @@ when transitioning between both states:
 .menu-icon line {
     @media (prefers-reduced-motion: no-preference) {
         transition: none 300ms ease;
-        transition-property: transform-origin, translate, rotate, opacity;
+        transition-property: transform-origin, translate, rotate, scale, opacity;
     }
 
     &:first-of-type {
@@ -83,6 +84,7 @@ when transitioning between both states:
     }
 
     &:nth-of-type(2) {
+        transform-origin: center;
         animation-duration: 150ms;
     }
 }
