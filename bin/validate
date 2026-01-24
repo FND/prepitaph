@@ -11,8 +11,10 @@ abort() {
 	exit 1
 }
 
-# detect hard-coded FQDN while ignoring JavaScript-style comments
-git grep "[^@]prepitaph.org" ./content | grep '\.md' | grep -v '\.md: */[/*] ' && \
+# detect hard-coded FQDN while ignoring raw HTML and JavaScript-style comments
+git grep "[^@]prepitaph.org" ./content | grep '\.md' | \
+		grep -v '\.md: *<a href="https://prepitaph.org/' |
+		grep -v '\.md: */[/*] ' && \
 		abort "ERROR: detected hard-coded URL; use internal link instead"
 
 java -jar "$(node -e 'console.log(require("vnu-jar"))')" --skip-non-html \
