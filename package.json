@@ -13,6 +13,6 @@
 		"prismjs": "^1.29.0"
 	},
 	"devDependencies": {
-		"vnu-jar": "^24.10.17"
+		"vnu-jar": "^26.1.11"
 	}
 }

@@ -4,7 +4,7 @@
 	},
 	"fmt": {
 		"include": ["./src", "./test"],
-		"exclude": ["./src/assets/*.css"],
+		"exclude": ["./src/assets/*.css", "./src/assets/*.svg"],
 		"lineWidth": 90,
 		"useTabs": true,
 		"indentWidth": 4
