@@ -92,7 +92,7 @@ figcaption {
 }
 figcaption.is-filename {
 	font-family: monospace;
-	font-size: small;
+	font-size: smaller;
 }
 figcaption p:only-child {
 	margin-block: 0;
@@ -278,7 +278,7 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 .article > header .metadata {
 	min-width: 12rem; /* XXX: magic value */
 	margin-top: 0;
-	font-size: small;
+	font-size: smaller;
 }
 .article > header .metadata,
 .article > header .metadata a {
@@ -292,7 +292,7 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 }
 
 .article > footer {
-	font-size: small;
+	font-size: smaller;
 	text-align: right;
 	color: var(--color-acc);
 }
@@ -326,7 +326,7 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 .article aside:not(.footnote).is-compact,
 .article .infobox {
 	border-block-width: var(--border-size);
-	font-size: small;
+	font-size: smaller;
 }
 
 .article .infobox {
@@ -341,7 +341,7 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 
 .article .footnote {
 	margin-left: var(--spacing-lg3);
-	font-size: small;
+	font-size: smaller;
 }
 .article .footnote > sup:first-child {
 	float: left;
@@ -456,7 +456,7 @@ article.article header { /* collection instead of entity -- XXX: brittle */
 }
 
 .article figure.is-compact {
-	font-size: small;
+	font-size: smaller;
 }
 
 .article img {
