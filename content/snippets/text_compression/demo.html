@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Text Compression</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--h-size: 60ch;
+	--spacing: 0.5rem;
+}
+
+body {
+	max-width: calc(var(--h-size) + 2 * var(--spacing));
+	margin: 1rem auto;
+	padding-inline: var(--spacing);
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+h1 {
+	margin-block: 0;
+	font-size: 1.2rem;
+}
+
+textarea {
+	width: 100%;
+	min-height: 10em;
+	font-family: inherit;
+	font-size: inherit;
+}
+
+output {
+	white-space: pre;
+}
+
+button {
+	float: right;
+}
+	</style>
+</head>
+
+<body>
+	<h1>Text Compression</h1>
+	<text-encryptor>
+		<textarea>lörεm ipsüm dølœr ßit ämзt
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+culpa qui officia deserunt mollit anim id est laborum.</textarea>
+	</text-encryptor>
+
+	<script type="module">
+export class TextEncryptor extends HTMLElement {
+	static tag = "text-encryptor";
+	static {
+		customElements.define(this.tag, this);
+	}
+
+	_output = document.createElement("output");
+	// placebo button to change focus
+	_controls = new DOMParser().parseFromString(`
+<button type="button">Calculate</button>
+	`.trim(), "text/html").body.firstChild;
+
+	get field() {
+		return this.querySelector("textarea");
+	}
+
+	constructor() {
+		super();
+		this.addEventListener("change", this);
+	}
+
+	connectedCallback() {
+		this.append(this._controls, this._output);
+		this._update();
+	}
+
+	handleEvent(ev) {
+		this._update(ev.target);
+	}
+
+	async _update(field = this.field) {
+		let txt = field.value;
+		let data = await compress(txt);
+		this._output.textContent = `
+📝 ${txt.length} characters (uncompressed)
+🗜️ ${data.byteLength} bytes (compressed)
+🗜️ ${data.toBase64?.().length ?? "🤷"} characters (compressed, Base64)
+		`.trim();
+	}
+}
+
+async function compress(txt) {
+	let stream = txt2stream(txt).
+		pipeThrough(new TextEncoderStream()).
+		pipeThrough(new CompressionStream("gzip"));
+	let blob = await new Response(stream).blob();
+	return blob.bytes();
+}
+
+// NB: this becomes obsolete once `ReadableStream.from` is widely available
+function txt2stream(txt) {
+	return new ReadableStream({
+		start(controller) {
+			controller.enqueue(txt);
+			controller.close();
+		},
+	});
+}
+	</script>
+</body>
+
+</html>
