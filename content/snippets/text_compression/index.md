@@ -136,8 +136,7 @@ function compress(txt) {
     let stream = txt2stream(txt).
         pipeThrough(new TextEncoderStream()).
         pipeThrough(new CompressionStream("gzip"));
-    let blob = await new Response(stream).blob();
-    return blob.bytes();
+    return new Response(stream).bytes();
 }
 ```
 
