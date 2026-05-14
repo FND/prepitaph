@@ -6,7 +6,7 @@ technology-related content and to
 for posterity -- primarily our future selves.
 
 Both code and content can be found in the
-[public repository](https://github.com/FND/prepitaph). You might also be
+[public repository](https://codeberg.org/FND/prepitaph). You might also be
 interested in the [Authoring Guide](page://articles/authoring).
 
 Thoughts or complaints can be directed at info@prepitaph.org.
