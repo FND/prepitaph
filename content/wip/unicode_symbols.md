@@ -209,6 +209,11 @@ More comprehensive collections include [symbol.wtf](https://symbol.wtf) and
                 <td><a href="https://en.wikipedia.org/wiki/Power_symbol#Unicode">power symbols</a></td>
             </tr>
             <tr>
+                <td>ᛥ</td>
+                <td>stan</td>
+                <td><a href="https://en.wikipedia.org/wiki/Anglo-Saxon_runes#:~:text=%E1%9B%A5">Anglo-Saxon runes</a></td>
+            </tr>
+            <tr>
                 <td>¯\_(ツ)_/¯</td>
                 <td>shrug</td>
                 <td></td>
@@ -436,6 +441,9 @@ case $symbol in
         ;;
     power)
         emit "⏻"
+        ;;
+    stan)
+        emit "ᛥ"
         ;;
     shrug)
         emit '¯\_(ツ)_/¯'
