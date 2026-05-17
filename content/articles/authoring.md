@@ -57,9 +57,9 @@ code blocks: This results in corresponding CSS being included along with the
 respective markup. Supported languages are registered within
 `src/config/converters.js`.
 
-Code portions can be highlighted by wrapping them in guillemets:
+Code portions can optionally be highlighted by wrapping them in guillemets:
 
-```html
+```html highlight
 <article>
     <h2>«Hello World»</h2>
     <small>detected ««123»» backlinks</small>
@@ -67,7 +67,7 @@ Code portions can be highlighted by wrapping them in guillemets:
 ```
 
 ```
-'''html
+'''html highlight
 <article>
     <h2>«Hello World»</h2>
     <small>detected ««123»» backlinks</small>

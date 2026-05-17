@@ -52,7 +52,7 @@ roughly be divided into three categories:
 
 For example, an article's header might look like this:
 
-```html
+```html highlight
 <header>
     <h1>«Hello World»</h1>
     <small>««123»» backlinks</small>

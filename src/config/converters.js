@@ -220,12 +220,16 @@ async function code(lang, grammar = lang) {
 		loadLanguages([lang]);
 		return code(lang, grammar);
 	}
-	return (content, _params, _context) => {
+
+
+	return (content, params, _context) => {
+		let src = highlight(content, _grammar, lang);
+		if (params.highlight) {
+			src = src.replaceAll("«", "<mark>").replaceAll("»", "</mark>");
+		}
 		// deno-fmt-ignore
 		return html`<source-view><pre><code${{ class: `language-${lang}` }}>${{
-			[RAW]: highlight(content, _grammar, lang)
-				.replaceAll("«", "<mark>")
-				.replaceAll("»", "</mark>"),
+			[RAW]: src,
 		}}</code></pre></source-view><script type="module"${{
 			src: "/assets/source.js", // TODO: fingerprinting
 		}} async></script>`;
