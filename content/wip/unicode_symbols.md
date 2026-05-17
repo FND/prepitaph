@@ -247,6 +247,15 @@ unicode-symbols {
         text-align: left;
     }
 
+    label {
+        display: flex;
+        gap: var(--spacing);
+
+        b {
+            font-weight: normal;
+        }
+    }
+
     button {
         font-size: inherit;
         transition: none var(--animation-duration) ease-in-out;
@@ -267,13 +276,36 @@ unicode-symbols {
 let ANIMATION_DURATION = 150;
 
 customElements.define("unicode-symbols", class extends HTMLElement {
+    _rows = [];
+
+    get table() {
+        return this.querySelector("table");
+    }
+
+    get rows() {
+        return this.table.querySelectorAll("tbody tr");
+    }
+
     connectedCallback() {
-        let table = this.querySelector("table");
-        table.querySelector("thead").appendChild(document.createElement("th"));
+        if(this._search) { // already initialized
+            return;
+        }
+
+        this.insertAdjacentHTML("afterbegin", `
+<label>
+    <b>Search</b>
+    <input type="search" autofocus>
+</label>
+        `.trim());
+        this._search = this.querySelector("input[type=search]");
+
+        let { table } = this;
+        table.querySelector("thead tr").appendChild(document.createElement("th"));
         table.style.setProperty("--animation-duration", `${ANIMATION_DURATION}ms`);
 
-        let tbody = table.querySelector("tbody");
-        for(let row of tbody.querySelectorAll("tr")) {
+        for(let row of this.rows) {
+            this._rows.push(row.textContent.trim().toLowerCase());
+
             let btn = document.createElement("button");
             btn.type = "button";
             btn.innerHTML = `
@@ -287,9 +319,15 @@ customElements.define("unicode-symbols", class extends HTMLElement {
         }
 
         this.addEventListener("click", this);
+        this._search.addEventListener("input", this);
     }
 
     async handleEvent(ev) {
+        if(ev.type === "input") {
+            this._filter(ev.target.value.trim().toLowerCase());
+            return;
+        }
+
         let btn = ev.target.closest("button");
         if(!btn) {
             return;
@@ -302,6 +340,30 @@ customElements.define("unicode-symbols", class extends HTMLElement {
         setTimeout(() => {
             btn.classList.remove("is-pending", "is-success");
         }, ANIMATION_DURATION);
+    }
+
+    _filter(value) {
+        if(!value) {
+            for(let row of this.rows) {
+                row.hidden = false;
+            }
+            return;
+        }
+
+        if(!this._filtered) { // fix layout
+            let { table } = this;
+            for(let cell of table.querySelectorAll("thead th")) {
+                cell.style.width = getComputedStyle(cell).width;
+            }
+            table.style.tableLayout = "fixed";
+            this._filtered = true;
+        }
+
+        let i = 0;
+        for(let row of this.rows) {
+            row.hidden = !this._rows[i].includes(value);
+            i++;
+        }
     }
 });
 </script>
