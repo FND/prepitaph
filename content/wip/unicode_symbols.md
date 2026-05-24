@@ -189,6 +189,11 @@ More comprehensive collections include [symbol.wtf](https://symbol.wtf) and
                 <td></td>
             </tr>
             <tr>
+                <td>π</td>
+                <td>pi</td>
+                <td></td>
+            </tr>
+            <tr>
                 <td>€</td>
                 <td>eur</td>
                 <td></td>
@@ -491,6 +496,9 @@ case $symbol in
         ;;
     sub)
         emit "₀ ₁ ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉"
+        ;;
+    pi)
+        emit "π"
         ;;
     eur)
         emit "€"
