@@ -23,7 +23,7 @@ async function main() {
 	let host = normalizeURI(globalConfig.host);
 	let pathPrefix = normalizeURI(globalConfig.pathPrefix);
 	let baseURL = new URL(pathPrefix + "/", host).href;
-	let config = clone(globalConfig, { baseURL, host, pathPrefix });
+	let config = clone({ ...globalConfig }, { baseURL, host, pathPrefix });
 
 	let contentDir = await realpath(config.contentDir);
 	let outputDir = resolve(config.outputDir);
