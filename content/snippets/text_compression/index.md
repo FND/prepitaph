@@ -12,6 +12,11 @@ of usability challenges. Naturally, those could only be addressed by fumbling
 with byte streams.
 ```
 
+```infobox
+This article was updated a few months after publication to include notes on
+reversing text compression.
+```
+
 For environmental reasons _\*scowls at mobile operating systems*_, I felt the
 need to encode non-trivial amounts of
 [state in the URL](https://plus.excalidraw.com/blog/end-to-end-encryption).[affordances](footnote://)
@@ -140,5 +145,25 @@ function compress(txt) {
 }
 ```
 
-Resolving Base64-encoded data from the URL is left as an exercise for the
-reader.
+Resolving Base64-encoded data from the URL works pretty much the same way: We
+start with
+[`fromBase64`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/fromBase64)
+to turn the text representation back into bytes. Then we need a function that
+accepts such data and returns the original text:
+
+```javascript
+/**
+ * @param {Uint8Array} data
+ * @returns {Promise<string>}
+ */
+function decompress(data) {
+    let stream = new Blob([data]).stream().
+        pipeThrough(new DecompressionStream("gzip"));
+    return new Response(stream).text();
+}
+```
+
+(In the aforementioned thread, Jake
+[explains](https://mastodon.social/@firefoxwebdevs/116651197687816186) that we
+do _not_ need `TextDecoderStream` here because `Response` provides this
+conversion automatically.)

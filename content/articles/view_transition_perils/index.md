@@ -9,12 +9,12 @@ syntax: true
 [View transitions](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API)
 are excellent, but might block concurrent animations as well as interactions
 while transitioning.
+```
 
-'''infobox
+```infobox
 This article was updated a week after publication to include helpful comments
 from Mr. View Transitions himself, [Jake Archibald](https://jakearchibald.com),
 who was kind enough to respond in private.
-'''
 ```
 
 Wanting to add some flourish to a web application recently, I considered using
