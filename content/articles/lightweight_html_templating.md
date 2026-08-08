@@ -16,8 +16,8 @@ let link = `<a href="${uri}">${caption}</a>`;
 ```
 
 Of course that's a surefire way to risk code injection: Even if we trust the
-purveyor of those `uri` and `caption` values, it becomes that source's
-responsibility to sanitize those values.
+purveyor of `uri` and `caption`, it becomes that source's responsibility to
+sanitize those values.
 
 Consequently, I've been carrying around this little function for escaping
 HTML:
