@@ -56,7 +56,7 @@ $ TITLE="hello world" CONTENT="lorem ipsum" envsubst < template.html
 <head>
     <meta charset="utf-8">
     <title>Test Case</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="./styles/main.css">
     <style>
 *,
